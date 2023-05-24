@@ -1,14 +1,14 @@
-<template >
+<template>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="/" class="brand-link">
       <img
-        src="../assets/img/AdminLTELogo.png"
-        alt="AdminLTE Logo"
+        src="../assets/img/logopolindra.png"
+        alt="Polindra"
         class="brand-image img-circle elevation-3"
         style="opacity: 0.8"
       />
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Senat Polindra</span>
     </a>
 
     <!-- Sidebar -->
@@ -52,39 +52,83 @@
           role="menu"
           data-accordion="false"
         >
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-          <li class="nav-header">EXAMPLES</li>
           <nav-item
-            icon-class="far fa-calendar-alt"
-            text="Dashboard"
-            :to="{ path: '/' }"
+            icon-class="fas fa-chart-pie"
+            text="Beranda"
+            :to="{ path: '/dashboard' }"
           >
           </nav-item>
           <nav-item
-            icon-class="far fa-image"
-            text="Gallery"
-            :to="{ path: 'pages/gallery' }"
+            icon-class="fas fa-book"
+            text="Dokumen"
+            :to="{ path: 'pages/dokumen' }"
           >
             <li class="nav-item">
-              <router-link to="pages/gallery.html" class="nav-link">
-                <i class="nav-icon far fa-image"></i>
-                <p>Gallery</p>
+              <router-link to="pages/dokumen/DokumenPleno.vue" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Dokumen Pleno</p>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="pages/dokumen/DokumenSenat.vue" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Dokumen Senat</p>
               </router-link>
             </li>
           </nav-item>
           <nav-item
-            icon-class="fas fa-columns"
-            text="Kanban Board"
-            :to="{ path: 'pages/kanban' }"
+            icon-class="fas fa-sitemap"
+            text="Struktur Organisasi"
+            :to="{ path: 'pages/organisasi' }"
           >
-            <nav-item
-              icon-class="fas fa-columns"
-              text="Kanban Board"
-              :to="{ path: 'pages/kanban' }"
-            >
-            </nav-item>
+            <li class="nav-item">
+              <router-link to="pages/anggota.html" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Keanggotaan</p>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="pages/kerja.html" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Fungsi Kerja</p>
+              </router-link>
+            </li>
+          </nav-item>
+          <nav-item
+            icon-class="fas fa-newspaper"
+            text="Berita"
+            :to="{ path: '/berita' }"
+          >
+          </nav-item>
+          <nav-item
+            icon-class="fas fa-address-card"
+            text="Profil"
+            :to="{ path: '/profil' }"
+          >
+            <li class="nav-item">
+              <router-link to="pages/senat.html" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Sambutan Ketua Senat</p>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="pages/polindra.html" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>Sejarah Polindra</p>
+              </router-link>
+            </li>
+          </nav-item>
+          <nav-item
+            icon-class="fas fa-images"
+            text="Galeri"
+            :to="{ path: '/galeri' }"
+          >
+          </nav-item>
+          <nav-item
+            icon-class="fas fa-user"
+            text="User"
+            :to="{ path: '/user' }"
+          >
           </nav-item>
         </ul>
       </nav>
@@ -107,5 +151,4 @@ export default {
   },
 };
 </script>
-<style >
-</style>
+<style></style>

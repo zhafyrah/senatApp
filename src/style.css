@@ -8,5 +8,7 @@
 @import "../src/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
 @import "../src/assets/plugins/daterangepicker/daterangepicker.css";
 @import "../src/assets/plugins/summernote/summernote-bs4.min.css";
-    
+@import "../src/assets/plugins/codemirror/codemirror.css";
+@import "../src/assets/plugins/codemirror/theme/monokai.css";
+@import "../src/assets/plugins/daterangepicker/daterangepicker.css";
    
