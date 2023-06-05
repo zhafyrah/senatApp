@@ -6,9 +6,11 @@
           <div class="card">
             <div class="card-header">
               <div class="card-tools">
-                <router-link to="/tambah-sambutan" class="btn btn-primary">
-                  <i class="fas fa-plus mr-1"></i> Tambah Sambutan</router-link
-                >
+                <a href="/tambah-sejarah">
+                  <button type="button" class="btn btn-block btn-primary">
+                    <i class="fas fa-plus mr-2"></i>Tambah Sejarah
+                  </button>
+                </a>
               </div>
             </div>
             <div class="card-body table-responsive p-0">
@@ -22,8 +24,8 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Sambutan Ketua Senat</td>
-                    <td>Selamat Pagi bagi semua penonton</td>
+                    <td>Sejarah polindra</td>
+                    <td>Berdiri pada tahun ...</td>
                     <td><i class="fas fa-pen"></i></td>
                   </tr>
                 </tbody>

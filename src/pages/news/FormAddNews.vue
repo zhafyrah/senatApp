@@ -3,7 +3,6 @@
     <div class="card-header">
       <h4 class="card-title">Silahkan Tambahkan Berita</h4>
     </div>
-
     <form>
       <div class="card-body">
         <div class="form-group">
@@ -45,16 +44,12 @@
           ></textarea>
         </div>
         <div class="form-group">
-          <label for="exampleInputFile">File input</label>
+          <label for="inputPhoto">File input</label>
           <div class="input-group">
             <div class="custom-file">
-              <input
-                type="file"
-                class="custom-file-input"
-                id="exampleInputFile"
-              />
-              <label class="custom-file-label" for="exampleInputFile"
-                >Choose file</label
+              <input type="file" class="custom-file-input" id="inputPhoto" />
+              <label class="custom-file-label" for="inputPhoto"
+                >Pilih foto dari perangkat</label
               >
             </div>
             <div class="input-group-append">

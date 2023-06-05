@@ -2,9 +2,9 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah-berita">
+        <a href="/tambah-user">
           <button class="btn btn-primary">
-            <i class="fas fa-plus mr-1"></i>Unggah Berita
+            <i class="fas fa-plus mr-1"></i>Tambah User
           </button></a
         >
         <div class="card-tools mt-2">
@@ -29,10 +29,10 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>Judul Berita</th>
-              <th>Isi Berita</th>
-              <th>Foto</th>
-              <th>Tanggal Unggah</th>
+              <th>Nama</th>
+              <th>Role</th>
+              <th>Jabatan</th>
+              <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -40,9 +40,24 @@
             <tr>
               <td>1</td>
               <td>John Doe.pdf</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>Anggota Senat</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -51,9 +66,24 @@
             <tr>
               <td>2</td>
               <td>Alexander Pierce</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>Komisi</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -62,9 +92,24 @@
             <tr>
               <td>3</td>
               <td>Bob Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>Ketua Senat</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -73,9 +118,24 @@
             <tr>
               <td>4</td>
               <td>Mike Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>ketua Komisi A</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -84,9 +144,24 @@
             <tr>
               <td>5</td>
               <td>Jim Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>Anggota Komisi B</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -95,9 +170,24 @@
             <tr>
               <td>6</td>
               <td>Victoria Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
+              <td>Senat</td>
+              <td>
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitch1"
+                    />
+
+                    <label
+                      class="custom-control-label"
+                      for="customSwitch1"
+                    ></label>
+                  </div>
+                </div>
+              </td>
               <td>
                 <i class="fas fa-trash"></i>
                 <i class="fas fa-pen ml-2"></i>
@@ -159,12 +249,4 @@
   </div>
 </template>
 
-<script>
-// import FormAddNews from "./FormAddNews.vue";
-
-// export default {
-//   components: {
-//     FormAddNews,
-//   },
-// };
-</script>
+<script></script>

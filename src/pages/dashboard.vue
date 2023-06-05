@@ -2,9 +2,7 @@
   <div class="row">
     <div class="col-md-3 col-sm-6 col-12 mb-5">
       <div class="info-box">
-        <span class="info-box-icon bg-info"
-          ><i class="far fa-copy"></i
-        ></span>
+        <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Dokumen</span>
           <span class="info-box-number">1,410</span>
@@ -48,7 +46,7 @@
   <!-- Main row -->
   <div class="row">
     <!-- left col (We are only adding the ID to make the widgets sortable)-->
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
       <!-- TO DO List -->
       <div class="card">
         <div class="card-header">

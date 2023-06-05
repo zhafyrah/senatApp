@@ -1,11 +1,9 @@
-<template >
+<template>
   <footer class="main-footer">
     <center>
-        <strong
-      >Copyright &copy;
-      <a href="https://polindra.ac.id/">Polindra</a></strong
-    >
-    All rights reserved.
+      <strong
+        >Copyright &copy; <a href="https://polindra.ac.id/">Polindra</a></strong
+      >
     </center>
   </footer>
   <aside class="control-sidebar control-sidebar-dark">
@@ -15,5 +13,4 @@
 <script>
 export default {};
 </script>
-<style >
-</style>
+<style></style>

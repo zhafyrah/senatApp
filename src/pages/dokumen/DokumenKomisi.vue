@@ -2,10 +2,8 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah-berita">
-          <button class="btn btn-primary">
-            <i class="fas fa-plus mr-1"></i>Unggah Berita
-          </button></a
+        <router-link to="dokumen/tambah" class="btn btn-primary">
+          <i class="fas fa-plus mr-1"></i> Unggah Dokumen</router-link
         >
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
@@ -23,85 +21,59 @@
           </div>
         </div>
       </div>
-
       <div class="card-body table-responsive p-0" style="height: 300px">
         <table class="table table-head-fixed text-nowrap">
           <thead>
             <tr>
-              <th>No</th>
-              <th>Judul Berita</th>
-              <th>Isi Berita</th>
-              <th>Foto</th>
+              <th>No surat</th>
+              <th>Dokumen</th>
               <th>Tanggal Unggah</th>
+              <th>Keterangan</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
+              <td>183</td>
               <td>John Doe.pdf</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
             <tr>
-              <td>2</td>
+              <td>219</td>
               <td>Alexander Pierce</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
             <tr>
-              <td>3</td>
+              <td>657</td>
               <td>Bob Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
             <tr>
-              <td>4</td>
+              <td>175</td>
               <td>Mike Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
             <tr>
-              <td>5</td>
+              <td>134</td>
               <td>Jim Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
             <tr>
-              <td>6</td>
+              <td>494</td>
               <td>Victoria Doe</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
               <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+              <td>Bacon ipsum dolor sit amet.</td>
+              <td><i class="fas fa-trash"></i></td>
             </tr>
           </tbody>
         </table>
@@ -158,13 +130,3 @@
     </div>
   </div>
 </template>
-
-<script>
-// import FormAddNews from "./FormAddNews.vue";
-
-// export default {
-//   components: {
-//     FormAddNews,
-//   },
-// };
-</script>

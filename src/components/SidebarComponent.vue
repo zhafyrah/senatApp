@@ -1,6 +1,5 @@
 <template>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <a href="/" class="brand-link">
       <img
         src="../assets/img/logopolindra.png"
@@ -10,10 +9,7 @@
       />
       <span class="brand-text font-weight-light">Senat Polindra</span>
     </a>
-
-    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img
@@ -27,7 +23,6 @@
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input
@@ -44,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul
           class="nav nav-pills nav-sidebar flex-column"
@@ -61,7 +55,7 @@
           <nav-item
             icon-class="fas fa-book"
             text="Dokumen"
-            :to="{ path: 'pages/dokumen' }"
+            :to="{ path: '/dokumen' }"
           >
             <li class="nav-item">
               <router-link to="pages/dokumen/DokumenPleno.vue" class="nav-link">
@@ -97,7 +91,7 @@
           <nav-item
             icon-class="fas fa-newspaper"
             text="Berita"
-            :to="{ path: '/berita' }"
+            :to="{ path: '/news' }"
           >
           </nav-item>
           <nav-item
@@ -132,9 +126,7 @@
           </nav-item>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
 </template>
 <script>

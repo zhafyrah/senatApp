@@ -16,9 +16,14 @@ const routes = [
         component: () => import("../pages/dokumen/DokumenPleno.vue"),
     },
     {
-        path: "/dokumen-senat",
-        name: "Dokumen Senat",
-        component: () => import("../pages/dokumen/DokumenSenat.vue"),
+        path: "/dokumen/tambah",
+        name: "Tambah Dokumen",
+        component: () => import('../pages/dokumen/FormAddDokumen.vue'),
+    },
+    {
+        path: "/dokumen-komisi",
+        name: "Dokumen Komisi",
+        component: () => import("../pages/dokumen/DokumenKomisi.vue"),
     },
     // {
     //     path: "/struktur-organisasi",
@@ -26,7 +31,7 @@ const routes = [
     //     component: () => import("../pages/"),
     // },
     {
-        path: "/berita",
+        path: "/news",
         name: "Berita",
         component: () => import("../pages/news/News.vue"),
     },
@@ -41,16 +46,40 @@ const routes = [
         component: () => import("../pages/profil/SambutanKetua.vue"),
     },
     {
+        path: "/tambah-sambutan",
+        name: "Tambah Sambutan Ketua Senat",
+        component: () => import("../pages/profil/FormAddEditSambutan.vue"),
+    },
+    {
+        path: "/sejarah",
+        name: "Sejarah Polindra",
+        component: () => import("../pages/profil/SejarahPolindra.vue"),
+    },
+    {
+        path: "/tambah-sejarah",
+        name: "Tambah Sejarah Polindra",
+        component: () => import("../pages/profil/FormAddEditSejarah.vue"),
+    },
+    {
         path: "/galeri",
         name: "Galeri",
         component: () => import("../pages/gallery/Gallery.vue"),
     },
-    // {
-    //     path: "/user",
-    //     name: "User",
-    //     component: () => import("../pages/"),
-    // },
-
+    {
+        path: "/tambah-foto",
+        name: "Tambah Foto",
+        component: () => import("../pages/gallery/FormAddGallery.vue"),
+    },
+    {
+        path: "/user",
+        name: "User",
+        component: () => import("../pages/user/User.vue"),
+    },
+    {
+        path: "/tambah-user",
+        name: "Tambah User",
+        component: () => import("../pages/user/FormAddEditUser.vue"),
+    },
     {
         //not-found paeg
         path: "/:pathMatch(.*)*",
