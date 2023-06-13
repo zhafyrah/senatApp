@@ -1,8 +1,15 @@
 <template>
   <div class="card-body">
-    <h5>Sejarah</h5>
     <div class="row">
-      <div class="col-md-12"></div>
+      <div class="form-group col-md-12">
+        <label for="input">Judul</label>
+        <input
+          type="text"
+          id="title"
+          class="form-control"
+          placeholder="Isi Judul Disini"
+        />
+      </div>
       <div class="form-group col-md-12">
         <label>Isi Sejarah Polindra</label>
         <textarea

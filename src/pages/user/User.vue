@@ -31,7 +31,6 @@
               <th>No</th>
               <th>Nama</th>
               <th>Role</th>
-              <th>Jabatan</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
@@ -39,8 +38,7 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td>John Doe.pdf</td>
-              <td>11-7-2014</td>
+              <td>John Doe</td>
               <td>Anggota Senat</td>
               <td>
                 <div class="form-group">
@@ -66,7 +64,6 @@
             <tr>
               <td>2</td>
               <td>Alexander Pierce</td>
-              <td>11-7-2014</td>
               <td>Komisi</td>
               <td>
                 <div class="form-group">
@@ -92,7 +89,6 @@
             <tr>
               <td>3</td>
               <td>Bob Doe</td>
-              <td>11-7-2014</td>
               <td>Ketua Senat</td>
               <td>
                 <div class="form-group">
@@ -118,8 +114,7 @@
             <tr>
               <td>4</td>
               <td>Mike Doe</td>
-              <td>11-7-2014</td>
-              <td>ketua Komisi A</td>
+              <td>Komisi</td>
               <td>
                 <div class="form-group">
                   <div class="custom-control custom-switch">
@@ -144,8 +139,7 @@
             <tr>
               <td>5</td>
               <td>Jim Doe</td>
-              <td>11-7-2014</td>
-              <td>Anggota Komisi B</td>
+              <td>Anggota Senat</td>
               <td>
                 <div class="form-group">
                   <div class="custom-control custom-switch">
@@ -170,8 +164,7 @@
             <tr>
               <td>6</td>
               <td>Victoria Doe</td>
-              <td>11-7-2014</td>
-              <td>Senat</td>
+              <td>Anggota Senat</td>
               <td>
                 <div class="form-group">
                   <div class="custom-control custom-switch">

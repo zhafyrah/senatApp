@@ -1,6 +1,5 @@
 <template>
   <div class="card-body">
-    <h5>Sambutan</h5>
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
@@ -10,6 +9,15 @@
             id="name"
             class="form-control"
             placeholder="Isi Nama Ketua Senat"
+          />
+        </div>
+        <div class="form-group">
+          <label for="input">Judul</label>
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            placeholder="Isi Judul Disini"
           />
         </div>
       </div>

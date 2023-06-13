@@ -38,45 +38,57 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td>John Doe.pdf</td>
+              <td>komisi.jpg</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
             <tr>
               <td>2</td>
-              <td>Alexander Pierce</td>
+              <td>senat.png</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
             <tr>
               <td>3</td>
-              <td>Bob Doe</td>
+              <td>komisi.jpeg</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
             <tr>
               <td>4</td>
-              <td>Mike Doe</td>
+              <td>komisi.png</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
             <tr>
               <td>5</td>
-              <td>Jim Doe</td>
+              <td>senat.jpg</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
             <tr>
               <td>6</td>
-              <td>Victoria Doe</td>
+              <td>rapat.png</td>
               <td>Bacon ipsum dolor sit amet.</td>
               <td>11-7-2014</td>
-              <td><i class="fas fa-trash"></i></td>
+              <td>
+                <i class="fas fa-trash"></i> <i class="fas fa-pen ml-2"></i>
+              </td>
             </tr>
           </tbody>
         </table>

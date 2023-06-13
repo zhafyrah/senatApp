@@ -32,6 +32,7 @@
               <th>Judul Berita</th>
               <th>Isi Berita</th>
               <th>Foto</th>
+              <th>Pembuat</th>
               <th>Tanggal Unggah</th>
               <th>Aksi</th>
             </tr>
@@ -39,9 +40,10 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td>John Doe.pdf</td>
+              <td><a href="/detail-berita">Rapat Pleno</a></td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Robert</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -50,9 +52,10 @@
             </tr>
             <tr>
               <td>2</td>
-              <td>Alexander Pierce</td>
+              <td>Rapat Komisi</td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Jupita</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -61,9 +64,10 @@
             </tr>
             <tr>
               <td>3</td>
-              <td>Bob Doe</td>
+              <td>Sidang Senat</td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Bob Doe</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -72,9 +76,10 @@
             </tr>
             <tr>
               <td>4</td>
-              <td>Mike Doe</td>
+              <td>Rapat komisi 2</td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Mike Doe</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -83,9 +88,10 @@
             </tr>
             <tr>
               <td>5</td>
-              <td>Jim Doe</td>
+              <td>Sidang Senat Terbuka</td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Jim Doe</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -94,9 +100,10 @@
             </tr>
             <tr>
               <td>6</td>
-              <td>Victoria Doe</td>
+              <td>Rapat Komisi4</td>
               <td>isinya berita</td>
               <td>Bacon.jpg</td>
+              <td>Victoria Doe</td>
               <td>11-7-2014</td>
               <td>
                 <i class="fas fa-trash"></i>
@@ -159,12 +166,4 @@
   </div>
 </template>
 
-<script>
-// import FormAddNews from "./FormAddNews.vue";
-
-// export default {
-//   components: {
-//     FormAddNews,
-//   },
-// };
-</script>
+<script></script>

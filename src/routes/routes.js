@@ -6,8 +6,8 @@ const routes = [
         component: () => import("../pages/auth/Login.vue"),
     },
     {
-        path: "/dashboard",
-        name: "Dashboard",
+        path: "/",
+        name: "Beranda",
         component: () => import("../pages/dashboard.vue"),
     },
     {
@@ -25,13 +25,28 @@ const routes = [
         name: "Dokumen Komisi",
         component: () => import("../pages/dokumen/DokumenKomisi.vue"),
     },
-    // {
-    //     path: "/struktur-organisasi",
-    //     name: "Struktur Organisasi",
-    //     component: () => import("../pages/"),
-    // },
     {
-        path: "/news",
+        path: "/detail-1",
+        name: "Dokumen",
+        component: () => import("../pages/dokumen/DetailDokumen.vue")
+    },
+    {
+        path: "/tambah-fungsi",
+        name: "Tambah Fungsi Kerja",
+        component: () => import("../pages/struktur-organisasi/FormAddStruktur.vue"),
+    },
+    {
+        path: "/anggota",
+        name: "Keanggotaan",
+        component: () => import("../pages/struktur-organisasi/Keanggotaan.vue"),
+    },
+    {
+        path: "/fungsi-kerja",
+        name: "Fungsi Kerja",
+        component: () => import("../pages/struktur-organisasi/FungsiKerja.vue"),
+    },
+    {
+        path: "/berita",
         name: "Berita",
         component: () => import("../pages/news/News.vue"),
     },
@@ -39,6 +54,11 @@ const routes = [
         path: "/tambah-berita",
         name: "Tambah Berita",
         component: () => import("../pages/news/FormAddNews.vue"),
+    },
+    {
+        path: "/detail-berita",
+        name: "Detail Berita",
+        component: () => import("../pages/news/DetailNews.vue"),
     },
     {
         path: "/profil",

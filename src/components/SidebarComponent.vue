@@ -2,12 +2,12 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="/" class="brand-link">
       <img
-        src="../assets/img/logopolindra.png"
-        alt="Polindra"
+        src="../assets/img/logo.png"
+        alt=""
         class="brand-image img-circle elevation-3"
         style="opacity: 0.8"
       />
-      <span class="brand-text font-weight-light">Senat Polindra</span>
+      <span class="brand-text font-weight-light">Senat </span>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -49,7 +49,7 @@
           <nav-item
             icon-class="fas fa-chart-pie"
             text="Beranda"
-            :to="{ path: '/dashboard' }"
+            :to="{ path: '/' }"
           >
           </nav-item>
           <nav-item
@@ -73,10 +73,10 @@
           <nav-item
             icon-class="fas fa-sitemap"
             text="Struktur Organisasi"
-            :to="{ path: 'pages/organisasi' }"
+            :to="{ path: '/anggota' }"
           >
             <li class="nav-item">
-              <router-link to="pages/anggota.html" class="nav-link">
+              <router-link to="/anggota" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>Keanggotaan</p>
               </router-link>
@@ -91,7 +91,7 @@
           <nav-item
             icon-class="fas fa-newspaper"
             text="Berita"
-            :to="{ path: '/news' }"
+            :to="{ path: '/berita' }"
           >
           </nav-item>
           <nav-item
