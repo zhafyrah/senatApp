@@ -10,7 +10,3 @@ export function loginRequest(email, password) {
     }, 'login')
 }
 
-export function test() {
-    const test = new Resource("test")
-    return test.get()
-}

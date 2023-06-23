@@ -1,0 +1,17 @@
+.group {
+    position: relative;
+    align-content: stretch;
+
+    input {
+        width: 100%;
+        flex: 1 0 auto;
+    }
+
+    span {
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        right: 10px;
+        font-size: 20px;
+    }
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserRoleModel;
 use Auth;
 use Illuminate\Http\Request;
 use Throwable;
@@ -30,7 +31,13 @@ class LoginController extends Controller {
                 throw new \Exception("Email atau Password Tidak Terdaftar", 404);
             }
 
-            return $this->successResponse(Auth::user());
+            $user = Auth::user();
+            $result = [
+                'user' => $user,
+                'permission' => UserRoleModel::allbyUserId($user->id)
+            ];
+
+            return $this->successResponse($result);
         } catch (Throwable $e) {
             return $this->exceptionResponse($e);
         }

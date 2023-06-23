@@ -1,20 +1,118 @@
+<script setup>
+import { useBeritaStore } from "../../store/berita-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+
+const beritaStore = useBeritaStore()
+const snackbar = useSnackbar()
+
+const beritaData = computed(() => beritaStore.beritaData)
+const page = computed(() => beritaStore.page)
+const totalPage = computed(() => beritaStore.totalPage)
+const lastNumberPage = computed(() => beritaStore.lastNoPage)
+
+onMounted(() => {
+  //beritaStore.$reset()
+  beritaStore.getList()
+})
+
+watch(
+  () => beritaStore.errorMessage,
+  () => {
+    if (beritaStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: beritaStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => beritaStore.isSuccessSubmit,
+  () => {
+    if (beritaStore.isSuccessSubmit)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Data Berita Berhasil di Hapus",
+      })
+
+      beritaStore.getList()
+    }
+  }
+)
+
+function onCLickNext() {
+  if (beritaStore.page < beritaStore.totalPage)
+  {
+    beritaStore.page++;
+    beritaStore.getList()
+  } else
+  {
+    snackbar.add({
+      type: "warning",
+      text: "Sudah Mencapai Halaman Maximum"
+    })
+  }
+}
+
+function onClickPrev() {
+  if (beritaStore.page > 0)
+  {
+    beritaStore.page--;
+    beritaStore.getList()
+  }
+  else
+  {
+    snackbar.add({
+      type: "warning",
+      message: "Sudah Mencapai Halaman Minimum"
+    })
+  }
+}
+
+function onClickPaginate(number) {
+  beritaStore.page = number
+  beritaStore.getList()
+}
+
+function confirmDelete(e) {
+  e.preventDefault();
+  showConfirm(
+    "Konfirmasi",
+    "Hapus Data?",
+    "question",
+    "Hapus",
+    "Batal",
+    (isConfirm) => {
+      if (isConfirm)
+      {
+        beritaStore.deleteBerita(e.target.id)
+      }
+    }
+  )
+}
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah-berita">
+        <router-link to="/tambah-berita">
           <button class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i>Unggah Berita
-          </button></a
-        >
+          </button>
+        </router-link>
+        <!-- <button class="btn btn-primary ml-4" @click.prevent="showSwall">
+          <i class="fas fa-plus mr-1"></i>test
+        </button> -->
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -24,9 +122,9 @@
         </div>
       </div>
 
-      <div class="card-body table-responsive p-0" style="height: 300px">
-        <table class="table table-head-fixed text-nowrap">
-          <thead>
+      <div class="card-body table-responsive p-0 mb-5">
+        <table class="table table-bordered table-hover">
+          <thead class="text-center">
             <tr>
               <th>No</th>
               <th>Judul Berita</th>
@@ -37,133 +135,33 @@
               <th>Aksi</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><a href="/detail-berita">Rapat Pleno</a></td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Robert</td>
-              <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+          <tbody class="">
+            <tr v-if="beritaData.length == 0" class="text-center border">
+              <td colspan="7">Berita Kosong</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Rapat Komisi</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Jupita</td>
-              <td>11-7-2014</td>
+            <tr v-for="(berita, i) in beritaData" :key="i">
+              <td>{{ i+=lastNumberPage }}</td>
               <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+                {{ berita.judul }}
               </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Sidang Senat</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Bob Doe</td>
-              <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Rapat komisi 2</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Mike Doe</td>
-              <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Sidang Senat Terbuka</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Jim Doe</td>
-              <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Rapat Komisi4</td>
-              <td>isinya berita</td>
-              <td>Bacon.jpg</td>
-              <td>Victoria Doe</td>
-              <td>11-7-2014</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+              <td>{{ berita.isi ? berita.isi.substring(0, 30) + ' ...' : '' }}</td>
+              <td>{{ berita.foto_name }}</td>
+              <td>{{ berita.nama_user }}</td>
+              <td>{{ berita.tanggal_unggah }} </td>
+              <td class="text-center">
+                <a href="#" @click.prevent="confirmDelete">
+                  <i :id="berita.id" class="fas fa-trash"></i>
+                </a>
+                <router-link :to="{ name: 'DetailBerita', params: { id: berita.id } }">
+                  <i class="fas fa-pen ml-3"></i>
+                </router-link>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-sm-12 col-md-7 ml-3">
-          <div class="dataTables_paginate_numbers">
-            <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
-              </li>
-              <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
-              </li>
-              <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
-              </li>
-              <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
+        @click-paginate="onClickPaginate" />
     </div>
   </div>
 </template>
-
-<script></script>

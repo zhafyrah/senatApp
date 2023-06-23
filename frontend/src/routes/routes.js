@@ -1,11 +1,8 @@
-
-
-const routes = [
-    //make
+const constantRoutes = [
     {
         path: "/",
         name: "Beranda",
-        meta: { 
+        meta: {
             layout: 'Authenticated',
         },
         component: () => import("../pages/dashboard.vue"),
@@ -26,6 +23,46 @@ const routes = [
         },
         component: () => import("../pages/dokumen/DokumenPleno.vue"),
     },
+]
+
+const adminRoutes = [
+    {
+        path: "/dokumen-komisi",
+        name: "Dokumen Komisi",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['dokumen komisi']
+        },
+        component: () => import("../pages/dokumen/DokumenKomisi.vue"),
+    },
+    {
+        path: "/user",
+        name: "User",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['user']
+        },
+        component: () => import("../pages/user/User.vue"),
+    },
+]
+
+const routes = [
+    ...constantRoutes,
+    ...adminRoutes,
+    {
+        path: "/dokumen-senat",
+        name: "Dokumen Senat",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['dokumen senat']
+        },
+        component: () => import("../pages/dokumen/DokumenSenat.vue"),
+    },
+    {
+        path: "/tambah-user",
+        name: "Tambah User",
+        component: () => import("../pages/user/FormAddEditUser.vue"),
+    },
     {
         path: "/dokumen/tambah",
         name: "Tambah Dokumen",
@@ -33,14 +70,6 @@ const routes = [
             layout: 'Authenticated',
         },
         component: () => import('../pages/dokumen/FormAddDokumen.vue'),
-    },
-    {
-        path: "/dokumen-komisi",
-        name: "Dokumen Komisi",
-        meta: {
-            layout: 'Authenticated',
-        },
-        component: () => import("../pages/dokumen/DokumenKomisi.vue"),
     },
     {
         path: "/detail-1",
@@ -81,17 +110,25 @@ const routes = [
     },
     {
         path: "/tambah-berita",
-        name: "Tambah Berita",
+        name: "TambahBerita",
         meta: {
             layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Berita',
+                path: '/berita',
+            }]
         },
         component: () => import("../pages/news/FormAddNews.vue"),
     },
     {
-        path: "/detail-berita",
-        name: "Detail Berita",
+        path: "/detail-berita/:id",
+        name: "DetailBerita",
         meta: {
             layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Berita',
+                path: '/berita',
+            }]
         },
         component: () => import("../pages/news/DetailNews.vue"),
     },
@@ -108,6 +145,7 @@ const routes = [
         name: "Tambah Sambutan Ketua Senat",
         meta: {
             layout: 'Authenticated',
+            permission: ['tambah sambutan']
         },
         component: () => import("../pages/profil/FormAddEditSambutan.vue"),
     },
@@ -142,19 +180,6 @@ const routes = [
             layout: 'Authenticated',
         },
         component: () => import("../pages/gallery/FormAddGallery.vue"),
-    },
-    {
-        path: "/user",
-        name: "User",
-        meta: {
-            layout: 'Authenticated',
-        },
-        component: () => import("../pages/user/User.vue"),
-    },
-    {
-        path: "/tambah-user",
-        name: "Tambah User",
-        component: () => import("../pages/user/FormAddEditUser.vue"),
     },
     {
         //not-found paeg

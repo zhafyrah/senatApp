@@ -8,7 +8,7 @@ import { onMounted } from "vue";
 import { Vue3Snackbar } from "vue3-snackbar";
 
 onMounted(() => {
-    console.log('authenticated')
+    
 })
 </script>
 

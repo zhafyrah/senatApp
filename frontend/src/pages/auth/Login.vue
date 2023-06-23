@@ -29,7 +29,7 @@ function handleLogin() {
 }
 
 authStore.$subscribe((mutatuin, state) => {
-  console.log(state.responseMessage)
+  console.log('subscribe', state.isSuccess)
 })
 
 watch(
@@ -50,12 +50,15 @@ watch(
   () => {
     if (authStore.isSuccess)
     {
+      authStore.$reset()
       snackbar.add({
         type: 'success',
         text: "Login Berhasil",
       })
 
-      router.push('/')
+      router.push({
+        path: '/'
+      })
     }
   }
 )
@@ -75,7 +78,7 @@ onMounted(() => {
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html">Senat App</a>
+        <a href="#">Senat App</a>
       </div>
       <!-- /.login-logo -->
       <div class="card">

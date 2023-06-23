@@ -1,18 +1,30 @@
+<script setup>
+import { useDokPlenoStore } from "../../store/dokumen-pleno-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+
+const dokStore = useDokPlenoStore()
+const snackbar = useSnackbar()
+
+const data = computed(() => dokStore.dokData)
+const page = computed(() => dokStore.page)
+const totalPage = computed(() => dokStore.totalPage)
+const lastNumberPage = computed(() => dokStore.lastNoPage)
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
         <router-link to="dokumen/tambah" class="btn btn-primary">
-          <i class="fas fa-plus mr-1"></i> Unggah Dokumen</router-link
-        >
+          <i class="fas fa-plus mr-1"></i>
+          Unggah Dokumen
+        </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -21,7 +33,6 @@
           </div>
         </div>
       </div>
-
       <div class="card-body table-responsive p-0" style="height: 300px">
         <table class="table table-head-fixed text-nowrap">
           <thead>
@@ -91,48 +102,17 @@
         <div class="col-sm-12 col-md-7 ml-3">
           <div class="dataTables_paginate_numbers">
             <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example2_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
+              <li class="paginate_button page-item previous disabled" id="example2_previous">
+                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
               </li>
               <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="1"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
+                <a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a>
               </li>
               <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="2"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
+                <a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a>
               </li>
               <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="7"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
+                <a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
               </li>
             </ul>
           </div>

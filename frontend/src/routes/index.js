@@ -16,9 +16,10 @@ router.beforeEach((to, from, next) => {
         '/auth/login',
     ];
 
-    const authRequired = !publicPages.includes(to.name);
+    const publicPage = !publicPages.includes(to.path);
+    const session = useUserSession();
 
-    if (authRequired && !useUserSession())
+    if (publicPage && Object.keys(session).length === 0)
     {
         next({
             path: '/auth/login',
@@ -26,7 +27,15 @@ router.beforeEach((to, from, next) => {
         })
     } else
     {
-        next()
+        if (to.path === '/auth/login' && Object.keys(session).length > 0)
+        {
+            next({
+                path: '/'
+            })
+        } else
+        {
+            next()
+        }
     }
 })
 

@@ -21,7 +21,7 @@ trait TraitApiResponse {
         return response()->json($response, 200);
     }
 
-    public function successResponse($result, $message = '', $token = ''): JsonResponse {
+    public function successResponse($result = [], $message = '', $token = ''): JsonResponse {
         if ($token != '') {
             $response = [
                 'status'  => true,
@@ -37,7 +37,7 @@ trait TraitApiResponse {
             ];
         }
 
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     public function successResponseImage($image) {
@@ -72,10 +72,7 @@ trait TraitApiResponse {
     }
 
     public function paginateResponse($meta) {
-        return response()->json([
-            'status' => true,
-            'meta'   => $meta
-        ], 200);
+        return response()->json($meta, 200);
     }
 
     public function metaResponse($meta) {

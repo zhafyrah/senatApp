@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
 
             loginRequest(email, password)
                 .then((response) => {
-                    
+                    console.log('login res', response)
                     if (remember)
                     {
                         localStorage.setItem("remember", {
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
                         localStorage.setItem("remember", null)
                     }
 
-                    saveUserSession(response.data)
+                    saveUserSession(response.data.user, response.data.permission)
                     this.isSuccess = true
                     loadingOverlay.hide()
                 })
@@ -54,14 +54,26 @@ export const useAuthStore = defineStore('auth', {
                     this.isError = true
                     loadingOverlay.hide()
                 })
+        },
+        submitLogout() {
+            localStorage.removeItem("user")
         }
     }
 })
 
-export const useUserSession = () => {
-    return JSON.parse(localStorage.getItem("user"))
+export function useUserSession() {
+    if (localStorage.getItem("user") && localStorage.getItem("permission"))
+    {
+        return {
+            user: JSON.parse(localStorage.getItem("user")),
+            permission: JSON.parse(localStorage.getItem("permission")),
+        }
+    }
+
+    return {}
 }
 
-function saveUserSession(user) {
+function saveUserSession(user, permission) {
     localStorage.setItem("user", JSON.stringify(user))
+    localStorage.setItem("permission", JSON.stringify(permission))
 }
