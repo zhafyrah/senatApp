@@ -23,6 +23,30 @@ const constantRoutes = [
         },
         component: () => import("../pages/dokumen/DokumenPleno.vue"),
     },
+    {
+        path: "/detail-dokumen/:id",
+        name: "Detail Dokumen",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Pleno',
+                path: '/dokumen-pleno',
+            }]
+        },
+        component: () => import("../pages/dokumen/DokumenPleno.vue"),
+    },
+    {
+        path: "/dokumen-tambah/:type",
+        name: "TambahDokumen",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Pleno',
+                path: '/dokumen-pleno',
+            }]
+        },
+        component: () => import('../pages/dokumen/FormAddDokumen.vue'),
+    },
 ]
 
 const adminRoutes = [
@@ -44,6 +68,19 @@ const adminRoutes = [
         },
         component: () => import("../pages/user/User.vue"),
     },
+    {
+        path: "/tambah-user",
+        name: "Tambah User",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['user'],
+            breadcrumb: [{
+                label: 'User',
+                path: '/user',
+            }]
+        },
+        component: () => import("../pages/user/FormAddEditUser.vue"),
+    },
 ]
 
 const routes = [
@@ -59,26 +96,13 @@ const routes = [
         component: () => import("../pages/dokumen/DokumenSenat.vue"),
     },
     {
-        path: "/tambah-user",
-        name: "Tambah User",
-        component: () => import("../pages/user/FormAddEditUser.vue"),
-    },
-    {
-        path: "/dokumen/tambah",
-        name: "Tambah Dokumen",
-        meta: {
-            layout: 'Authenticated',
-        },
-        component: () => import('../pages/dokumen/FormAddDokumen.vue'),
-    },
-    {
         path: "/detail-1",
         name: "Dokumen",
         component: () => import("../pages/dokumen/DetailDokumen.vue")
     },
     {
         path: "/tambah-fungsi",
-        name: "Tambah Fungsi Kerja",
+        name: "Tambah FungsiKerja",
         meta: {
             layout: 'Authenticated',
         },
@@ -91,6 +115,18 @@ const routes = [
             layout: 'Authenticated',
         },
         component: () => import("../pages/struktur-organisasi/Keanggotaan.vue"),
+    },
+    {
+        path: "/tambah-anggota",
+        name: "TambahAnggota",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Keanggotaan',
+                path: '/anggota',
+            }]
+        },
+        component: () => import("../pages/struktur-organisasi/FormAddKeanggotaan.vue"),
     },
     {
         path: "/fungsi-kerja",
@@ -133,7 +169,7 @@ const routes = [
         component: () => import("../pages/news/DetailNews.vue"),
     },
     {
-        path: "/profil",
+        path: "/sambutan",
         name: "Sambutan Ketua Senat",
         meta: {
             layout: 'Authenticated',

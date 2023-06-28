@@ -22,7 +22,7 @@ if (!!access && access.constructor === Array)
 
 //console.log('permission', access)
 
-const fullName = user.first_name + ' ' + user.last_name
+const fullName = user.nama
 
 const handleLogout = () => {
   authStore.submitLogout()
@@ -104,19 +104,19 @@ onMounted(() => {
           <nav-item v-if="isDokumen" icon-class="fas fa-book" text="Dokumen" to="#">
             <template #dropdown>
               <li v-if="isDokumenPleno" class="nav-item">
-                <router-link to="/dokumen-pleno" class="nav-link">
+                <router-link to="/dokumen-pleno" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('pleno') }">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Pleno</p>
                 </router-link>
               </li>
               <li v-if="isDokumenSenat" class="nav-item">
-                <router-link to="/dokumen-senat" class="nav-link">
+                <router-link to="/dokumen-senat" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('senat') }">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Senat</p>
                 </router-link>
               </li>
               <li v-if="isDokumenKomisi" class="nav-item">
-                <router-link to="/dokumen-komisi" class="nav-link">
+                <router-link to="/dokumen-komisi" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('komisi') }">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Komisi</p>
                 </router-link>
@@ -133,7 +133,7 @@ onMounted(() => {
                 </router-link>
               </li>
               <li v-if="isFungsiKerja" class="nav-item">
-                <router-link to="pages/kerja" class="nav-link">
+                <router-link to="/fungsi-kerja" class="nav-link">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Fungsi Kerja</p>
                 </router-link>
@@ -148,13 +148,13 @@ onMounted(() => {
           <nav-item v-if="isProfile" icon-class="fas fa-address-card" text="Profil" to="#">
             <template #dropdown>
               <li v-if="isSambutan" class="nav-item">
-                <router-link to="pages/senat" class="nav-link">
+                <router-link to="/sambutan" class="nav-link">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p class="">Sambutan Ketua Senat</p>
                 </router-link>
               </li>
               <li v-if="isSejarah" class="nav-item">
-                <router-link to="pages/polindra" class="nav-link">
+                <router-link to="/sejarah" class="nav-link">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Sejarah Polindra</p>
                 </router-link>
@@ -165,7 +165,8 @@ onMounted(() => {
           <nav-item v-if="isGaleri" icon-class="fas fa-images" text="Galeri" :to="{ path: '/galeri' }">
           </nav-item>
 
-          <nav-item v-if="isUserAccess" icon-class="fas fa-user" text="User" :to="{ path: '/user' }">
+          <nav-item v-if="isUserAccess" icon-class="fas fa-user" text="User" :to="{ path: '/user' }"
+          :custom-class="{ 'active router-link-exact-active': routePath.includes('user') }">
           </nav-item>
         </ul>
       </nav>

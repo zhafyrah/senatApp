@@ -1,70 +1,115 @@
+<script setup>
+import { useDokPlenoStore } from "../../store/dokumen-pleno-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, ref, watch, computed } from 'vue';
+import Datepicker from 'vue3-datepicker'
+import { useRouter, useRoute } from "vue-router";
+
+const dokStore = useDokPlenoStore()
+const snackbar = useSnackbar()
+const router = useRouter()
+const route = useRoute()
+
+watch(
+  () => dokStore.errorMessage,
+  () => {
+    if (dokStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: dokStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => dokStore.isSuccessSubmit,
+  () => {
+    if (dokStore.isSuccessSubmit)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Dokumen Pleno Berhasil di Simpan",
+      })
+
+      router.back()
+    }
+  }
+)
+
+const dokForm = ref({
+  noSurat: '',
+  tanggal_unggah: new Date(),
+  keterangan: '',
+  status: '',
+});
+
+const dokFile = ref(null)
+
+function onChangeDok(e) {
+  dokFile.value = e.target.files[0]
+}
+
+function onSubmit(e) {
+  e.preventDefault();
+  dokStore.saveDokPleno(dokForm.value, dokFile.value)
+}
+
+</script>
 <template>
-  <div class="card-body">
-    <h5>Dokumen</h5>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="inputName">No Surat</label>
-          <input type="text" id="nosurat" class="form-control" />
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex align-items-center">
+        <h5>Dokumen</h5>
+      </div>
+    </div>
+    <form @submit.prevent="onSubmit">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="inputName">No Surat</label>
+              <input type="text" id="nosurat" class="form-control" v-model="dokForm.no_surat" required />
+            </div>
+            <div class="form-group">
+              <label>Tanggal Unggah</label>
+              <Datepicker v-model="dokForm.tanggal_unggah" placeholder="Tanggal Unggah" class="form-control" required />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="inputEmail">Keterangan</label>
+              <input type="text" id="keterangan" class="form-control" v-model="dokForm.keterangan" required />
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select class="form-control" v-model="dokForm.status" required>
+                <option selected disabled value="">Silahkan Pilih Status</option>
+                <option value="Belum Disahkan">Belum Disahkan</option>
+                <option value="Dipertimbangkan">Dipertimbangkan</option>
+                <option value="Disahkan">Disahkan</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="form-group">
-          <label>Tanggal Unggah</label>
-          <div
-            class="input-group date"
-            id="reservationdate"
-            data-target-input="nearest"
-          >
-            <input
-              type="text"
-              class="form-control datetimepicker-input"
-              data-target="#reservationdate"
-            />
-            <div
-              class="input-group-append"
-              data-target="#reservationdate"
-              data-toggle="datetimepicker"
-            >
-              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          <label for="exampleInputFile">Unggah Dokumen</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeDok"/>
+              <label class="custom-file-label" for="exampleInputFile">{{ dokFile == null ? "Temukan Dokumen dari Komputer Anda" :
+                dokFile.name }}</label>
+            </div>
+            <div class="input-group-append">
+              <span class="input-group-text">Upload</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="inputEmail">Keterangan</label>
-          <input type="text" id="keterangan" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Status</label>
-          <select
-            class="form-control select"
-            style="width: 100%"
-            placeholder="Silahkan Pilih Status"
-          >
-            <option selected disabled>Silahkan Pilih Status</option>
-            <option select-id="1">Belum Disahkan</option>
-            <option select-id="2">Dipertimbangkan</option>
-            <option select-id="3">Disahkan</option>
-          </select>
-        </div>
+      <div class="card-footer d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary w-100">Kirim</button>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputFile">Unggah Dokumen</label>
-      <div class="input-group">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="exampleInputFile" />
-          <label class="custom-file-label" for="exampleInputFile"
-            >Temukan Dokumen dari Komputer Anda</label
-          >
-        </div>
-        <div class="input-group-append">
-          <span class="input-group-text">Upload</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="submit" class="btn btn-primary" value="Send message" />
-    </div>
+    </form>
   </div>
 </template>

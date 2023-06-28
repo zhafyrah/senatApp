@@ -1,20 +1,133 @@
+<script setup>
+import { useFungsiKerjaStore } from "../../store/fungsi-kerja-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+
+const fungsiKerjaStore = useFungsiKerjaStore()
+const snackbar = useSnackbar()
+
+const fungsiKerjaData = computed(() => {
+  return fungsiKerjaStore.fungsiKerjaData
+})
+
+const page = computed(() => {
+  return fungsiKerjaStore.page
+})
+
+const totalPage = computed(() => {
+  return fungsiKerjaStore.totalPage
+})
+
+const lastNumberPage = computed(() => {
+  return fungsiKerjaStore.lastNoPage
+})
+
+onMounted(() => {
+  fungsiKerjaStore.getList()
+})
+
+watch(
+  () => fungsiKerjaStore.errorMessage,
+  () => {
+    if (fungsiKerjaStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: fungsiKerjaStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => fungsiKerjaStore.isSuccessSubmit,
+  () => {
+    if (fungsiKerjaStore.isSuccessSubmit && fungsiKerjaStore.submitMessage)
+    {
+      snackbar.add({
+        type: 'success',
+        text: fungsiKerjaStore.submitMessage,
+      })
+
+      fungsiKerjaStore.getList()
+    }
+  }
+)
+
+function onCLickNext() {
+  if (fungsiKerjaStore.page < fungsiKerjaStore.totalPage)
+  {
+    fungsiKerjaStore.page++;
+    fungsiKerjaStore.getList()
+  } else
+  {
+    snackbar.add({
+      type: "warning",
+      text: "Sudah Mencapai Halaman Maximum"
+    })
+  }
+}
+
+function onClickPrev() {
+  if (fungsiKerjaStore.page > 0)
+  {
+    fungsiKerjaStore.page--;
+    fungsiKerjaStore.getList()
+  }
+  else
+  {
+    snackbar.add({
+      type: "warning",
+      message: "Sudah Mencapai Halaman Minimum"
+    })
+  }
+}
+
+function onClickPaginate(number) {
+  fungsiKerjaStore.page = number
+  fungsiKerjaStore.getList()
+}
+
+function confirmDelete(e) {
+  e.preventDefault();
+  showConfirm(
+    "Konfirmasi",
+    "Hapus Data?",
+    "question",
+    "Hapus",
+    "Batal",
+    (isConfirm) => {
+      if (isConfirm)
+      {
+        fungsiKerjaStore.deleteFungsiKerja(e.target.id)
+      }
+    }
+  )
+}
+
+const anggota = (anggota1, anggota2, anggota3) => {
+  var result = [anggota1, anggota2, anggota3].map((value, index) => {
+    index++;
+    return `${index}. ${value}`
+  }).join("\n")
+  return result
+}
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah">
+        <router-link to="/tambah-fungsi">
           <button class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i>Tambah Fungsi
-          </button></a
-        >
+          </button>
+        </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -24,122 +137,45 @@
         </div>
       </div>
 
-      <div class="card-body table-responsive p-0" style="height: 300px">
-        <table class="table table-head-fixed text-nowrap">
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hovered table-bordered">
           <thead>
             <tr>
               <th>No</th>
               <th>Komisi</th>
-              <th>Fungsi Kerja Anggota</th>
+              <th>Fungsi Kerja</th>
+              <th>Ketua Komisi</th>
               <th>Anggota</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Komisi A</td>
-              <td>isinya Fungsi</td>
-              <td>
-                1. Robert <br />
-                2. Rian
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+            <tr v-if="fungsiKerjaData.length == 0" class="text-center border">
+              <td colspan="6">Data FungsiKerja Kosong</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Komisi B</td>
-              <td>isinya Fungsi</td>
+            <tr v-for="(fungsiKerja, i) in fungsiKerjaData" :key="i">
+              <td class="text-center">{{ i+=lastNumberPage }}</td>
               <td>
-                1. Robert <br />
-                2. Rian
+                {{ fungsiKerja.komisi }}
               </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Komisi C</td>
-              <td>isinya Fungsi</td>
-              <td>
-                1. Robert <br />
-                2. Rian
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Komisi D</td>
-              <td>isinya Fungsi</td>
-              <td>
-                1. Robert <br />
-                2. Rian
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+              <td>{{ fungsiKerja.fungsi_kerja }}</td>
+              <td>{{ fungsiKerja.ketua_komisi }}</td>
+              <td style="white-space: pre-line" class="text-center">{{ anggota(fungsiKerja.nama_anggota1,
+                fungsiKerja.nama_anggota2, fungsiKerja.nama_anggota3) }}</td>
+              <td class="text-center">
+                <a href="#" @click.prevent="confirmDelete">
+                  <i :id="fungsiKerja.id" class="fas fa-trash"></i>
+                </a>
+                <!--  <router-link :to="{ name: 'DetailBerita', params: { id: fungsiKerja.id } }">
+                    <i class="fas fa-pen ml-3"></i>
+                  </router-link> -->
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-sm-12 col-md-7 ml-3">
-          <div class="dataTables_paginate_numbers">
-            <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
-              </li>
-              <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
-              </li>
-              <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
-              </li>
-              <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
+        @click-paginate="onClickPaginate" />
     </div>
   </div>
 </template>

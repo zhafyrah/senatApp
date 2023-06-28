@@ -1,20 +1,152 @@
+<script setup>
+import { useUserStore } from "../../store/user-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+import { ucwords } from "../../utils/formating-utils"
+
+const userStore = useUserStore()
+const snackbar = useSnackbar()
+
+const userData = computed(() => userStore.userData)
+const page = computed(() => userStore.page)
+const totalPage = computed(() => userStore.totalPage)
+const lastNumberPage = computed(() => userStore.lastNoPage)
+
+onMounted(() => {
+  //userStore.$reset()
+  userStore.getList()
+})
+
+watch(
+  () => userStore.errorMessage,
+  () => {
+    if (userStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: userStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => userStore.isSuccessSubmit,
+  () => {
+    if (userStore.isSuccessSubmit)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Data User Berhasil di Hapus",
+      })
+      userStore.getList()
+    }
+  }
+)
+
+watch(
+  () => userStore.isSuccessUpdate,
+  () => {
+    if (userStore.isSuccessUpdate)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Data User Berhasil di Update",
+      })
+      userStore.getList()
+    }
+  }
+)
+
+watch(
+  () => userStore.isSuccessDelete,
+  () => {
+    if (userStore.isSuccessDelete)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Data User Berhasil di Hapus",
+      })
+      userStore.getList()
+    }
+  }
+)
+
+
+function onCLickNext() {
+  if (userStore.page < userStore.totalPage)
+  {
+    userStore.page++;
+    userStore.getList()
+  } else
+  {
+    snackbar.add({
+      type: "warning",
+      text: "Sudah Mencapai Halaman Maximum"
+    })
+  }
+}
+
+function onClickPrev() {
+  if (userStore.page > 0)
+  {
+    userStore.page--;
+    userStore.getList()
+  }
+  else
+  {
+    snackbar.add({
+      type: "warning",
+      message: "Sudah Mencapai Halaman Minimum"
+    })
+  }
+}
+
+function onClickPaginate(number) {
+  userStore.page = number
+  userStore.getList()
+}
+
+function confirmDelete(e) {
+  e.preventDefault();
+  showConfirm(
+    "Konfirmasi",
+    "Hapus Data?",
+    "question",
+    "Hapus",
+    "Batal",
+    (isConfirm) => {
+      if (isConfirm)
+      {
+        userStore.deleteUser(e.target.id)
+      }
+    }
+  )
+}
+
+function onChangeStatus(e) {
+  const userId = e.target.getAttribute('data-id')
+  const isActive = e.target.checked;
+  userStore.updateUser(userId, {
+    status: isActive ? 1 : 0
+  })
+}
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah-user">
+        <router-link to="/tambah-user">
           <button class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i>Tambah User
-          </button></a
-        >
+          </button>
+        </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -24,9 +156,9 @@
         </div>
       </div>
 
-      <div class="card-body table-responsive p-0" style="height: 300px">
-        <table class="table table-head-fixed text-nowrap">
-          <thead>
+      <div class="card-body table-responsive p-0">
+        <table class="table table-bordered table-hover">
+          <thead class="text-center">
             <tr>
               <th>No</th>
               <th>Nama</th>
@@ -36,210 +168,38 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>John Doe</td>
-              <td>Anggota Senat</td>
-              <td>
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+            <tr v-if="userData.length == 0" class="text-center border">
+              <td colspan="5">Data User Kosong</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Alexander Pierce</td>
-              <td>Komisi</td>
+            <tr v-for="(user, i) in userData" :key="i">
+              <td class="text-center">{{ i+=lastNumberPage }}</td>
               <td>
+                {{ user.nama }}
+              </td>
+              <td>{{ ucwords(user.role) }}</td>
+              <td class="text-center">
                 <div class="form-group">
                   <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
+                    <input type="checkbox" class="custom-control-input" :id="'customSwitch' + user.id" :checked="user.status == 1"
+                      :data-id="user.id" @change="onChangeStatus"/>
+                    <label class="custom-control-label" :for="'customSwitch' + user.id"></label>
                   </div>
                 </div>
               </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Bob Doe</td>
-              <td>Ketua Senat</td>
-              <td>
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Mike Doe</td>
-              <td>Komisi</td>
-              <td>
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Jim Doe</td>
-              <td>Anggota Senat</td>
-              <td>
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Victoria Doe</td>
-              <td>Anggota Senat</td>
-              <td>
-                <div class="form-group">
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="customSwitch1"
-                    />
-
-                    <label
-                      class="custom-control-label"
-                      for="customSwitch1"
-                    ></label>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+              <td class="text-center">
+                <a href="#" @click.prevent="confirmDelete">
+                  <i :id="user.id" class="fas fa-trash"></i>
+                </a>
+                <router-link :to="{ name: 'DetailBerita', params: { id: user.id } }">
+                  <i class="fas fa-pen ml-3"></i>
+                </router-link>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-sm-12 col-md-7 ml-3">
-          <div class="dataTables_paginate_numbers">
-            <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
-              </li>
-              <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
-              </li>
-              <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
-              </li>
-              <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
+        @click-paginate="onClickPaginate" />
     </div>
   </div>
 </template>
-
-<script></script>

@@ -21,7 +21,7 @@ trait TraitApiResponse {
         return response()->json($response, 200);
     }
 
-    public function successResponse($result = [], $message = '', $token = ''): JsonResponse {
+    public function successResponse($result = [], $message = '', $token = '') {
         if ($token != '') {
             $response = [
                 'status'  => true,
@@ -60,15 +60,11 @@ trait TraitApiResponse {
 
     public function exceptionResponse(Throwable $e): JsonResponse {
         $code = 500;
-        if ($e instanceof HttpExceptionInterface) {
-            $code = $e->getStatusCode();
-        } else {
-            if ($e->getCode() > 0) {
-                $code = $e->getCode();
-            }
+        if ($e->getCode() > 0) {
+            $code = $e->getCode();
         }
 
-        return $this->errorResponse($e->getMessage(), [], $code);
+        return $this->errorResponse($e->getMessage(), [], 500);
     }
 
     public function paginateResponse($meta) {

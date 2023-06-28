@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('pendidikan');
             $table->string('foto_name')->nullable();
-            $table->longText('foto_url');
+            $table->longText('foto_url')->nullable();
             $table->string('foto_path');
 
             $table->bigInteger('created_user')->index()->nullable();

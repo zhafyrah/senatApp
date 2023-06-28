@@ -57,7 +57,8 @@ watch(
       })
 
       router.push({
-        path: '/'
+        path: '/',
+        replace: true,
       })
     }
   }

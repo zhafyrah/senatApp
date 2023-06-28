@@ -10,7 +10,9 @@ Chart.register(...registerables);
 const dashboardStore = useDashboardStore()
 const snackbar = useSnackbar()
 
-const dashboardData = computed(() => dashboardStore.dashboardData)
+const dashboardData = computed(() => {
+  return dashboardStore.dashboardData
+})
 
 const data = ref([30, 40, 60, 70, 5]);
 

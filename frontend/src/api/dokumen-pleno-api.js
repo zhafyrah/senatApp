@@ -18,10 +18,10 @@ export function insertDokPlenoRequest(data) {
     return resource.store(data, 'save', true);
 }
 
-export function updateDokPlenoRequest(beritaId, data) {
-    return resource.update(beritaId, data, 'update', true)
+export function updateDokPlenoRequest(dokId, data) {
+    return resource.update(dokId, data, 'update', true)
 }
 
-export function deleteDokPlenoRequest(beritaId) {
-    return resource.destroy('delete', beritaId)
+export function deleteDokPlenoRequest(dokId) {
+    return resource.destroy('delete', dokId)
 }

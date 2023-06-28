@@ -26,7 +26,8 @@ class DokumenPleno extends BaseModel
         return $query
             ->leftJoin('users', 'users.id', '=', 'dokumen_pleno.created_user')
             ->select('dokumen_pleno.*')
-            ->selectRaw("CONCAT(users.first_name, ' ', users.last_name) as nama_user");
+            ->selectRaw("DATE(dokumen_pleno.created_at) as tanggal_unggah")
+            ->selectRaw("users.nama as nama_user");
     }
 
     public function scopeList($query) {

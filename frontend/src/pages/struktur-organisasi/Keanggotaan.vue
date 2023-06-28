@@ -1,20 +1,125 @@
+<script setup>
+import { useKeanggotaanStore } from "../../store/keanggotaan-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+
+const keanggotaanStore = useKeanggotaanStore()
+const snackbar = useSnackbar()
+
+const keanggotaanData = computed(() => {
+  return keanggotaanStore.keanggotaanData
+})
+
+const page = computed(() => {
+  return keanggotaanStore.page
+})
+
+const totalPage = computed(() => {
+  return keanggotaanStore.totalPage
+})
+
+const lastNumberPage = computed(() => {
+  return keanggotaanStore.lastNoPage
+})
+
+onMounted(() => {
+  keanggotaanStore.getList()
+})
+
+watch(
+  () => keanggotaanStore.errorMessage,
+  () => {
+    if (keanggotaanStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: keanggotaanStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => keanggotaanStore.isSuccessSubmit,
+  () => {
+    if (keanggotaanStore.isSuccessSubmit && keanggotaanStore.submitMessage)
+    {
+      snackbar.add({
+        type: 'success',
+        text: keanggotaanStore.submitMessage,
+      })
+
+      keanggotaanStore.getList()
+    }
+  }
+)
+
+function onCLickNext() {
+  if (keanggotaanStore.page < keanggotaanStore.totalPage)
+  {
+    keanggotaanStore.page++;
+    keanggotaanStore.getList()
+  } else
+  {
+    snackbar.add({
+      type: "warning",
+      text: "Sudah Mencapai Halaman Maximum"
+    })
+  }
+}
+
+function onClickPrev() {
+  if (keanggotaanStore.page > 0)
+  {
+    keanggotaanStore.page--;
+    keanggotaanStore.getList()
+  }
+  else
+  {
+    snackbar.add({
+      type: "warning",
+      message: "Sudah Mencapai Halaman Minimum"
+    })
+  }
+}
+
+function onClickPaginate(number) {
+  keanggotaanStore.page = number
+  keanggotaanStore.getList()
+}
+
+function confirmDelete(e) {
+  e.preventDefault();
+  showConfirm(
+    "Konfirmasi",
+    "Hapus Data?",
+    "question",
+    "Hapus",
+    "Batal",
+    (isConfirm) => {
+      if (isConfirm)
+      {
+        keanggotaanStore.deleteKeanggotaan(e.target.id)
+      }
+    }
+  )
+}
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <a href="/tambah">
+        <router-link to="/tambah-anggota">
           <button class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i>Tambah Anggota
-          </button></a
-        >
+          </button>
+        </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -24,8 +129,8 @@
         </div>
       </div>
 
-      <div class="card-body table-responsive p-0" style="height: 300px">
-        <table class="table table-head-fixed text-nowrap">
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hovered table-bordered">
           <thead>
             <tr>
               <th>No</th>
@@ -37,126 +142,31 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>John Doe.pdf</td>
-              <td>Anggota Senat</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
+            <tr v-if="keanggotaanData.length == 0" class="text-center border">
+              <td colspan="6">Data Keanggotaan Kosong</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Alexander Pierce</td>
-              <td>Komisi</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
+            <tr v-for="(keanggotaan, i) in keanggotaanData" :key="i">
+              <td class="text-center">{{ i+=lastNumberPage }}</td>
               <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+                {{ keanggotaan.nama }}
               </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Bob Doe</td>
-              <td>Ketua Senat</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Mike Doe</td>
-              <td>ketua Komisi A</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Jim Doe</td>
-              <td>Anggota Komisi B</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>Victoria Doe</td>
-              <td>Senat</td>
-              <td>S2 UGM</td>
-              <td>anggota.jpg</td>
-              <td>
-                <i class="fas fa-trash"></i>
-                <i class="fas fa-pen ml-2"></i>
+              <td>{{ keanggotaan.jabatan }}</td>
+              <td>{{ keanggotaan.pendidikan }}</td>
+              <td>{{ keanggotaan.foto_name }}</td>
+              <td class="text-center">
+                <a href="#" @click.prevent="confirmDelete">
+                  <i :id="keanggotaan.id" class="fas fa-trash"></i>
+                </a>
+                <!--  <router-link :to="{ name: 'DetailBerita', params: { id: keanggotaan.id } }">
+                    <i class="fas fa-pen ml-3"></i>
+                  </router-link> -->
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-sm-12 col-md-7 ml-3">
-          <div class="dataTables_paginate_numbers">
-            <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
-              </li>
-              <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
-              </li>
-              <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
-              </li>
-              <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
+        @click-paginate="onClickPaginate" />
     </div>
   </div>
 </template>
-
-<script></script>

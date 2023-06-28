@@ -8,6 +8,7 @@ use App\Models\Berita;
 use App\Models\DokumenKomisi;
 use App\Models\DokumenPleno;
 use App\Models\DokumenSenat;
+use App\Models\Keanggotaan;
 use Illuminate\Database\Seeder;
 use Schema;
 
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder {
         DokumenPleno::factory(30)->create();
         DokumenKomisi::factory(30)->create();
         DokumenSenat::factory(30)->create();
+
+        Keanggotaan::factory(30)->create();
 
         Schema::enableForeignKeyConstraints();
     }

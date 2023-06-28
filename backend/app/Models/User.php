@@ -18,10 +18,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'nama',
         'email',
         'password',
+        'status',
     ];
 
     /**
@@ -42,4 +42,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    private function main($query) {
+        return $query
+            ->leftJoin('users_roles', 'users.id', '=', 'users_roles.users_id')
+            ->leftJoin('roles', 'users_roles.roles_id', '=', 'roles.id')
+            ->select('users.*', 'roles.role')
+            ->selectRaw("DATE(users.created_at) as tanggal_unggah")
+            ->selectRaw("users.nama as nama_user");
+    }
+
+    public function scopeList($query, $currentUserId) {
+        $data = $this->main($query)->whereRaw("users.id <> $currentUserId")->paginate(10);
+        return $data;
+    }
+
+    public function scopeSingleRow($query, $id) {
+        $data = $this->main($query)->where('users.id', $id)->first();
+        return $data;
+    }
 }

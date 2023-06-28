@@ -1,8 +1,18 @@
 import axios from "axios";
 import { useUserSession } from '../store/auth-store'
+import { useRouter, useRoute } from "vue-router";
 
 const userSession = useUserSession()
+const router = useRouter()
+
 let baseUrl = import.meta.env.VITE_BASE_API_URL
+
+if (Object.keys(userSession).length === 0)
+{
+    /* router.push({
+        path: '/auth/login'
+    }) */
+}
 
 if (import.meta.env.PROD)
 {
@@ -10,7 +20,7 @@ if (import.meta.env.PROD)
     //baseUrl = ""
 }
 
-const moreOptions = userSession ?
+const moreOptions = Object.keys(userSession).length > 0 ?
     {
     userId: userSession.user.id
     } :
@@ -32,7 +42,7 @@ service.interceptors.request.use(
         //   config.headers['Authorization'] = 'Bearer ' + isLogged(); // Set JWT token
         // }
         
-        if (userSession)
+        if (Object.keys(userSession).length > 0)
         {
             if (config.data)
             {

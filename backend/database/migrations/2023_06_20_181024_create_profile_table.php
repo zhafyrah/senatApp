@@ -13,22 +13,6 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profile', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->longText('konten');
-            $table->string('foto_name')->nullable();
-            $table->longText('foto_url');
-            $table->string('foto_path');
-
-            $table->bigInteger('created_user')->index()->nullable();
-            $table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
-
-            $table->bigInteger('modified_user')->index()->nullable();
-            $table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
-
-            $table->timestamps();
-        });
     }
 
     /**

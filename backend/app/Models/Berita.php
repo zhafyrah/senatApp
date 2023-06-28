@@ -26,7 +26,7 @@ class Berita extends BaseModel {
             ->leftJoin('users', 'users.id', '=', 'berita.created_user')
             ->select('berita.*')
             ->selectRaw("DATE(berita.created_at) as tanggal_unggah")
-            ->selectRaw("CONCAT(users.first_name, ' ', users.last_name) as nama_user");
+            ->selectRaw("users.nama as nama_user");
     }
 
     public function scopeList($query) {

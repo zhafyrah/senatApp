@@ -57,12 +57,13 @@ export const useAuthStore = defineStore('auth', {
         },
         submitLogout() {
             localStorage.removeItem("user")
+            localStorage.removeItem("permission")
         }
     }
 })
 
 export function useUserSession() {
-    if (localStorage.getItem("user") && localStorage.getItem("permission"))
+    if (localStorage.getItem("user"))
     {
         return {
             user: JSON.parse(localStorage.getItem("user")),

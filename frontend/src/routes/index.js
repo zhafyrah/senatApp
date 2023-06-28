@@ -16,10 +16,9 @@ router.beforeEach((to, from, next) => {
         '/auth/login',
     ];
 
-    const publicPage = !publicPages.includes(to.path);
     const session = useUserSession();
 
-    if (publicPage && Object.keys(session).length === 0)
+    if (!publicPages.includes(to.path) && Object.keys(session).length === 0)
     {
         next({
             path: '/auth/login',

@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 use Throwable;
 use Validator;
 
-class KeanggotaanController extends Controller
-{
+class KeanggotaanController extends Controller {
     public function __construct() {
     }
 
@@ -29,34 +28,36 @@ class KeanggotaanController extends Controller
     }
 
     public function store(Request $request) {
+        //\Log::info('store', $request->all());
         DB::beginTransaction();
-
         try {
             $this->validationException(Validator::make(
                 $request->all(),
                 [
-                    'judul'     => 'required',
-                    'isi'  => 'required',
+                    'nama'     => 'required',
+                    'jabatan'  => 'required',
+                    'pendidikan'  => 'required',
                     'foto'  => 'required',
                 ],
                 [
-                    'judul.required'     => 'Judul Kosong',
-                    'isi.required'  => 'Isi Kosong',
+                    'nama.required'     => 'Nama Kosong',
+                    'jabatan.required'  => 'Jabatan Kosong',
+                    'pendidikan.required'     => 'Pendidikan Kosong',
                     'foto.required'     => 'Foto Kosong',
                 ]
             ));
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/berita/' . $fileName;
-            $destinationPath = public_path('/img/berita');
+            $saveName = "/img/keanggotaan/" . md5($fileName);
+            $destinationPath = public_path('/img/keanggotaan');
 
             $file->move($destinationPath, $fileName);
 
             $data = [
-                'judul' => $request->judul,
-                'isi' => $request->isi,
-                'tanggal_unggah' => date('Y-m-d H:i:s', strtotime(Carbon::parse($request->tanggal_unggah))),
+                'nama' => $request->nama,
+                'jabatan' => $request->jabatan,
+                'pendidikan' => $request->pendidikan,
                 'foto_name' => $fileName,
                 'foto_path' => $saveName,
                 'created_user' => $request->header('userId'),
@@ -70,7 +71,7 @@ class KeanggotaanController extends Controller
             return $this->successResponse();
         } catch (Throwable $e) {
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
-                unlink(public_path('/img/berita') . $fileName);
+                unlink(public_path('/img/keanggotaan') . $fileName);
             }
 
             return $this->exceptionResponse($e);
@@ -90,14 +91,15 @@ class KeanggotaanController extends Controller
             ));
 
             $berita = Keanggotaan::find($id);
-            $berita->judul = $request->judul;
-            $berita->isi = $request->isi;
+            $berita->nama = $request->nama;
+            $berita->jabatan = $request->jabatan;
+            $berita->pendidikan = $request->pendidikan;
             $berita->modified_user = $request->modified_user;
 
             if ($file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
-                $saveName = '/img/berita/' . $fileName;
-                $destinationPath = public_path('/img/berita');
+                $saveName = '/img/keanggotaan/' . md5($fileName);
+                $destinationPath = public_path('/img/keanggotaan');
 
                 $file->move($destinationPath, $fileName);
 

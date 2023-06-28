@@ -25,7 +25,7 @@ class DokumenKomisi extends BaseModel
         return $query
             ->leftJoin('users', 'users.id', '=', 'dokumen_komisi.created_user')
             ->select('dokumen_komisi.*')
-            ->selectRaw("CONCAT(users.first_name, ' ', users.last_name) as nama_user");
+            ->selectRaw("users.nama as nama_user");
     }
 
     public function scopeList($query) {

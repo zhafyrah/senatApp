@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 use Throwable;
 use Validator;
 
-class GalleryController extends Controller
-{
+class GalleryController extends Controller {
     public function __construct() {
     }
 
@@ -35,28 +34,24 @@ class GalleryController extends Controller
             $this->validationException(Validator::make(
                 $request->all(),
                 [
-                    'judul'     => 'required',
-                    'isi'  => 'required',
+                    'keterangan'     => 'required',
                     'foto'  => 'required',
                 ],
                 [
-                    'judul.required'     => 'Judul Kosong',
-                    'isi.required'  => 'Isi Kosong',
+                    'keterangan.required'     => 'Keterangan Kosong',
                     'foto.required'     => 'Foto Kosong',
                 ]
             ));
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/berita/' . $fileName;
-            $destinationPath = public_path('/img/berita');
+            $saveName = '/img/gallery/' . md5($fileName);
+            $destinationPath = public_path('/img/gallery');
 
             $file->move($destinationPath, $fileName);
 
             $data = [
-                'judul' => $request->judul,
-                'isi' => $request->isi,
-                'tanggal_unggah' => date('Y-m-d H:i:s', strtotime(Carbon::parse($request->tanggal_unggah))),
+                'keterangan' => $request->keterangan,
                 'foto_name' => $fileName,
                 'foto_path' => $saveName,
                 'created_user' => $request->header('userId'),
@@ -70,34 +65,24 @@ class GalleryController extends Controller
             return $this->successResponse();
         } catch (Throwable $e) {
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
-                unlink(public_path('/img/berita') . $fileName);
+                unlink(public_path('/img/gallery') . $fileName);
             }
 
+            \Log::warning($e->getMessage());
             return $this->exceptionResponse($e);
         }
     }
 
     public function edit(Request $request, $id) {
         try {
-            $this->validationException(Validator::make(
-                $request->all(),
-                [
-                    'userId'  => 'required',
-                ],
-                [
-                    'userId.required'  => 'User Tidak Valid',
-                ]
-            ));
-
             $berita = Gallery::find($id);
-            $berita->judul = $request->judul;
-            $berita->isi = $request->isi;
+            $berita->keterangan = $request->keterangan;
             $berita->modified_user = $request->modified_user;
 
             if ($file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
-                $saveName = '/img/berita/' . $fileName;
-                $destinationPath = public_path('/img/berita');
+                $saveName = '/img/gallery/' . md5($fileName);
+                $destinationPath = public_path('/img/gallery');
 
                 $file->move($destinationPath, $fileName);
 

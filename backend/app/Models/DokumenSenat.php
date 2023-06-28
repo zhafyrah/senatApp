@@ -25,7 +25,8 @@ class DokumenSenat extends BaseModel
         return $query
             ->leftJoin('users', 'users.id', '=', 'dokumen_senat.created_user')
             ->select('dokumen_senat.*')
-            ->selectRaw("CONCAT(users.first_name, ' ', users.last_name) as nama_user");
+            ->selectRaw("DATE(dokumen_senat.created_at) as tanggal_unggah")
+            ->selectRaw("users.nama as nama_user");
     }
 
     public function scopeList($query) {

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('keterangan');
             $table->string('foto_name')->nullable();
-            $table->longText('foto_url');
-            $table->string('foto_path');
-            
+            $table->longText('foto_url')->nullable();
+            $table->string('foto_path')->nullable();
+
             $table->bigInteger('created_user')->index()->nullable();
             $table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
 

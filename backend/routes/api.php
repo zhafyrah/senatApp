@@ -2,12 +2,17 @@
 
 use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DokumenPlenoController;
+use App\Http\Controllers\Api\DokumenSenatController;
+use App\Http\Controllers\Api\FungsiKerjaController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\KeanggotaanController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RolesController;
+use App\Http\Controllers\Api\SambutanController;
+use App\Http\Controllers\Api\SejarahController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Models\DokumenPleno;
-use App\Models\DokumenSenat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +47,20 @@ Route::group(
         });
 
         Route::group([
+            'prefix' => 'users',
+        ], function () {
+            Route::get('/', [UserController::class, 'show']);
+
+            Route::get('/{id}', [UserController::class, 'show']);
+
+            Route::post('/save', [UserController::class, 'store']);
+
+            Route::put('/update/{id}', [UserController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [UserController::class, 'destroy']);
+        });
+
+        Route::group([
             'prefix' => 'berita',
         ], function () {
             Route::get('/', [BeritaController::class, 'show']);
@@ -58,29 +77,29 @@ Route::group(
         Route::group([
             'prefix' => 'dokumen-pleno',
         ], function () {
-            Route::get('/', [DokumenPleno::class, 'show']);
+            Route::get('/', [DokumenPlenoController::class, 'show']);
 
-            Route::get('/{id}', [DokumenPleno::class, 'show']);
+            Route::get('/{id}', [DokumenPlenoController::class, 'show']);
 
-            Route::post('/save', [DokumenPleno::class, 'store']);
+            Route::post('/save', [DokumenPlenoController::class, 'store']);
 
-            Route::put('/update/{id}', [DokumenPleno::class, 'edit']);
+            Route::put('/update/{id}', [DokumenPlenoController::class, 'edit']);
 
-            Route::delete('/delete/{id}', [DokumenPleno::class, 'destroy']);
+            Route::delete('/delete/{id}', [DokumenPlenoController::class, 'destroy']);
         });
 
         Route::group([
             'prefix' => 'dokumen-senat',
         ], function () {
-            Route::get('/', [DokumenSenat::class, 'show']);
+            Route::get('/', [DokumenSenatController::class, 'show']);
 
-            Route::get('/{id}', [DokumenSenat::class, 'show']);
+            Route::get('/{id}', [DokumenSenatController::class, 'show']);
 
-            Route::post('/save', [DokumenSenat::class, 'store']);
+            Route::post('/save', [DokumenSenatController::class, 'store']);
 
-            Route::put('/update/{id}', [DokumenSenat::class, 'edit']);
+            Route::put('/update/{id}', [DokumenSenatController::class, 'edit']);
 
-            Route::delete('/delete/{id}', [DokumenSenat::class, 'destroy']);
+            Route::delete('/delete/{id}', [DokumenSenatController::class, 'destroy']);
         });
 
         Route::group([
@@ -123,6 +142,54 @@ Route::group(
             Route::put('/update/{id}', [ProfileController::class, 'edit']);
 
             Route::delete('/delete/{id}', [ProfileController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'master',
+        ], function () {
+            Route::get('/roles', [RolesController::class, 'show']);
+        });
+
+        Route::group([
+            'prefix' => 'fungsi-kerja',
+        ], function () {
+            Route::get('/', [FungsiKerjaController::class, 'show']);
+
+            Route::get('/{id}', [FungsiKerjaController::class, 'show']);
+
+            Route::post('/save', [FungsiKerjaController::class, 'store']);
+
+            Route::put('/update/{id}', [FungsiKerjaController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [FungsiKerjaController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'sejarah',
+        ], function () {
+            Route::get('/', [SejarahController::class, 'show']);
+
+            Route::get('/{id}', [SejarahController::class, 'show']);
+
+            Route::post('/save', [SejarahController::class, 'store']);
+
+            Route::put('/update/{id}', [SejarahController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [SejarahController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'sambutan',
+        ], function () {
+            Route::get('/', [SambutanController::class, 'show']);
+
+            Route::get('/{id}', [SambutanController::class, 'show']);
+
+            Route::post('/save', [SambutanController::class, 'store']);
+
+            Route::put('/update/{id}', [SambutanController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [SambutanController::class, 'destroy']);
         });
     }
 );
