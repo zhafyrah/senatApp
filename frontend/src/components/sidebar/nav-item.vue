@@ -1,5 +1,5 @@
 <script setup>
-import { computed, useSlots } from 'vue';
+import { computed, useSlots, onMounted } from 'vue';
 
 const props = defineProps({
   iconClass: {
@@ -32,7 +32,7 @@ const hasChildren = computed(() => {
 })
 
 const is = computed(() => {
-  if (props.to !== '#' )
+  if (props.to !== '#')
   {
     return 'router-link'
   }
@@ -47,6 +47,7 @@ function handleItemClick(event) {
 </script>
 <template>
   <li class="nav-item">
+    <!-- :class="{ 'menu menu-is-opening menu-open': isOpenDropdown }" -->
     <component :is="is" :to="to" class="nav-link" @click.prevent="handleItemClick" :class="customClass">
       <p>
         <i :class="iconClass + ' mr-1'"></i>

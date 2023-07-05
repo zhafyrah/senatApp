@@ -5,7 +5,7 @@ import navItem from "./sidebar/nav-item.vue";
 import { computed, onMounted } from "vue"
 
 function handleItemClick() {
-  this.$emit("item-click");
+  
 }
 
 const router = useRouter()
@@ -66,7 +66,7 @@ const isProfile = computed(() => isSambutan.value || isSejarah.value)
 const routePath = computed(() => route.path)
 
 onMounted(() => {
-
+  $('[data-widget="treeview"]').Treeview('init');
 })
 </script>
 <template>
