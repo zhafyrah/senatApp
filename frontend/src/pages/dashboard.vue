@@ -4,15 +4,14 @@ import { useDashboardStore } from "../store/dashboard-store";
 import { useSnackbar } from "vue3-snackbar";
 import { BarChart, useBarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
+import { storeToRefs } from "pinia";
 
 Chart.register(...registerables);
 
 const dashboardStore = useDashboardStore()
 const snackbar = useSnackbar()
 
-const dashboardData = computed(() => {
-  return dashboardStore.dashboardData
-})
+const { dashboardData } = storeToRefs(dashboardStore)
 
 const data = ref([30, 40, 60, 70, 5]);
 

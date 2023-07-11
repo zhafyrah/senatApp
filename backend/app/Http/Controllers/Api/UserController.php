@@ -72,7 +72,7 @@ class UserController extends Controller {
 
             return $this->successResponse();
         } catch (Throwable $e) {
-
+            DB::rollBack();
             return $this->exceptionResponse($e);
         }
     }
@@ -107,6 +107,7 @@ class UserController extends Controller {
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             return $this->exceptionResponse($e);
         }
     }

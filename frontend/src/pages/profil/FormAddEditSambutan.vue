@@ -2,11 +2,22 @@
 import { useSambutanStore } from "../../store/sambutan-store"
 import { useSnackbar } from "vue3-snackbar"
 import { onMounted, ref, watch, computed } from "vue"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 
 const sambutanStore = useSambutanStore()
 const snackbar = useSnackbar()
 const router = useRouter()
+const route = useRoute()
+
+const sambutanForm = ref({
+  namaKetuaSenat: '',
+  judul: '',
+  isi: '',
+  fotoUrl: '',
+  fotoName: ''
+});
+
+const fotoFile = ref(null)
 
 watch(
   () => sambutanStore.errorMessage,
@@ -36,13 +47,18 @@ watch(
   }
 )
 
-const sambutanForm = ref({
-  namaKetuaSenat: '',
-  judul: '',
-  isi: '',
-});
-
-const fotoFile = ref(null)
+watch(
+  () => sambutanStore.singleData,
+  () => {
+    const data = sambutanStore.singleData
+    console.log('data', data)
+    sambutanForm.value.judul = data.judul
+    sambutanForm.value.isi = data.isi
+    sambutanForm.value.namaKetuaSenat = data.nama_ketua_senat
+    sambutanForm.value.fotoUrl = data.foto_url
+    sambutanForm.value.fotoName = data.foto_name
+  }
+)
 
 function onChangeFoto(e) {
   fotoFile.value = e.target.files[0]
@@ -50,8 +66,24 @@ function onChangeFoto(e) {
 
 function onClickSubmit(e) {
   e.preventDefault();
-  sambutanStore.saveSambutan(sambutanForm.value, fotoFile.value)
+  if (route.params.id)
+  {
+    sambutanStore.updateSambutan(route.params.id, sambutanForm.value, null)
+  }
+  else
+  {
+    sambutanStore.saveSambutan(sambutanForm.value, fotoFile.value)
+  }
+
 }
+
+onMounted(() => {
+  if (route.params.id)
+  {
+    sambutanStore.getSambutanById(route.params.id)
+  }
+})
+
 </script>
 <template>
   <form class="form" @submit.prevent="onClickSubmit">
@@ -76,7 +108,7 @@ function onClickSubmit(e) {
             </textarea>
           </div>
         </div>
-        <div class="form-group">
+        <div v-if="sambutanForm.fotoUrl == ''" class="form-group">
           <label for="exampleInputFile">Unggah Foto</label>
           <div class="input-group">
             <div class="custom-file">
@@ -88,6 +120,14 @@ function onClickSubmit(e) {
             <div class="input-group-append">
               <span class="input-group-text">Upload</span>
             </div>
+          </div>
+        </div>
+        <div v-else class="row text-center">
+          <div class="col-md-12">
+            <img :src="sambutanForm.fotoUrl" width="150" height="150" />
+          </div>
+          <div class="col-md-12">
+            <label>{{ sambutanForm.fotoName }}</label>
           </div>
         </div>
       </div>

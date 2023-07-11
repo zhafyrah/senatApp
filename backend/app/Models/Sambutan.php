@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sambutan extends Model
-{
+class Sambutan extends Model {
     use HasFactory;
 
     protected $table = 'sambutan';
@@ -27,7 +26,8 @@ class Sambutan extends Model
             ->leftJoin('users', 'users.id', '=', 'sambutan.created_user')
             ->select('sambutan.*')
             ->selectRaw("DATE(sambutan.created_at) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user");
+            ->selectRaw("users.nama as nama_user")
+            ->selectRaw("CONCAT('" . url('') . "', foto_path) as foto_url");
     }
 
     public function scopeList($query) {

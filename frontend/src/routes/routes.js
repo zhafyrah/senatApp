@@ -24,8 +24,8 @@ const constantRoutes = [
         component: () => import("../pages/dokumen/DokumenPleno.vue"),
     },
     {
-        path: "/detail-dokumen/:id",
-        name: "Detail Dokumen",
+        path: "/detail-dokumen-pleno/:id",
+        name: "DetailDokumenPleno",
         meta: {
             layout: 'Authenticated',
             breadcrumb: [{
@@ -33,11 +33,35 @@ const constantRoutes = [
                 path: '/dokumen-pleno',
             }]
         },
-        component: () => import("../pages/dokumen/DokumenPleno.vue"),
+        component: () => import("../pages/dokumen/DetailDokumenPleno.vue"),
     },
     {
-        path: "/dokumen-tambah/:type",
-        name: "TambahDokumen",
+        path: "/detail-dokumen-komisi/:id",
+        name: "DetailDokumenKomisi",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Komisi',
+                path: '/dokumen-komisi',
+            }]
+        },
+        component: () => import("../pages/dokumen/DetailDokumenKomisi.vue"),
+    },
+    {
+        path: "/detail-dokumen-senat/:id",
+        name: "DetailDokumenSenat",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Senat',
+                path: '/dokumen-senat',
+            }]
+        },
+        component: () => import("../pages/dokumen/DetailDokumenSenat.vue"),
+    },
+    {
+        path: "/dokumen-tambah-pleno/:id?",
+        name: "TambahDokumenPleno",
         meta: {
             layout: 'Authenticated',
             breadcrumb: [{
@@ -45,7 +69,31 @@ const constantRoutes = [
                 path: '/dokumen-pleno',
             }]
         },
-        component: () => import('../pages/dokumen/FormAddDokumen.vue'),
+        component: () => import('../pages/dokumen/FormAddDokumenPleno.vue'),
+    },
+    {
+        path: "/dokumen-tambah-komisi/:id?",
+        name: "TambahDokumenKomisi",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Komisi',
+                path: '/dokumen-komisi',
+            }]
+        },
+        component: () => import('../pages/dokumen/FormAddDokumenKomisi.vue'),
+    },
+    {
+        path: "/dokumen-tambah-senat/:id?",
+        name: "TambahDokumenSenat",
+        meta: {
+            layout: 'Authenticated',
+            breadcrumb: [{
+                label: 'Dokumen Senat',
+                path: '/dokumen-senat',
+            }]
+        },
+        component: () => import('../pages/dokumen/FormAddDokumenSenat.vue'),
     },
 ]
 
@@ -69,8 +117,8 @@ const adminRoutes = [
         component: () => import("../pages/user/User.vue"),
     },
     {
-        path: "/tambah-user",
-        name: "Tambah User",
+        path: "/tambah-user/:id?",
+        name: "TambahUser",
         meta: {
             layout: 'Authenticated',
             permission: ['user'],
@@ -94,11 +142,6 @@ const routes = [
             permission: ['dokumen senat']
         },
         component: () => import("../pages/dokumen/DokumenSenat.vue"),
-    },
-    {
-        path: "/detail-1",
-        name: "Dokumen",
-        component: () => import("../pages/dokumen/DetailDokumen.vue")
     },
     {
         path: "/tambah-fungsi",
@@ -177,8 +220,8 @@ const routes = [
         component: () => import("../pages/profil/SambutanKetua.vue"),
     },
     {
-        path: "/tambah-sambutan",
-        name: "Tambah Sambutan Ketua Senat",
+        path: "/tambah-sambutan/:id?",
+        name: "TambahSambutan",
         meta: {
             layout: 'Authenticated',
             permission: ['tambah sambutan']

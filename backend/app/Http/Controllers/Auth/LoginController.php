@@ -25,10 +25,10 @@ class LoginController extends Controller {
                 ]
             ));
 
-            $credentials = $request->only('email', 'password');
+            $credentials = $this->credentials($request);
 
             if (!Auth::attempt($credentials)) {
-                throw new \Exception("Email atau Password Tidak Terdaftar", 404);
+                throw new \Exception("Email & Password Tidak Terdaftar atau Akun Mu Non-Aktif", 404);
             }
 
             $user = Auth::user();
@@ -41,5 +41,9 @@ class LoginController extends Controller {
         } catch (Throwable $e) {
             return $this->exceptionResponse($e);
         }
+    }
+
+    protected function credentials(Request $request) {
+        return ['email' => $request->email, 'password' => $request->password, 'status' => 1];
     }
 }

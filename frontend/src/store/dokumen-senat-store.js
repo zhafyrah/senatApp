@@ -18,7 +18,11 @@ function resultDokSenatForm(dokSenatForm, dokumenFile) {
     formData.append('keterangan', dokSenatForm.keterangan)
     formData.append('tanggal_unggah', formatDateToServer(dokSenatForm.tanggal_unggah))
     formData.append('status', dokSenatForm.status)
-    formData.append('dokumen', dokumenFile)
+    if (dokumenFile)
+    {
+        formData.append('dokumen', dokumenFile)    
+    }
+    
 
     return formData
 }
@@ -26,6 +30,7 @@ function resultDokSenatForm(dokSenatForm, dokumenFile) {
 export const useDokSenatStore = defineStore("dokumen-senat", {
     state: () => ({
         dokData: [],
+        komentarData: [],
         singleData: {},
         errorMessage: "",
         totalData: 0,
@@ -153,6 +158,6 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
 
                     loadingOverlay.hide()
                 })
-        }
+        },
     }
 })

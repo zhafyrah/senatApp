@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DokumenKomisiController;
 use App\Http\Controllers\Api\DokumenPlenoController;
 use App\Http\Controllers\Api\DokumenSenatController;
 use App\Http\Controllers\Api\FungsiKerjaController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\KeanggotaanController;
+use App\Http\Controllers\Api\KomentarDokumenPlenoController;
+use App\Http\Controllers\Api\KomentarDokumenSenatController;
+use App\Http\Controllers\Api\KomentarDokumenKomisiController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SambutanController;
@@ -100,6 +104,56 @@ Route::group(
             Route::put('/update/{id}', [DokumenSenatController::class, 'edit']);
 
             Route::delete('/delete/{id}', [DokumenSenatController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'dokumen-komisi',
+        ], function () {
+            Route::get('/', [DokumenKomisiController::class, 'show']);
+
+            Route::get('/{id}', [DokumenKomisiController::class, 'show']);
+
+            Route::post('/save', [DokumenKomisiController::class, 'store']);
+
+            Route::put('/update/{id}', [DokumenKomisiController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [DokumenKomisiController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'komentar-komisi',
+        ], function () {
+            Route::get('/', [KomentarDokumenKomisiController::class, 'show']);
+
+            Route::get('/{id}', [KomentarDokumenKomisiController::class, 'show']);
+
+            Route::post('/save', [KomentarDokumenKomisiController::class, 'store']);
+
+            Route::delete('/delete/{id}', [KomentarDokumenKomisiController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'komentar-pleno',
+        ], function () {
+            Route::get('/', [KomentarDokumenPlenoController::class, 'show']);
+
+            Route::get('/{id}', [KomentarDokumenPlenoController::class, 'show']);
+
+            Route::post('/save', [KomentarDokumenPlenoController::class, 'store']);
+
+            Route::delete('/delete/{id}', [KomentarDokumenPlenoController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'komentar-senat',
+        ], function () {
+            Route::get('/', [KomentarDokumenSenatController::class, 'show']);
+
+            Route::get('/{id}', [KomentarDokumenSenatController::class, 'show']);
+
+            Route::post('/save', [KomentarDokumenSenatController::class, 'store']);
+
+            Route::delete('/delete/{id}', [KomentarDokumenSenatController::class, 'destroy']);
         });
 
         Route::group([

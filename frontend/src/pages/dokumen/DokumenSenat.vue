@@ -101,7 +101,7 @@ function confirmDelete(e) {
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <router-link :to="{ name: 'TambahDokumen', params: { type: 'senat' } }" class="btn btn-primary">
+                <router-link :to="{ name: 'TambahDokumenSenat' }" class="btn btn-primary">
                     <i class="fas fa-plus mr-1"></i>
                     Unggah Dokumen
                 </router-link>
@@ -124,7 +124,7 @@ function confirmDelete(e) {
                             <th>Dokumen</th>
                             <th>Tanggal Unggah</th>
                             <th>Keterangan</th>
-                            <th>Status</th>
+                            <!-- <th>Status</th> -->
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -139,12 +139,15 @@ function confirmDelete(e) {
                             <td>{{ dok.dokumen_name }}</td>
                             <td>{{ dok.tanggal_unggah }}</td>
                             <td>{{ dok.keterangan }} </td>
-                            <td>{{ dok.status }} </td>
+                            <!-- <td>{{ dok.status }} </td> -->
                             <td class="text-center">
                                 <a href="#" @click.prevent="confirmDelete">
                                     <i :id="dok.id" class="fas fa-trash"></i>
                                 </a>
-                                <router-link :to="{ name: 'Detail Dokumen', params: { id: dok.id } }">
+                                <router-link :to="{ name: 'DetailDokumenSenat', params: { id: dok.id } }">
+                                    <i class="fas fa-eye ml-3"></i>
+                                </router-link>
+                                <router-link :to="{ name: 'TambahDokumenSenat', params: { id: dok.id } }">
                                     <i class="fas fa-pen ml-3"></i>
                                 </router-link>
                             </td>

@@ -16,7 +16,11 @@ function resultSambutanForm(sambutanForm, fotoFile) {
     formData.append('nama_ketua_senat', sambutanForm.namaKetuaSenat)
     formData.append('judul', sambutanForm.judul)
     formData.append('isi', sambutanForm.isi)
-    formData.append('foto', fotoFile)
+    if (fotoFile)
+    {
+        formData.append('foto', fotoFile)    
+    }
+    
     return formData
 }
 

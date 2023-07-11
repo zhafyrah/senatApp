@@ -10,6 +10,18 @@ const snackbar = useSnackbar()
 const router = useRouter()
 const route = useRoute()
 
+const dokForm = ref({
+  noSurat: '',
+  tanggal_unggah: new Date(),
+  keterangan: '',
+  status: '',
+});
+
+const dokUrl = ref('')
+const dokName = ref('')
+const dokId = ref(0)
+const dokFile = ref(null)
+
 watch(
   () => dokStore.errorMessage,
   () => {
@@ -28,6 +40,8 @@ watch(
   () => {
     if (dokStore.isSuccessSubmit)
     {
+      dokStore.$reset()
+
       snackbar.add({
         type: 'success',
         text: "Dokumen Pleno Berhasil di Simpan",
@@ -38,14 +52,18 @@ watch(
   }
 )
 
-const dokForm = ref({
-  noSurat: '',
-  tanggal_unggah: new Date(),
-  keterangan: '',
-  status: '',
-});
-
-const dokFile = ref(null)
+watch(
+  () => dokStore.singleData,
+  () => {
+    dokId.value = dokStore.singleData.id
+    dokForm.value.noSurat = dokStore.singleData.no_surat
+    dokForm.value.tanggal_unggah = new Date(dokStore.singleData.tanggal_unggah)
+    dokForm.value.keterangan = dokStore.singleData.keterangan
+    dokForm.value.status = dokStore.singleData.status
+    dokUrl.value = dokStore.singleData.dokumen_url
+    dokName.value = dokStore.singleData.dokumen_name
+  }
+)
 
 function onChangeDok(e) {
   dokFile.value = e.target.files[0]
@@ -53,8 +71,26 @@ function onChangeDok(e) {
 
 function onSubmit(e) {
   e.preventDefault();
-  dokStore.saveDokPleno(dokForm.value, dokFile.value)
+  if (dokId.value == 0)
+  {
+    dokStore.saveDokPleno(dokForm.value, dokFile.value)
+  } else
+  {
+    dokStore.updateDokPleno(dokId.value, dokForm.value, null)
+  }
+
 }
+
+const isDokKomisi = computed(() => {
+  return route.params.type && route.params.type === 'komisi'
+})
+
+onMounted(() => {
+  if (route.params.id)
+  {
+    dokStore.getDokPlenoById(route.params.id)
+  }
+})
 
 </script>
 <template>
@@ -67,22 +103,26 @@ function onSubmit(e) {
     <form @submit.prevent="onSubmit">
       <div class="card-body">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="form-group">
               <label for="inputName">No Surat</label>
-              <input type="text" id="nosurat" class="form-control" v-model="dokForm.no_surat" required />
+              <input type="text" id="nosurat" class="form-control" v-model="dokForm.noSurat" required />
             </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="inputEmail">Keterangan</label>
+              <input type="text" id="keterangan" class="form-control" v-model="dokForm.keterangan" required />
+            </div>
+          </div>
+          <div class="col-md-12">
             <div class="form-group">
               <label>Tanggal Unggah</label>
               <Datepicker v-model="dokForm.tanggal_unggah" placeholder="Tanggal Unggah" class="form-control" required />
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="inputEmail">Keterangan</label>
-              <input type="text" id="keterangan" class="form-control" v-model="dokForm.keterangan" required />
-            </div>
-            <div class="form-group">
+          <div class="col-md-12">
+            <div v-if="!isDokKomisi" class="form-group">
               <label>Status</label>
               <select class="form-control" v-model="dokForm.status" required>
                 <option selected disabled value="">Silahkan Pilih Status</option>
@@ -93,17 +133,26 @@ function onSubmit(e) {
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div v-if="dokUrl == ''" class="form-group">
           <label for="exampleInputFile">Unggah Dokumen</label>
           <div class="input-group">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeDok"/>
-              <label class="custom-file-label" for="exampleInputFile">{{ dokFile == null ? "Temukan Dokumen dari Komputer Anda" :
-                dokFile.name }}</label>
+              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeDok" />
+              <label class="custom-file-label" for="exampleInputFile">
+                {{ dokFile == null ? "Temukan Dokumen dari Komputer Anda" : dokFile.name }}
+              </label>
             </div>
             <div class="input-group-append">
               <span class="input-group-text">Upload</span>
             </div>
+          </div>
+        </div>
+        <div v-else class="row text-center">
+          <div class="col-md-12">
+            <img :src="dokUrl" width="150" height="150" />
+          </div>
+          <div class="col-md-12">
+            <label>{{ dokName }}</label>
           </div>
         </div>
       </div>

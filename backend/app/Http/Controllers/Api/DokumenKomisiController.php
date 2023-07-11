@@ -7,6 +7,7 @@ use App\Models\DokumenKomisi;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Log;
 use Throwable;
 use Validator;
 
@@ -69,6 +70,8 @@ class DokumenKomisiController extends Controller
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
+
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/dokumen-komisi') . $fileName);
             }
@@ -79,12 +82,13 @@ class DokumenKomisiController extends Controller
 
     public function edit(Request $request, $id) {
         try {
+            Log::warning("request", $request->all());
             $dok = DokumenKomisi::find($id);
-            $dok->judul = $request->judul;
-            $dok->isi = $request->isi;
-            $dok->modified_user = $request->modified_user;
+            $dok->no_surat = $request->no_surat;
+            $dok->keterangan = $request->keterangan;
+            $dok->modified_user = $request->header('userId');
 
-            if ($file = $request->file('dokumen')) {
+            if ($request->file('dokumen') != null && $file = $request->file('dokumen')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
                 $saveName = '/img/dokumen-komisi/' . $fileName;
                 $destinationPath = public_path('/img/dokumen-komisi');
@@ -98,6 +102,7 @@ class DokumenKomisiController extends Controller
             $dok->save();
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/dokumen-komisi') . $fileName);
             }

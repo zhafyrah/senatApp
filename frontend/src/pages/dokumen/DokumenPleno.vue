@@ -101,7 +101,7 @@ function confirmDelete(e) {
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <router-link :to="{ name: 'TambahDokumen', params: { type: 'pleno' } }" class="btn btn-primary">
+        <router-link :to="{ name: 'TambahDokumenPleno' }" class="btn btn-primary">
           <i class="fas fa-plus mr-1"></i>
           Unggah Dokumen
         </router-link>
@@ -144,7 +144,10 @@ function confirmDelete(e) {
                 <a href="#" @click.prevent="confirmDelete">
                   <i :id="dok.id" class="fas fa-trash"></i>
                 </a>
-                <router-link :to="{ name: 'Detail Dokumen', params: { id: dok.id } }">
+                <router-link :to="{ name: 'DetailDokumenPleno', params: { id: dok.id } }">
+                    <i class="fas fa-eye ml-3"></i>
+                  </router-link>
+                <router-link :to="{ name: 'TambahDokumenPleno', params: { id: dok.id } }">
                   <i class="fas fa-pen ml-3"></i>
                 </router-link>
               </td>

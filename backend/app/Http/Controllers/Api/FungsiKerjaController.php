@@ -62,6 +62,7 @@ class FungsiKerjaController extends Controller
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             return $this->exceptionResponse($e);
         }
     }
@@ -79,6 +80,7 @@ class FungsiKerjaController extends Controller
             $fungsiKerja->save();
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             return $this->exceptionResponse($e);
         }
     }

@@ -110,7 +110,7 @@ function confirmDelete(e) {
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <div class="card-tools">
+              <div v-if="sambutanData.length == 0" class="card-tools">
                 <router-link to="/tambah-sambutan" class="btn btn-primary">
                   <i class="fas fa-plus mr-1"></i> Tambah Sambutan
                 </router-link>
@@ -134,15 +134,18 @@ function confirmDelete(e) {
                   <tr v-if="sambutanData.length == 0" class="text-center border">
                     <td colspan="3">Data Sambutan Kosong</td>
                   </tr>
-                  <tr v-for="(gallery, i) in sambutanData" :key="i">
+                  <tr v-for="(sambutan, i) in sambutanData" :key="i">
                     <td>
-                      {{ gallery.judul }}
+                      {{ sambutan.judul }}
                     </td>
-                    <td>{{ gallery.isi }}</td>
+                    <td>{{ sambutan.isi }}</td>
                     <td class="text-center">
                       <a href="#" @click.prevent="confirmDelete">
-                        <i :id="gallery.id" class="fas fa-trash"></i>
+                        <i :id="sambutan.id" class="fas fa-trash"></i>
                       </a>
+                      <router-link :to="{ name: 'TambahSambutan', params: { id: sambutan.id } }">
+                      <i class="fas fa-pen ml-3"></i>
+                    </router-link>
                     </td>
                   </tr>
                 </tbody>

@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        //'password',
         'remember_token',
     ];
 
@@ -49,7 +49,7 @@ class User extends Authenticatable
             ->leftJoin('roles', 'users_roles.roles_id', '=', 'roles.id')
             ->select('users.*', 'roles.role')
             ->selectRaw("DATE(users.created_at) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user");
+            ->selectRaw("users.nama as nama_user, roles.id as role_id");
     }
 
     public function scopeList($query, $currentUserId) {

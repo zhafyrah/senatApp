@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('foto_path')->nullable();
 
             $table->bigInteger('created_user')->index()->nullable();
-            $table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
+            //$table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
 
             $table->bigInteger('modified_user')->index()->nullable();
-            $table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
+            //$table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
 
             $table->timestamps();
         });

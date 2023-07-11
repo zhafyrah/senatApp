@@ -103,13 +103,10 @@ export const useUserStore = defineStore("user", {
                 })
         },
         updateUser(id, userForm) {
-            this.isSuccessUpdate = false
-            this.errorMessage = ""
-            
             showLoading()
             updateUserRequest(id, resultUserForm(userForm))
                 .then((response) => {
-                    this.isSuccessUpdate = true
+                    this.isSuccessSubmit = true
                     //console.log('response', response)
                     loadingOverlay.hide()
                 })

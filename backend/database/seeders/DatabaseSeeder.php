@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder {
         //Berita::factory(30)->create();
 
         DokumenPleno::factory(30)->create();
-        DokumenKomisi::factory(30)->create();
+        //DokumenKomisi::factory(30)->create();
         DokumenSenat::factory(30)->create();
 
         Keanggotaan::factory(30)->create();

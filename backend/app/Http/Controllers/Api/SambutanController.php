@@ -10,8 +10,7 @@ use DB;
 use Throwable;
 use Validator;
 
-class SambutanController extends Controller
-{
+class SambutanController extends Controller {
     public function __construct() {
     }
 
@@ -50,7 +49,7 @@ class SambutanController extends Controller
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/sambutan/' . md5($fileName);
+            $saveName = '/img/sambutan/' . $fileName;
             $destinationPath = public_path('/img/sambutan');
 
             $file->move($destinationPath, $fileName);
@@ -71,6 +70,7 @@ class SambutanController extends Controller
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/sambutan') . $fileName);
             }
@@ -83,13 +83,14 @@ class SambutanController extends Controller
     public function edit(Request $request, $id) {
         try {
             $berita = Sambutan::find($id);
-            $berita->ketua_senat = $request->ketua_senat;
+            $berita->nama_ketua_senat = $request->nama_ketua_senat;
+            $berita->judul = $request->judul;
             $berita->isi = $request->isi;
-            $berita->modified_user = $request->modified_user;
+            $berita->modified_user = $request->header('userId');
 
-            if ($file = $request->file('foto')) {
+            if ($request->file('foto') != null && $file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
-                $saveName = '/img/sambutan/' . md5($fileName);
+                $saveName = '/img/sambutan/' . $fileName;
                 $destinationPath = public_path('/img/sambutan');
 
                 $file->move($destinationPath, $fileName);
@@ -101,6 +102,10 @@ class SambutanController extends Controller
             $berita->save();
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
+            if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
+                unlink(public_path('/img/sambutan') . $fileName);
+            }
             return $this->exceptionResponse($e);
         }
     }

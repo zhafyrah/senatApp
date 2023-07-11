@@ -15,6 +15,8 @@ class Resource {
             params
         });
 
+        //console.log('url', finalUrl)
+
         return result
     }
 
@@ -42,10 +44,7 @@ class Resource {
         const finalPath = path ? '/' + path : ''
         const finalId = id > 0 ? finalPath + '/' + id : ''
         const finalUrl = this.uri ? this.uri + finalId : ''
-        const headers = isUpload ?
-            {
-                'Content-Type': 'multipart/form-data'
-            } :
+        const headers = 
             {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 "Content-Type": "application/json",

@@ -64,6 +64,7 @@ class GalleryController extends Controller {
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/gallery') . $fileName);
             }
@@ -93,6 +94,7 @@ class GalleryController extends Controller {
             $berita->save();
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             return $this->exceptionResponse($e);
         }
     }

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { useLoading } from 'vue3-loading-overlay';
 import { listDokPlenoRequest, insertDokPlenoRequest, updateDokPlenoRequest, deleteDokPlenoRequest, getById } from '../api/dokumen-pleno-api';
 import { formatDateToServer } from "../utils/date-utils"
+import { komentarForm } from '../utils/form-utils';
 
 const loadingOverlay = useLoading()
 
@@ -18,14 +19,18 @@ function resultDokPlenoForm(dokPlenoForm, dokumenFile) {
     formData.append('keterangan', dokPlenoForm.keterangan)
     formData.append('tanggal_unggah', formatDateToServer(dokPlenoForm.tanggal_unggah))
     formData.append('status', dokPlenoForm.status)
-    formData.append('dokumen', dokumenFile)
-
+    if (dokumenFile)
+    {
+        formData.append('dokumen', dokumenFile)    
+    }
+    
     return formData
 }
 
 export const useDokPlenoStore = defineStore("dokumen-pleno", {
     state: () => ({
         dokData: [],
+        komentarData: [],
         singleData: {},
         errorMessage: "",
         totalData: 0,
@@ -153,6 +158,6 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
 
                     loadingOverlay.hide()
                 })
-        }
+        },
     }
 })

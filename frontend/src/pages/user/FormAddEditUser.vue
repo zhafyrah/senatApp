@@ -3,15 +3,24 @@ import { useUserStore } from "../../store/user-store"
 import { useMstStore } from "../../store/mst-store"
 import { useSnackbar } from "vue3-snackbar";
 import { onMounted, ref, watch, computed } from 'vue';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { ucwords } from "../../utils/formating-utils"
 
 const userStore = useUserStore()
 const mstStore = useMstStore()
 const snackbar = useSnackbar()
 const router = useRouter()
+const route = useRoute()
 
 const roleData = computed(() => mstStore.roleData)
+const userForm = ref({
+  nama: '',
+  role: 0,
+  status: 0,
+  email: '',
+  password: ''
+});
+
 
 onMounted(() => {
   mstStore.getRoles()
@@ -35,6 +44,9 @@ watch(
   () => {
     if (userStore.isSuccessSubmit)
     {
+      console.log('success')
+      userStore.$reset()
+
       snackbar.add({
         type: 'success',
         text: "User Berhasil di Simpan",
@@ -45,13 +57,18 @@ watch(
   }
 )
 
-const userForm = ref({
-  nama: '',
-  role: 0,
-  status: 0,
-  email: '',
-  password: ''
-});
+watch(
+  () => userStore.singleData,
+  () => {
+    const data = userStore.singleData
+    userForm.value.nama = data.nama
+    userForm.value.email = data.email
+    userForm.value.status = data.status
+    userForm.value.role = data.role_id
+    userForm.value.password = data.password
+  }
+)
+
 
 function onChangeStatus(e) {
   userForm.value.status = e.target.checked
@@ -59,9 +76,22 @@ function onChangeStatus(e) {
 
 function onClickSubmit(e) {
   e.preventDefault();
-  userStore.saveUser(userForm.value)
+  if (route.params.id)
+  {
+    userStore.updateUser(route.params.id, userForm.value)
+  } else
+  {
+    userStore.saveUser(userForm.value)
+  }
+
 }
 
+onMounted(() => {
+  if (route.params.id)
+  {
+    userStore.getUserById(route.params.id)
+  }
+})
 
 </script>
 <template>

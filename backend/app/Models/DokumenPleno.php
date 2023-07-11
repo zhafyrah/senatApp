@@ -27,7 +27,8 @@ class DokumenPleno extends BaseModel
             ->leftJoin('users', 'users.id', '=', 'dokumen_pleno.created_user')
             ->select('dokumen_pleno.*')
             ->selectRaw("DATE(dokumen_pleno.created_at) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user");
+            ->selectRaw("users.nama as nama_user")
+            ->selectRaw("CONCAT('" . url('') . "', dokumen_path) as dokumen_url");
     }
 
     public function scopeList($query) {

@@ -26,7 +26,8 @@ class DokumenSenat extends BaseModel
             ->leftJoin('users', 'users.id', '=', 'dokumen_senat.created_user')
             ->select('dokumen_senat.*')
             ->selectRaw("DATE(dokumen_senat.created_at) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user");
+            ->selectRaw("users.nama as nama_user")
+            ->selectRaw("CONCAT('" . url('') . "', dokumen_path) as dokumen_url");
     }
 
     public function scopeList($query) {

@@ -72,6 +72,7 @@ class DokumenPlenoController extends Controller
 
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/dokumen-pleno') . $fileName);
             }
@@ -83,12 +84,12 @@ class DokumenPlenoController extends Controller
     public function edit(Request $request, $id) {
         try {
             $dok = DokumenPleno::find($id);
-            $dok->judul = $request->judul;
-            $dok->isi = $request->isi;
+            $dok->no_surat = $request->no_surat;
+            $dok->keterangan = $request->keterangan;
             $dok->modified_user = $request->modified_user;
             $dok->status = $request->status;
 
-            if ($file = $request->file('dokumen')) {
+            if ($request->file('dokumen') != null && $file = $request->file('dokumen')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
                 $saveName = '/img/dokumen-pleno/' . $fileName;
                 $destinationPath = public_path('/img/dokumen-pleno');
@@ -102,6 +103,7 @@ class DokumenPlenoController extends Controller
             $dok->save();
             return $this->successResponse();
         } catch (Throwable $e) {
+            DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
                 unlink(public_path('/img/dokumen-pleno') . $fileName);
             }

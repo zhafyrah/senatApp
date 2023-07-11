@@ -5,14 +5,12 @@ import { onMounted, watch, computed } from 'vue';
 import Pagination from "../../components/Pagination.vue";
 import { showConfirm } from "../../utils/notif-utils"
 import { ucwords } from "../../utils/formating-utils"
+import { storeToRefs } from "pinia";
 
 const userStore = useUserStore()
 const snackbar = useSnackbar()
 
-const userData = computed(() => userStore.userData)
-const page = computed(() => userStore.page)
-const totalPage = computed(() => userStore.totalPage)
-const lastNumberPage = computed(() => userStore.lastNoPage)
+const { userData, page, totalPage, lastNoPage } = storeToRefs(userStore)
 
 onMounted(() => {
   //userStore.$reset()
@@ -172,7 +170,7 @@ function onChangeStatus(e) {
               <td colspan="5">Data User Kosong</td>
             </tr>
             <tr v-for="(user, i) in userData" :key="i">
-              <td class="text-center">{{ i+=lastNumberPage }}</td>
+              <td class="text-center">{{ i+=lastNoPage }}</td>
               <td>
                 {{ user.nama }}
               </td>
@@ -190,7 +188,7 @@ function onChangeStatus(e) {
                 <a href="#" @click.prevent="confirmDelete">
                   <i :id="user.id" class="fas fa-trash"></i>
                 </a>
-                <router-link :to="{ name: 'DetailBerita', params: { id: user.id } }">
+                <router-link :to="{ name: 'TambahUser', params: { id: user.id } }">
                   <i class="fas fa-pen ml-3"></i>
                 </router-link>
               </td>

@@ -1,18 +1,113 @@
+<script setup>
+import { useDokKomisiStore } from "../../store/dokumen-komisi-store"
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, watch, computed } from 'vue';
+import Pagination from "../../components/Pagination.vue";
+import { showConfirm } from "../../utils/notif-utils"
+
+const dokStore = useDokKomisiStore()
+const snackbar = useSnackbar()
+
+const data = computed(() => dokStore.dokData)
+const page = computed(() => dokStore.page)
+const totalPage = computed(() => dokStore.totalPage)
+
+onMounted(() => {
+  dokStore.getList()
+})
+
+watch(
+  () => dokStore.errorMessage,
+  () => {
+    if (dokStore.errorMessage)
+    {
+      snackbar.add({
+        type: 'error',
+        text: dokStore.errorMessage,
+      })
+    }
+  }
+)
+
+watch(
+  () => dokStore.isSuccessSubmit,
+  () => {
+    if (dokStore.isSuccessSubmit)
+    {
+      snackbar.add({
+        type: 'success',
+        text: "Data Dokumen Komisi Berhasil di Hapus",
+      })
+
+      dokStore.getList()
+    }
+  }
+)
+
+function onCLickNext() {
+  if (dokStore.page < dokStore.totalPage)
+  {
+    dokStore.page++;
+    dokStore.getList()
+  } else
+  {
+    snackbar.add({
+      type: "warning",
+      text: "Sudah Mencapai Halaman Maximum"
+    })
+  }
+}
+
+function onClickPrev() {
+  if (dokStore.page > 0)
+  {
+    dokStore.page--;
+    dokStore.getList()
+  }
+  else
+  {
+    snackbar.add({
+      type: "warning",
+      message: "Sudah Mencapai Halaman Minimum"
+    })
+  }
+}
+
+function onClickPaginate(number) {
+  dokStore.page = number
+  dokStore.getList()
+}
+
+function confirmDelete(e) {
+  e.preventDefault();
+  showConfirm(
+    "Konfirmasi",
+    "Hapus Data?",
+    "question",
+    "Hapus",
+    "Batal",
+    (isConfirm) => {
+      if (isConfirm)
+      {
+        dokStore.$reset()
+        dokStore.deleteDokKomisi(e.target.id)
+      }
+    }
+  )
+}
+
+</script>
 <template>
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <router-link to="dokumen/tambah" class="btn btn-primary">
-          <i class="fas fa-plus mr-1"></i> Unggah Dokumen</router-link
-        >
+        <router-link :to="{ name: 'TambahDokumenKomisi' }" class="btn btn-primary">
+            <i class="fas fa-plus mr-1"></i>
+            Unggah Dokumen
+          </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input
-              type="text"
-              name="table_search"
-              class="form-control float-right"
-              placeholder="Search"
-            />
+            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -21,8 +116,8 @@
           </div>
         </div>
       </div>
-      <div class="card-body table-responsive p-0" style="height: 300px">
-        <table class="table table-head-fixed text-nowrap">
+      <div class="card-body table-responsive p-0">
+        <table class="table table-bordered table-head-fixed text-nowrap table-hover">
           <thead>
             <tr>
               <th>No surat</th>
@@ -33,100 +128,33 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>183</td>
-              <td>John Doe.pdf</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
+            <tr v-if="data.length == 0" class="text-center border">
+              <td colspan="6">Dokumen Komisi Kosong</td>
             </tr>
-            <tr>
-              <td>219</td>
-              <td>Alexander Pierce</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
-            </tr>
-            <tr>
-              <td>657</td>
-              <td>Bob Doe</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
-            </tr>
-            <tr>
-              <td>175</td>
-              <td>Mike Doe</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
-            </tr>
-            <tr>
-              <td>134</td>
-              <td>Jim Doe</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
-            </tr>
-            <tr>
-              <td>494</td>
-              <td>Victoria Doe</td>
-              <td>11-7-2014</td>
-              <td>Bacon ipsum dolor sit amet.</td>
-              <td><i class="fas fa-trash"></i></td>
+            <tr v-for="(dok, i) in data" :key="i">
+              <td>
+                {{ dok.no_surat }}
+              </td>
+              <td>{{ dok.dokumen_name }}</td>
+              <td>{{ dok.tanggal_unggah }}</td>
+              <td>{{ dok.keterangan }} </td>
+              <td class="text-center">
+                <a href="#" @click.prevent="confirmDelete">
+                  <i :id="dok.id" class="fas fa-trash"></i>
+                </a>
+                <router-link :to="{ name: 'DetailDokumenKomisi', params: { id: dok.id } }">
+                  <i class="fas fa-eye ml-3"></i>
+                </router-link>
+                <router-link :to="{ name: 'TambahDokumenKomisi', params: { id: dok.id } }">
+                    <i class="fas fa-pen ml-3"></i>
+                  </router-link>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-sm-12 col-md-7 ml-3">
-          <div class="dataTables_paginate_numbers">
-            <ul class="pagination">
-              <li
-                class="paginate_button page-item previous disabled"
-                id="example_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx="0"
-                  tabindex="0"
-                  class="page-link"
-                  >Previous</a
-                >
-              </li>
-              <li class="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >1</a
-                >
-              </li>
-              <li class="paginate_button page-item">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >2</a
-                >
-              </li>
-              <li class="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example"
-                  tabindex="0"
-                  class="page-link"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
+        @click-paginate="onClickPaginate" />
     </div>
   </div>
 </template>
