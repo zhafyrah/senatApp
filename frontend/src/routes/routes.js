@@ -1,5 +1,4 @@
-const constantRoutes = [
-    {
+const constantRoutes = [{
         path: "/",
         name: "Beranda",
         meta: {
@@ -14,6 +13,14 @@ const constantRoutes = [
             layout: 'Guest',
         },
         component: () => import("../pages/auth/Login.vue"),
+    },
+    {
+        path: "/lupa-sandi",
+        name: "Lupa Kata Sandi",
+        meta: {
+            layout: 'Authenticated',
+        },
+        component: () => import("../pages/auth/LupaSandi.vue"),
     },
     {
         path: "/dokumen-pleno",
@@ -49,8 +56,7 @@ const constantRoutes = [
     },
 ]
 
-const adminRoutes = [
-    {
+const adminRoutes = [{
         path: "/dokumen-komisi",
         name: "Dokumen Komisi",
         meta: {
@@ -106,7 +112,7 @@ const routes = [
         meta: {
             layout: 'Authenticated',
         },
-        component: () => import("../pages/struktur-organisasi/FormAddStruktur.vue"),
+        component: () => import("../pages/struktur-organisasi/FormAddFungsi.vue"),
     },
     {
         path: "/anggota",
