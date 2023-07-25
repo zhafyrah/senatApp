@@ -6,7 +6,6 @@
           <div class="row"></div>
           <div class="row">
             <div class="col-12">
-                <!-- diambil dari nomor surat -->
               <h4>Surat nomor: 123</h4>
               <div class="row">
                 <p>

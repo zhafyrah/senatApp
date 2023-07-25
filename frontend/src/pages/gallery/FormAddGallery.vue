@@ -1,54 +1,52 @@
 <script setup>
-import { useGalleryStore } from "../../store/gallery-store"
-import { useSnackbar } from "vue3-snackbar"
-import { onMounted, ref, watch, computed } from "vue"
-import { useRouter } from "vue-router"
+import { useGalleryStore } from "../../store/gallery-store";
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, ref, watch, computed } from "vue";
+import { useRouter } from "vue-router";
 
-const galleryStore = useGalleryStore()
-const snackbar = useSnackbar()
-const router = useRouter()
+const galleryStore = useGalleryStore();
+const snackbar = useSnackbar();
+const router = useRouter();
 
 watch(
   () => galleryStore.errorMessage,
   () => {
-    if (galleryStore.errorMessage)
-    {
+    if (galleryStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: galleryStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => galleryStore.isSuccessSubmit,
   () => {
-    if (galleryStore.isSuccessSubmit)
-    {
+    if (galleryStore.isSuccessSubmit) {
       snackbar.add({
-        type: 'success',
-        text: "Keanggotaan Berhasil di Simpan",
-      })
+        type: "success",
+        text: "Foto Berhasil di Simpan",
+      });
 
-      router.back()
+      router.back();
     }
   }
-)
+);
 
 const galleryForm = ref({
-  keterangan: '',
+  keterangan: "",
 });
 
-const fotoFile = ref(null)
+const fotoFile = ref(null);
 
 function onChangeFoto(e) {
-  fotoFile.value = e.target.files[0]
+  fotoFile.value = e.target.files[0];
 }
 
 function onClickSubmit(e) {
   e.preventDefault();
-  galleryStore.saveGallery(galleryForm.value, fotoFile.value)
+  galleryStore.saveGallery(galleryForm.value, fotoFile.value);
 }
 </script>
 <template>
@@ -60,18 +58,30 @@ function onClickSubmit(e) {
       <div class="card-body">
         <div class="form-group">
           <label for="input">Keterangan</label>
-          <input type="text" class="form-control" id="photo" placeholder="Isi Keterangan Foto" v-model="galleryForm.keterangan" required/>
+          <input
+            type="text"
+            class="form-control"
+            id="photo"
+            placeholder="Keterangan Foto"
+            v-model="galleryForm.keterangan"
+            required
+          />
         </div>
         <div class="form-group">
-          <label for="inputPhoto">File input</label>
+          <label for="inputPhoto">Foto</label>
           <div class="input-group">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeFoto"/>
-                <label class="custom-file-label" for="exampleInputFile">{{ fotoFile == null ? "Temukan Foto dari Komputer Anda" :
-                  fotoFile.name }}</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
+              <input
+                type="file"
+                class="custom-file-input"
+                id="exampleInputFile"
+                @change="onChangeFoto"
+              />
+              <label class="custom-file-label" for="exampleInputFile">{{
+                fotoFile == null
+                  ? "Temukan Foto dari Komputer Anda"
+                  : fotoFile.name
+              }}</label>
             </div>
           </div>
         </div>

@@ -1,68 +1,64 @@
 <script setup>
-import { useUserStore } from "../../store/user-store"
-import { useMstStore } from "../../store/mst-store"
+import { useUserStore } from "../../store/user-store";
+import { useMstStore } from "../../store/mst-store";
 import { useSnackbar } from "vue3-snackbar";
-import { onMounted, ref, watch, computed } from 'vue';
+import { onMounted, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
-import { ucwords } from "../../utils/formating-utils"
+import { ucwords } from "../../utils/formating-utils";
 
-const userStore = useUserStore()
-const mstStore = useMstStore()
-const snackbar = useSnackbar()
-const router = useRouter()
+const userStore = useUserStore();
+const mstStore = useMstStore();
+const snackbar = useSnackbar();
+const router = useRouter();
 
-const roleData = computed(() => mstStore.roleData)
+const roleData = computed(() => mstStore.roleData);
 
 onMounted(() => {
-  mstStore.getRoles()
-})
+  mstStore.getRoles();
+});
 
 watch(
   () => userStore.errorMessage,
   () => {
-    if (userStore.errorMessage)
-    {
+    if (userStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: userStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => userStore.isSuccessSubmit,
   () => {
-    if (userStore.isSuccessSubmit)
-    {
+    if (userStore.isSuccessSubmit) {
       snackbar.add({
-        type: 'success',
-        text: "User Berhasil di Simpan",
-      })
+        type: "success",
+        text: "Data User Berhasil di Simpan",
+      });
 
-      router.back()
+      router.back();
     }
   }
-)
+);
 
 const userForm = ref({
-  nama: '',
+  nama: "",
   role: 0,
   status: 0,
-  email: '',
-  password: ''
+  email: "",
+  password: "",
 });
 
 function onChangeStatus(e) {
-  userForm.value.status = e.target.checked
+  userForm.value.status = e.target.checked;
 }
 
 function onClickSubmit(e) {
   e.preventDefault();
-  userStore.saveUser(userForm.value)
+  userStore.saveUser(userForm.value);
 }
-
-
 </script>
 <template>
   <div class="card">
@@ -74,14 +70,22 @@ function onClickSubmit(e) {
         <div class="form-group">
           <label for="inputEmail">Nama</label>
           <div class="form">
-            <input type="text" class="form-control" placeholder="Silahkan Isi Nama" v-model="userForm.nama" required />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Silahkan Isi Nama"
+              v-model="userForm.nama"
+              required
+            />
           </div>
         </div>
         <div class="form-group">
           <label>Role</label>
           <select class="form-control" v-model="userForm.role" required>
             <option selected disabled value="0">Silahkan Pilih Role</option>
-            <option v-for="item in roleData" :value="item.id">{{ ucwords(item.role) }}</option>
+            <option v-for="item in roleData" :value="item.id">
+              {{ ucwords(item.role) }}
+            </option>
           </select>
         </div>
         <!--  <div class="form-group">
@@ -94,17 +98,29 @@ function onClickSubmit(e) {
         <div class="form-group">
           <label for="inputEmail">Email</label>
           <div class="form">
-            <input type="email" class="form-control" placeholder="Silahkan Isi Email" v-model="userForm.email" required />
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Silahkan Isi Email"
+              v-model="userForm.email"
+              required
+            />
           </div>
         </div>
         <div class="form-group">
-          <label for="inputPassword3">Password</label>
-          <input type="password" class="form-control" id="inputPassword3" placeholder="Password"
-            v-model="userForm.password" required />
+          <label for="inputPassword3">Kata Sandi</label>
+          <input
+            type="password"
+            class="form-control"
+            id="inputPassword3"
+            placeholder="Kata Sandi"
+            v-model="userForm.password"
+            required
+          />
         </div>
       </div>
       <div class="card-footer">
-        <button type="submit" class="btn btn-primary w-100">Submit</button>
+        <button type="submit" class="btn btn-primary w-100">Kirim</button>
       </div>
     </form>
   </div>

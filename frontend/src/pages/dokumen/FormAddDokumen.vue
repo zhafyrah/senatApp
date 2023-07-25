@@ -1,61 +1,58 @@
 <script setup>
-import { useDokPlenoStore } from "../../store/dokumen-pleno-store"
+import { useDokPlenoStore } from "../../store/dokumen-pleno-store";
 import { useSnackbar } from "vue3-snackbar";
-import { onMounted, ref, watch, computed } from 'vue';
-import Datepicker from 'vue3-datepicker'
+import { onMounted, ref, watch, computed } from "vue";
+import Datepicker from "vue3-datepicker";
 import { useRouter, useRoute } from "vue-router";
 
-const dokStore = useDokPlenoStore()
-const snackbar = useSnackbar()
-const router = useRouter()
-const route = useRoute()
+const dokStore = useDokPlenoStore();
+const snackbar = useSnackbar();
+const router = useRouter();
+const route = useRoute();
 
 watch(
   () => dokStore.errorMessage,
   () => {
-    if (dokStore.errorMessage)
-    {
+    if (dokStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: dokStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => dokStore.isSuccessSubmit,
   () => {
-    if (dokStore.isSuccessSubmit)
-    {
+    if (dokStore.isSuccessSubmit) {
       snackbar.add({
-        type: 'success',
-        text: "Dokumen Pleno Berhasil di Simpan",
-      })
+        type: "success",
+        text: "Dokumen Berhasil di Simpan",
+      });
 
-      router.back()
+      router.back();
     }
   }
-)
+);
 
 const dokForm = ref({
-  noSurat: '',
+  noSurat: "",
   tanggal_unggah: new Date(),
-  keterangan: '',
-  status: '',
+  keterangan: "",
+  status: "",
 });
 
-const dokFile = ref(null)
+const dokFile = ref(null);
 
 function onChangeDok(e) {
-  dokFile.value = e.target.files[0]
+  dokFile.value = e.target.files[0];
 }
 
 function onSubmit(e) {
   e.preventDefault();
-  dokStore.saveDokPleno(dokForm.value, dokFile.value)
+  dokStore.saveDokPleno(dokForm.value, dokFile.value);
 }
-
 </script>
 <template>
   <div class="card">
@@ -70,22 +67,41 @@ function onSubmit(e) {
           <div class="col-md-6">
             <div class="form-group">
               <label for="inputName">No Surat</label>
-              <input type="text" id="nosurat" class="form-control" v-model="dokForm.no_surat" required />
+              <input
+                type="text"
+                id="nosurat"
+                class="form-control"
+                v-model="dokForm.no_surat"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Tanggal Unggah</label>
-              <Datepicker v-model="dokForm.tanggal_unggah" placeholder="Tanggal Unggah" class="form-control" required />
+              <Datepicker
+                v-model="dokForm.tanggal_unggah"
+                placeholder="Tanggal Unggah"
+                class="form-control"
+                required
+              />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="inputEmail">Keterangan</label>
-              <input type="text" id="keterangan" class="form-control" v-model="dokForm.keterangan" required />
+              <input
+                type="text"
+                id="keterangan"
+                class="form-control"
+                v-model="dokForm.keterangan"
+                required
+              />
             </div>
             <div class="form-group">
               <label>Status</label>
               <select class="form-control" v-model="dokForm.status" required>
-                <option selected disabled value="">Silahkan Pilih Status</option>
+                <option selected disabled value="">
+                  Silahkan Pilih Status
+                </option>
                 <option value="Belum Disahkan">Belum Disahkan</option>
                 <option value="Dipertimbangkan">Dipertimbangkan</option>
                 <option value="Disahkan">Disahkan</option>
@@ -97,12 +113,17 @@ function onSubmit(e) {
           <label for="exampleInputFile">Unggah Dokumen</label>
           <div class="input-group">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeDok"/>
-              <label class="custom-file-label" for="exampleInputFile">{{ dokFile == null ? "Temukan Dokumen dari Komputer Anda" :
-                dokFile.name }}</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
+              <input
+                type="file"
+                class="custom-file-input"
+                id="exampleInputFile"
+                @change="onChangeDok"
+              />
+              <label class="custom-file-label" for="exampleInputFile">{{
+                dokFile == null
+                  ? "Temukan Dokumen dari Komputer Anda"
+                  : dokFile.name
+              }}</label>
             </div>
           </div>
         </div>
