@@ -14,6 +14,15 @@ use Validator;
 class BeritaController extends Controller {
 
     public function __construct() {
+        /* $this->middleware('auth', [
+            'except' => [
+                '/'
+            ]
+        ]); */
+
+        $this->middleware('auth')->except([
+            'show',
+        ]);
     }
 
     public function show(Request $request, $id = 0) {

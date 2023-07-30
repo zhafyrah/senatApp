@@ -35,9 +35,9 @@ export const useBeritaStore = defineStore("berita", {
         isSuccessSubmit: false,
     }),
     actions: {
-        getList() {
+        async getList() {
             showLoading()
-            listBeritaRequest(this.page)
+            await listBeritaRequest(this.page)
                 .then((response) => {
                     this.totalData = response.total
                     this.currentPage = response.current_page
@@ -46,6 +46,7 @@ export const useBeritaStore = defineStore("berita", {
                     this.beritaData = response.data
 
                     loadingOverlay.hide()
+                    //console.log('beritastore',response)
                 })
                 .catch((error) => {
                     if (error.response)

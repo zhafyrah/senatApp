@@ -38,7 +38,7 @@ watch(
 onMounted(() => {
   //beritaStore.$reset()
   beritaStore.getBeritaById(route.params.id)
-  console.log('urkl', fotoUrl)
+  //console.log('urkl', fotoUrl)
 })
 
 

@@ -41,7 +41,7 @@ Route::group([
 
 Route::group(
     [
-        'middleware' => ['auth.api']
+        //'middleware' => ['auth.api']
     ],
     function () {
         Route::group([
@@ -57,11 +57,15 @@ Route::group(
 
             Route::get('/{id}', [UserController::class, 'show']);
 
-            Route::post('/save', [UserController::class, 'store']);
+            Route::group([
+                'middleware' => ['auth.api']
+            ], function () {
+                Route::post('/save', [UserController::class, 'store']);
 
-            Route::put('/update/{id}', [UserController::class, 'edit']);
+                Route::put('/update/{id}', [UserController::class, 'edit']);
 
-            Route::delete('/delete/{id}', [UserController::class, 'destroy']);
+                Route::delete('/delete/{id}', [UserController::class, 'destroy']);
+            });
         });
 
         Route::group([
@@ -71,11 +75,15 @@ Route::group(
 
             Route::get('/{id}', [BeritaController::class, 'show']);
 
-            Route::post('/save', [BeritaController::class, 'store']);
+            Route::group([
+                'middleware' => ['auth.api']
+            ], function () {
+                Route::post('/save', [BeritaController::class, 'store']);
 
-            Route::put('/update/{id}', [BeritaController::class, 'edit']);
+                Route::put('/update/{id}', [BeritaController::class, 'edit']);
 
-            Route::delete('/delete/{id}', [BeritaController::class, 'destroy']);
+                Route::delete('/delete/{id}', [BeritaController::class, 'destroy']);
+            });
         });
 
         Route::group([
@@ -85,11 +93,15 @@ Route::group(
 
             Route::get('/{id}', [DokumenPlenoController::class, 'show']);
 
-            Route::post('/save', [DokumenPlenoController::class, 'store']);
+            Route::group([
+                'middleware' => ['auth.api']
+            ], function () {
+                Route::post('/save', [DokumenPlenoController::class, 'store']);
 
-            Route::put('/update/{id}', [DokumenPlenoController::class, 'edit']);
+                Route::put('/update/{id}', [DokumenPlenoController::class, 'edit']);
 
-            Route::delete('/delete/{id}', [DokumenPlenoController::class, 'destroy']);
+                Route::delete('/delete/{id}', [DokumenPlenoController::class, 'destroy']);
+            });
         });
 
         Route::group([

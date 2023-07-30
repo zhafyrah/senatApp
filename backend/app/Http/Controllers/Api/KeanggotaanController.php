@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anggota;
 use App\Models\Keanggotaan;
 use Carbon\Carbon;
 use DB;
@@ -24,6 +25,11 @@ class KeanggotaanController extends Controller {
         }
 
         $data = Keanggotaan::list();
+        $data->getCollection()->transform(function ($value) {
+            $value['anggota'] = Anggota::byKeanggotaanId($value->id);
+            return $value;
+        });
+
         return $this->paginateResponse($data);
     }
 

@@ -13,9 +13,9 @@ const page = computed(() => beritaStore.page)
 const totalPage = computed(() => beritaStore.totalPage)
 const lastNumberPage = computed(() => beritaStore.lastNoPage)
 
-onMounted(() => {
+onMounted(async() => {
   //beritaStore.$reset()
-  beritaStore.getList()
+  await beritaStore.getList()
 })
 
 watch(
@@ -136,7 +136,7 @@ function confirmDelete(e) {
             </tr>
           </thead>
           <tbody class="">
-            <tr v-if="beritaData.length == 0" class="text-center border">
+            <tr v-if="beritaData?.length == 0" class="text-center border">
               <td colspan="7">Berita Kosong</td>
             </tr>
             <tr v-for="(berita, i) in beritaData" :key="i">

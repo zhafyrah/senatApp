@@ -14,11 +14,16 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const publicPages = [
         '/auth/login',
+        '/home',
+        '/home/berita',
+        '/home/detail-berita/'
     ];
 
+    
+    const isPublicPage = publicPages.some(v => to.path.includes(v))
     const session = useUserSession();
 
-    if (!publicPages.includes(to.path) && Object.keys(session).length === 0)
+    if (!isPublicPage && Object.keys(session).length === 0)
     {
         next({
             path: '/auth/login',

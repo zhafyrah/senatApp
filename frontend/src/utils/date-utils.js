@@ -17,8 +17,8 @@ export function formatDateTimeFromServer(date) {
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear(),
-        hours = d.getHours(),
-        minutes = d.getMinutes();
+        hours = d.getHours() < 10 ? `0${d.getHours()}` : d.getHours(),
+        minutes = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
 
     if (month.length < 2)
         month = '0' + month;

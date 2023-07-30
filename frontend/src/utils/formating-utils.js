@@ -3,3 +3,7 @@ export function ucwords(str) {
         return $1.toUpperCase();
     });
 }
+
+export function generateFotoUrl(path) {
+    return import.meta.env.VITE_BASE_URL + path;
+}

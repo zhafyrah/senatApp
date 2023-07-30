@@ -11,7 +11,7 @@ const router = useRouter()
 const route = useRoute()
 
 onMounted(() => {
-  //beritaStore.$reset()
+  beritaStore.$reset()
 })
 
 watch(

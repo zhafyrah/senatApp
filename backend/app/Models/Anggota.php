@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Keanggotaan extends BaseModel {
+class Anggota extends Model
+{
     use HasFactory;
 
-    protected $table = 'keanggotaan';
+    use HasFactory;
+
+    protected $table = 'anggota';
 
     protected $fillable = [
+        'keanggotaan_id',
         'nama',
         'jabatan',
         'pendidikan',
@@ -23,9 +27,9 @@ class Keanggotaan extends BaseModel {
 
     private function main($query) {
         return $query
-            ->leftJoin('users', 'users.id', '=', 'keanggotaan.created_user')
-            ->select('keanggotaan.*')
-            ->selectRaw("DATE(keanggotaan.created_at) as tanggal_unggah")
+            ->leftJoin('users', 'users.id', '=', 'anggota.created_user')
+            ->select('anggota.*')
+            ->selectRaw("DATE(anggota.created_at) as tanggal_unggah")
             ->selectRaw("users.nama as nama_user");
     }
 
@@ -35,11 +39,12 @@ class Keanggotaan extends BaseModel {
     }
 
     public function scopeSingleRow($query, $id) {
-        $data = $this->main($query)->where('keanggotaan.id', $id)->first();
+        $data = $this->main($query)->where('anggota.id', $id)->first();
         return $data;
     }
 
-    public function anggota() {
-        return $this->hasMany(Anggota::class);
+    public function scopeByKeanggotaanId($query, $keanggotaanId){
+        $data = $this->main($query)->where('anggota.keanggotaan_id', $keanggotaanId)->get();
+        return $data;
     }
 }

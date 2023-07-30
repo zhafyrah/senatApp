@@ -95,7 +95,82 @@ const constantRoutes = [
         },
         component: () => import('../pages/dokumen/FormAddDokumenSenat.vue'),
     },
+    {
+        path: "/dokumen-tambah-senat/:id?",
+        name: "TambahDokumenSenat",
+        meta: {
+            layout: 'Authenticated',
+        },
+        component: () => import('../pages/dokumen/FormAddDokumenSenat.vue'),
+    },
 ]
+
+const homeRoutes = [
+    {
+        path: "/home",
+        name: "Home",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/Home.vue'),
+    },
+    {
+        path: "/home/berita",
+        name: "HomeBerita",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/NewsHomePage.vue'),
+    },
+    {
+        path: "/home/detail-berita/:id",
+        name: "HomeDetailBerita",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/DetailNewsHomePage.vue'),
+    },
+    {
+        path: "/home/keanggotaan",
+        name: "HomeKeanggotaan",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/KeanggotaanHomePage.vue'),
+    },
+    {
+        path: "/home/dokumen",
+        name: "",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/Home.vue'),
+    },
+    {
+        path: "/home/organisasi",
+        name: "",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/Home.vue'),
+    },
+    {
+        path: "/home/galery",
+        name: "",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/Home.vue'),
+    },
+    {
+        path: "/home/profil",
+        name: "",
+        meta: {
+            layout: 'Guest',
+        },
+        component: () => import('../pages/home/Home.vue'),
+    },
+];
 
 const adminRoutes = [
     {
@@ -134,6 +209,7 @@ const adminRoutes = [
 const routes = [
     ...constantRoutes,
     ...adminRoutes,
+    ...homeRoutes,
     {
         path: "/dokumen-senat",
         name: "Dokumen Senat",
