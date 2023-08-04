@@ -2,121 +2,153 @@
 import { useUserSession, useAuthStore } from "../store/auth-store";
 import { useRouter, useRoute, useLink } from "vue-router";
 import navItem from "./sidebar/nav-item.vue";
-import { computed, onMounted } from "vue"
+import { computed, onMounted } from "vue";
 
-function handleItemClick() {
-  
-}
+function handleItemClick() {}
 
-const router = useRouter()
-const route = useRoute()
-const authStore = useAuthStore()
-const session = useUserSession()
+const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
+const session = useUserSession();
 
-const user = session.user
-let access = session.permission
-if (!!access && access.constructor === Array)
-{
+const user = session.user;
+let access = session.permission;
+if (!!access && access.constructor === Array) {
   access = access[0];
 }
 
 //console.log('permission', access)
 
-const fullName = user.nama
+const fullName = user.nama;
 
 const handleLogout = () => {
-  authStore.submitLogout()
+  authStore.submitLogout();
   router.push({
-    path: '/auth/login'
-  })
-}
+    path: "/auth/login",
+  });
+};
 
 const hasAccess = (name) => {
   //console.log('acc', access.exclude != null && access.exclude.includes(name))
-  if (access.exclude != null && access.exclude.includes(name))
-  {
+  if (access.exclude != null && access.exclude.includes(name)) {
     return false;
   }
 
-  return access.permission === '*' || access.permission.includes(name)
-}
+  return access.permission === "*" || access.permission.includes(name);
+};
 
-const isUserAccess = computed(() => hasAccess('user'))
+const isUserAccess = computed(() => hasAccess("user"));
 
 // * dokumen
-const isDokumenKomisi = computed(() => hasAccess('dokumen komisi'))
-const isDokumenPleno = computed(() => hasAccess('dokumen pleno'))
-const isDokumenSenat = computed(() => hasAccess('dokumen senat'))
+const isDokumenKomisi = computed(() => hasAccess("dokumen komisi"));
+const isDokumenPleno = computed(() => hasAccess("dokumen pleno"));
+const isDokumenSenat = computed(() => hasAccess("dokumen senat"));
 
 // keanggotaan
-const isKeanggotaan = computed(() => hasAccess('keanggotaan'))
-const isFungsiKerja = computed(() => hasAccess('fungsi kerja'))
+const isKeanggotaan = computed(() => hasAccess("keanggotaan"));
+const isFungsiKerja = computed(() => hasAccess("fungsi kerja"));
 
 // * profil
-const isSambutan = computed(() => hasAccess('sambutan ketua senat'))
-const isSejarah = computed(() => hasAccess('sejarah'))
+const isSambutan = computed(() => hasAccess("sambutan ketua senat"));
+const isSejarah = computed(() => hasAccess("sejarah"));
 
-const isBerita = computed(() => hasAccess('berita'))
-const isGaleri = computed(() => hasAccess('galeri'))
+const isBerita = computed(() => hasAccess("berita"));
+const isGaleri = computed(() => hasAccess("galeri"));
 
-const isDokumen = computed(() => isDokumenKomisi.value || isDokumenPleno.value || isDokumenSenat.value)
-const isOrganisasi = computed(() => isKeanggotaan.value || isFungsiKerja.value)
-const isProfile = computed(() => isSambutan.value || isSejarah.value)
+const isDokumen = computed(
+  () => isDokumenKomisi.value || isDokumenPleno.value || isDokumenSenat.value
+);
+const isOrganisasi = computed(() => isKeanggotaan.value || isFungsiKerja.value);
+const isProfile = computed(() => isSambutan.value || isSejarah.value);
 
-const routePath = computed(() => route.path)
+const routePath = computed(() => route.path);
 
 onMounted(() => {
-  $('[data-widget="treeview"]').Treeview('init');
-})
+  $('[data-widget="treeview"]').Treeview("init");
+});
 </script>
+
 <template>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="/" class="brand-link text-center">
-      <img src="../assets/img/logo.png" alt="" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
-      <h2 class="brand-text fw-bold">Senat App</h2>
+      <img
+        src="../assets/img/logopolindra.png"
+        alt=""
+        class="brand-image img-circle elevation-3"
+        style="opacity: 1"
+      />
+      <h4 class="brand-text fw-bold">Senat Polindra</h4>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image" />
+          <img
+            src="../assets/img/user2-160x160.jpg"
+            class="img-circle elevation-2"
+            alt="User"
+          />
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ fullName }}</a>
         </div>
       </div>
 
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" />
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <nav-item icon-class="fas fa-chart-pie" text="Beranda" :to="{ path: '/' }">
+        <ul
+          class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview"
+          role="menu"
+          data-accordion="false"
+        >
+          <nav-item
+            icon-class="fas fa-chart-pie"
+            text="Beranda"
+            :to="{ path: '/' }"
+          >
           </nav-item>
 
-          <nav-item v-if="isDokumen" icon-class="fas fa-book" text="Dokumen" to="#">
+          <nav-item
+            v-if="isDokumen"
+            icon-class="fas fa-book"
+            text="Dokumen"
+            to="#"
+          >
             <template #dropdown>
               <li v-if="isDokumenPleno" class="nav-item">
-                <router-link to="/dokumen-pleno" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('pleno') }">
+                <router-link
+                  to="/dokumen-pleno"
+                  class="nav-link"
+                  :class="{
+                    'active router-link-exact-active':
+                      routePath.includes('pleno'),
+                  }"
+                >
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Pleno</p>
                 </router-link>
               </li>
-              <li v-if="isDokumenSenat" class="nav-item">
-                <router-link to="/dokumen-senat" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('senat') }">
+              <!-- <li v-if="isDokumenSenat" class="nav-item">
+                <router-link
+                  to="/dokumen-senat"
+                  class="nav-link"
+                  :class="{
+                    'active router-link-exact-active':
+                      routePath.includes('senat'),
+                  }"
+                >
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Senat</p>
                 </router-link>
-              </li>
+              </li> -->
               <li v-if="isDokumenKomisi" class="nav-item">
-                <router-link to="/dokumen-komisi" class="nav-link" :class="{ 'active router-link-exact-active': routePath.includes('komisi') }">
+                <router-link
+                  to="/dokumen-komisi"
+                  class="nav-link"
+                  :class="{
+                    'active router-link-exact-active':
+                      routePath.includes('komisi'),
+                  }"
+                >
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Komisi</p>
                 </router-link>
@@ -124,7 +156,12 @@ onMounted(() => {
             </template>
           </nav-item>
 
-          <nav-item v-if="isOrganisasi" icon-class="fas fa-sitemap" text="Struktur Organisasi" to="#">
+          <nav-item
+            v-if="isOrganisasi"
+            icon-class="fas fa-sitemap"
+            text="Struktur Organisasi"
+            to="#"
+          >
             <template #dropdown>
               <li v-if="isKeanggotaan" class="nav-item">
                 <router-link to="/anggota" class="nav-link">
@@ -141,11 +178,23 @@ onMounted(() => {
             </template>
           </nav-item>
 
-          <nav-item v-if="isBerita" icon-class="fas fa-newspaper" text="Berita" :to="{ path: '/berita' }"
-            :custom-class="{ 'active router-link-exact-active': routePath.includes('berita') }">
+          <nav-item
+            v-if="isBerita"
+            icon-class="fas fa-newspaper"
+            text="Berita"
+            :to="{ path: '/berita' }"
+            :custom-class="{
+              'active router-link-exact-active': routePath.includes('berita'),
+            }"
+          >
           </nav-item>
 
-          <nav-item v-if="isProfile" icon-class="fas fa-address-card" text="Profil" to="#">
+          <nav-item
+            v-if="isProfile"
+            icon-class="fas fa-address-card"
+            text="Profil"
+            to="#"
+          >
             <template #dropdown>
               <li v-if="isSambutan" class="nav-item">
                 <router-link to="/sambutan" class="nav-link">
@@ -162,18 +211,35 @@ onMounted(() => {
             </template>
           </nav-item>
 
-          <nav-item v-if="isGaleri" icon-class="fas fa-images" text="Galeri" :to="{ path: '/galeri' }">
+          <nav-item
+            v-if="isGaleri"
+            icon-class="fas fa-images"
+            text="Galeri"
+            :to="{ path: '/galeri' }"
+          >
           </nav-item>
 
-          <nav-item v-if="isUserAccess" icon-class="fas fa-user" text="User" :to="{ path: '/user' }"
-          :custom-class="{ 'active router-link-exact-active': routePath.includes('user') }">
+          <nav-item
+            v-if="isUserAccess"
+            icon-class="fas fa-user"
+            text="User"
+            :to="{ path: '/user' }"
+            :custom-class="{
+              'active router-link-exact-active': routePath.includes('user'),
+            }"
+          >
           </nav-item>
         </ul>
       </nav>
-      <div class="d-flex align-items-center justify-content-center mt-5">
-        <button type="button" class="btn btn-primary w-100" @click="handleLogout">Logout</button>
+      <div class="d-flex align-items-center justify-content-center mt-2">
+        <button
+          type="button"
+          class="btn btn-primary w-100"
+          @click="handleLogout"
+        >
+          Logout
+        </button>
       </div>
-
     </div>
   </aside>
 </template>

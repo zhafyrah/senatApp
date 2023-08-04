@@ -1,55 +1,53 @@
 <script setup>
-import { useSejarahStore } from "../../store/sejarah-store"
-import { useSnackbar } from "vue3-snackbar"
-import { onMounted, ref, watch, computed } from "vue"
-import { useRouter } from "vue-router"
+import { useSejarahStore } from "../../store/sejarah-store";
+import { useSnackbar } from "vue3-snackbar";
+import { onMounted, ref, watch, computed } from "vue";
+import { useRouter } from "vue-router";
 
-const sejarahStore = useSejarahStore()
-const snackbar = useSnackbar()
-const router = useRouter()
+const sejarahStore = useSejarahStore();
+const snackbar = useSnackbar();
+const router = useRouter();
 
 watch(
   () => sejarahStore.errorMessage,
   () => {
-    if (sejarahStore.errorMessage)
-    {
+    if (sejarahStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: sejarahStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => sejarahStore.isSuccessSubmit,
   () => {
-    if (sejarahStore.isSuccessSubmit)
-    {
+    if (sejarahStore.isSuccessSubmit) {
       snackbar.add({
-        type: 'success',
-        text: "Keanggotaan Berhasil di Simpan",
-      })
+        type: "success",
+        text: "Sejarah Berhasil Disimpan",
+      });
 
-      router.back()
+      router.back();
     }
   }
-)
+);
 
 const sejarahForm = ref({
-  judul: '',
-  isi: '',
+  judul: "",
+  isi: "",
 });
 
-const fotoFile = ref(null)
+const fotoFile = ref(null);
 
 function onChangeFoto(e) {
-  fotoFile.value = e.target.files[0]
+  fotoFile.value = e.target.files[0];
 }
 
 function onClickSubmit(e) {
   e.preventDefault();
-  sejarahStore.saveSejarah(sejarahForm.value, fotoFile.value)
+  sejarahStore.saveSejarah(sejarahForm.value, fotoFile.value);
 }
 </script>
 <template>
@@ -59,26 +57,43 @@ function onClickSubmit(e) {
         <div class="row">
           <div class="form-group col-md-12">
             <label for="input">Judul</label>
-            <input type="text" id="title" class="form-control" placeholder="Isi Judul Disini" v-model="sejarahForm.judul"
-              required />
+            <input
+              type="text"
+              id="title"
+              class="form-control"
+              placeholder="Isi Judul Disini"
+              v-model="sejarahForm.judul"
+              required
+            />
           </div>
           <div class="form-group col-md-12">
             <label>Isi Sejarah Polindra</label>
-            <textarea class="form-control" rows="4" placeholder="Isi Sambutan Ketua Senat" v-model="sejarahForm.isi"
-              required></textarea>
+            <textarea
+              class="form-control"
+              rows="4"
+              placeholder="Isi Sambutan Ketua Senat"
+              v-model="sejarahForm.isi"
+              required
+            ></textarea>
           </div>
         </div>
         <div class="form-group">
-          <label for="exampleInputFile">Unggah Foto</label>
+          <label for="exampleInputFile">Foto</label>
           <div class="input-group">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="exampleInputFile" @change="onChangeFoto" />
+              <input
+                type="file"
+                class="custom-file-input"
+                id="exampleInputFile"
+                @change="onChangeFoto"
+              />
               <label class="custom-file-label" for="exampleInputFile">
-                {{ fotoFile == null ? "Temukan Foto dari Komputer Anda" : fotoFile.name }}
+                {{
+                  fotoFile == null
+                    ? "Temukan Foto dari Komputer Anda"
+                    : fotoFile.name
+                }}
               </label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text">Upload</span>
             </div>
           </div>
         </div>
