@@ -12,10 +12,12 @@ use Validator;
 
 class DokumenSenatController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -28,23 +30,24 @@ class DokumenSenatController extends Controller
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
             $this->validationException(Validator::make(
                 $request->all(),
                 [
-                    'no_surat'     => 'required',
+                    'judul_dokumen'     => 'required',
                     'dokumen'  => 'required',
                     'keterangan'  => 'required',
-                    //'status'  => 'required',
+                    'link_url' => 'required'
                 ],
                 [
-                    'no_surat.required'     => 'No. Surat Kosong',
+                    'judul_dokumen.required'     => 'Judul Dokumen Kosong',
                     'dokumen.required'  => 'Dokumen Kosong',
                     'keterangan.required'     => 'Keterangan Kosong',
-                    //'status.required'     => 'Status Kosong',
+                    'link_url.required' => 'Link Kosong'
                 ]
             ));
 
@@ -56,11 +59,11 @@ class DokumenSenatController extends Controller
             $file->move($destinationPath, $fileName);
 
             $data = [
-                'no_surat' => $request->no_surat,
+                'judul_dokumen' => $request->judul_dokumen,
                 'dokumen_path' => $saveName,
                 'dokumen_name' => $fileName,
                 'keterangan' => $request->keterangan,
-                //'status' => $request->status,
+                'link_url' => $request->link_url,
                 'tanggal_unggah' => date('Y-m-d H:i:s', strtotime(Carbon::parse($request->tanggal_unggah))),
                 'created_user' => $request->header('userId'),
                 'modified_user' => $request->header('userId'),
@@ -81,13 +84,15 @@ class DokumenSenatController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $dok = DokumenSenat::find($id);
-            $dok->no_surat = $request->no_surat;
+            $dok->judul_dokumen = $request->judul_dokumen;
             $dok->keterangan = $request->keterangan;
+            $dok->tanggal_unggah = $request->tanggal_unggah;
             $dok->modified_user = $request->modified_user;
-            //$dok->status = $request->status;
+            $dok->link_url = $request->link_url;
 
             if ($file = $request->file('dokumen')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
@@ -112,7 +117,8 @@ class DokumenSenatController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $dok = DokumenSenat::find($id);
             $dok->delete();

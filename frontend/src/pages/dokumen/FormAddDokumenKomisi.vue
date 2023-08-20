@@ -12,7 +12,7 @@ const dokStore = useDokKomisiStore();
 const snackbar = useSnackbar();
 const router = useRouter();
 const route = useRoute();
-
+const isEdit = computed(() => route.params.id !== null);
 const dokUrl = ref("");
 const dokName = ref("");
 const dokId = ref(0);
@@ -58,7 +58,7 @@ watch(
   () => {
     dokId.value = dokStore.singleData.id;
     dokForm.value.noSurat = dokStore.singleData.no_surat;
-    dokForm.value.tanggal_unggah = new Date(dokStore.singleData.tanggal_unggah);
+    dokForm.value.tanggal_unggah = dokStore.singleData.tanggal_unggah;
     dokForm.value.keterangan = dokStore.singleData.keterangan;
     dokUrl.value = dokStore.singleData.dokumen_url;
     dokName.value = dokStore.singleData.dokumen_name;
@@ -88,7 +88,9 @@ onMounted(() => {
   <div class="card">
     <div class="card-header">
       <div class="d-flex align-items-center">
-        <h5>Dokumen</h5>
+        <h5 class="card-title">
+          Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} Dokumen Komisi
+        </h5>
       </div>
     </div>
     <form @submit.prevent="onSubmit">
@@ -96,7 +98,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="inputName">No Surat</label>
+              <label for="inputName">No Dokumen</label>
               <input
                 type="text"
                 id="nosurat"
@@ -121,11 +123,10 @@ onMounted(() => {
           <div class="col-md-12">
             <div class="form-group">
               <label>Tanggal Unggah</label>
-              <Datepicker
-                v-model="dokForm.tanggal_unggah"
-                placeholder="Tanggal Unggah"
+              <input
                 class="form-control"
-                required
+                type="date"
+                v-model="dokForm.tanggal_unggah"
               />
             </div>
           </div>
@@ -150,12 +151,12 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div v-else class="row text-center">
-          <div class="col-md-12">
+        <div v-else class="row text-left">
+          <!-- <div class="col-md-12">
             <img :src="dokUrl" width="150" height="150" />
-          </div>
+          </div> -->
           <div class="col-md-12">
-            <label>{{ dokName }}</label>
+            <h5>Dokumen yang diunggah: {{ dokName }}</h5>
           </div>
         </div>
       </div>

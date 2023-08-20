@@ -18,6 +18,7 @@ const sambutanForm = ref({
 });
 
 const fotoFile = ref(null);
+const isEdit = computed(() => route.params.id !== null);
 
 watch(
   () => sambutanStore.errorMessage,
@@ -49,7 +50,6 @@ watch(
   () => sambutanStore.singleData,
   () => {
     const data = sambutanStore.singleData;
-    console.log("data", data);
     sambutanForm.value.judul = data.judul;
     sambutanForm.value.isi = data.isi;
     sambutanForm.value.namaKetuaSenat = data.nama_ketua_senat;
@@ -80,6 +80,11 @@ onMounted(() => {
 <template>
   <form class="form" @submit.prevent="onClickSubmit">
     <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} Sambutan
+        </h4>
+      </div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-12">
@@ -95,7 +100,7 @@ onMounted(() => {
               />
             </div>
             <div class="form-group">
-              <label for="input">Judul</label>
+              <label for="input">Periode Ketua Senat</label>
               <input
                 type="text"
                 id="title"

@@ -13,10 +13,12 @@ use Validator;
 
 class DokumenKomisiController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -29,7 +31,8 @@ class DokumenKomisiController extends Controller
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -80,12 +83,14 @@ class DokumenKomisiController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             Log::warning("request", $request->all());
             $dok = DokumenKomisi::find($id);
             $dok->no_surat = $request->no_surat;
             $dok->keterangan = $request->keterangan;
+            $dok->tanggal_unggah = $request->tanggal_unggah;
             $dok->modified_user = $request->header('userId');
 
             if ($request->file('dokumen') != null && $file = $request->file('dokumen')) {
@@ -111,7 +116,8 @@ class DokumenKomisiController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $dok = DokumenKomisi::find($id);
             $dok->delete();

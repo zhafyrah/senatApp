@@ -1,6 +1,16 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listSejarahRequest, insertSejarahRequest, updateSejarahRequest, deleteSejarahRequest, getById } from '../api/sejarah-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listSejarahRequest,
+    insertSejarahRequest,
+    updateSejarahRequest,
+    deleteSejarahRequest,
+    getById
+} from '../api/sejarah-api';
 
 const loadingOverlay = useLoading()
 
@@ -15,8 +25,12 @@ function resultSejarahForm(sejarahForm, fotoFile) {
     const formData = new FormData()
     formData.append('judul', sejarahForm.judul)
     formData.append('isi', sejarahForm.isi)
-    formData.append('foto', fotoFile)
+    // formData.append('foto', fotoFile)
+    if (fotoFile) {
+        formData.append('foto', fotoFile)
+    }
     return formData
+
 }
 
 export const useSejarahStore = defineStore("sejarah", {
@@ -51,14 +65,11 @@ export const useSejarahStore = defineStore("sejarah", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -75,17 +86,13 @@ export const useSejarahStore = defineStore("sejarah", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sejarah Berhasil di Simpan"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -102,18 +109,14 @@ export const useSejarahStore = defineStore("sejarah", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sejarah Berhasil di Update"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -130,18 +133,14 @@ export const useSejarahStore = defineStore("sejarah", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sejarah Berhasil di Hapus"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -155,19 +154,15 @@ export const useSejarahStore = defineStore("sejarah", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

@@ -48,7 +48,7 @@ class SejarahController extends Controller
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/sejarah/' . md5($fileName);
+            $saveName = '/img/sejarah/' .$fileName;
             $destinationPath = public_path('/img/sejarah');
 
             $file->move($destinationPath, $fileName);
@@ -85,10 +85,11 @@ class SejarahController extends Controller
             $berita->judul = $request->judul;
             $berita->isi = $request->isi;
             $berita->modified_user = $request->modified_user;
+            $request->header('userId');
 
-            if ($file = $request->file('foto')) {
+            if ($request->file('foto') != null && $file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
-                $saveName = '/img/sejarah/' . md5($fileName);
+                $saveName = '/img/sejarah/' . $fileName;
                 $destinationPath = public_path('/img/sejarah');
 
                 $file->move($destinationPath, $fileName);
@@ -101,6 +102,9 @@ class SejarahController extends Controller
             return $this->successResponse();
         } catch (Throwable $e) {
             DB::rollBack();
+            if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
+                unlink(public_path('/img/sambutan') . $fileName);
+            }
             return $this->exceptionResponse($e);
         }
     }

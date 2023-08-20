@@ -2,11 +2,12 @@
 import { useSejarahStore } from "../../store/sejarah-store";
 import { useSnackbar } from "vue3-snackbar";
 import { onMounted, ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const sejarahStore = useSejarahStore();
 const snackbar = useSnackbar();
 const router = useRouter();
+const route = useRoute();
 
 watch(
   () => sejarahStore.errorMessage,
@@ -37,9 +38,22 @@ watch(
 const sejarahForm = ref({
   judul: "",
   isi: "",
+  fotoUrl: "",
+  fotoName: "",
 });
-
+const isEdit = computed(() => route.params.id !== null);
 const fotoFile = ref(null);
+
+watch(
+  () => sejarahStore.singleData,
+  () => {
+    const data = sejarahStore.singleData;
+    sejarahForm.value.judul = data.judul;
+    sejarahForm.value.isi = data.isi;
+    sejarahForm.value.fotoUrl = data.foto_url;
+    sejarahForm.value.fotoName = data.foto_name;
+  }
+);
 
 function onChangeFoto(e) {
   fotoFile.value = e.target.files[0];
@@ -47,12 +61,27 @@ function onChangeFoto(e) {
 
 function onClickSubmit(e) {
   e.preventDefault();
-  sejarahStore.saveSejarah(sejarahForm.value, fotoFile.value);
+  if (route.params.id) {
+    sejarahStore.updateSejarah(route.params.id, sejarahForm.value, null);
+  } else {
+    sejarahStore.saveSejarah(sejarahForm.value, fotoFile.value);
+  }
 }
+
+onMounted(() => {
+  if (route.params.id) {
+    sejarahStore.getSejarahById(route.params.id);
+  }
+});
 </script>
 <template>
   <form class="form" @submit.prevent="onClickSubmit">
     <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} Sejarah
+        </h4>
+      </div>
       <div class="card-body">
         <div class="row">
           <div class="form-group col-md-12">
@@ -71,13 +100,13 @@ function onClickSubmit(e) {
             <textarea
               class="form-control"
               rows="4"
-              placeholder="Isi Sambutan Ketua Senat"
+              placeholder="Isi sejarah Ketua Senat"
               v-model="sejarahForm.isi"
               required
             ></textarea>
           </div>
         </div>
-        <div class="form-group">
+        <div v-if="sejarahForm.fotoUrl == ''" class="form-group">
           <label for="exampleInputFile">Foto</label>
           <div class="input-group">
             <div class="custom-file">
@@ -97,7 +126,16 @@ function onClickSubmit(e) {
             </div>
           </div>
         </div>
+        <div v-else class="row text-center">
+          <div class="col-md-12">
+            <img :src="sejarahForm.fotoUrl" width="150" height="150" />
+          </div>
+          <div class="col-md-12">
+            <label>{{ sejarahForm.fotoName }}</label>
+          </div>
+        </div>
       </div>
+
       <div class="form-group">
         <input type="submit" class="btn btn-primary w-100" value="Kirim" />
       </div>

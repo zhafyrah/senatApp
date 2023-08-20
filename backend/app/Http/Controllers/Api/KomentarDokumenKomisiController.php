@@ -12,12 +12,14 @@ use Throwable;
 use Validator;
 
 
-class KomentarDokumenKomisiController extends Controller {
-    public function __construct() {
-
+class KomentarDokumenKomisiController extends Controller
+{
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //Log::info('show');
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -26,13 +28,14 @@ class KomentarDokumenKomisiController extends Controller {
             return $this->successResponse($data);
         }
 
-        $data = KomentarDokumenKomisi::list();
+        $data = KomentarDokumenKomisi::where('dokumen_komisi_id', $request->documentId)->list();
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         Log::warning('data', $request->all());
-        
+
         DB::beginTransaction();
 
         try {
@@ -80,7 +83,8 @@ class KomentarDokumenKomisiController extends Controller {
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
 
             return $this->successResponse();
@@ -90,7 +94,8 @@ class KomentarDokumenKomisiController extends Controller {
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $dok = KomentarDokumenKomisi::find($id);
             $dok->delete();

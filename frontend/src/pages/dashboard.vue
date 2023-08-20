@@ -13,7 +13,7 @@ const snackbar = useSnackbar();
 
 const { dashboardData } = storeToRefs(dashboardStore);
 
-const data = ref([30, 40, 60, 70, 5]);
+const data = ref([]);
 
 const options = computed(() => ({
   scales: {
@@ -28,7 +28,6 @@ const options = computed(() => ({
     tooltips: {
       callbacks: {
         label: function (tooltipItem) {
-          console.log(tooltipItem);
           return tooltipItem.yLabel;
         },
       },
@@ -48,23 +47,10 @@ const options = computed(() => ({
 }));
 
 const chartData = computed(() => ({
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ],
+  labels: dashboardStore.chartData.labels,
   datasets: [
     {
-      data: data.value,
+      data: dashboardStore.chartData.data,
       label: "Total Per-Bulan",
       backgroundColor: "#007bff",
     },
@@ -77,6 +63,7 @@ const { barChartProps, barChartRef } = useBarChart({
 });
 
 onMounted(() => {
+  dashboardStore.getChartData();
   dashboardStore.getDashboard();
 });
 
@@ -99,7 +86,7 @@ watch(
       <div class="info-box">
         <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">Dokumen</span>
+          <span class="info-box-text">Dokumen Pleno</span>
           <span class="info-box-number">{{ dashboardData.dokumen }}</span>
         </div>
       </div>

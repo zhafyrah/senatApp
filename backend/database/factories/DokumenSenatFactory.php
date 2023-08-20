@@ -17,10 +17,11 @@ class DokumenSenatFactory extends Factory
     public function definition()
     {
         return [
-            'no_surat' => $this->faker->company(),
+            'judul_dokumen' => $this->faker->company(),
             'dokumen_name' => 'no-picture.png',
             'dokumen_path' => '/img/no-picture.png',
             'keterangan' => $this->faker->text(50),
+            'link_url' => $this->faker->text(20),
             'created_user' => 1,
             'modified_user' => 1,
             'created_at' => $this->faker->dateTime(),

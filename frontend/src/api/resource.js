@@ -14,23 +14,18 @@ class Resource {
             method: 'get',
             params
         });
-
-        //console.log('url', finalUrl)
-
         return result
     }
 
     store(data, path = '', isUpload = false) {
         const finalPath = path ? '/' + path : ''
         const finalUrl = this.uri ? this.uri + finalPath : ''
-        const headers = isUpload ?
-            {
-                'Content-Type': 'multipart/form-data'
-            } :
-            {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "Content-Type": "application/json",
-            }
+        const headers = isUpload ? {
+            'Content-Type': 'multipart/form-data'
+        } : {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/json",
+        }
 
         return request({
             url: finalUrl,
@@ -44,11 +39,10 @@ class Resource {
         const finalPath = path ? '/' + path : ''
         const finalId = id > 0 ? finalPath + '/' + id : ''
         const finalUrl = this.uri ? this.uri + finalId : ''
-        const headers = 
-            {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "Content-Type": "application/json",
-            }
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/json",
+        }
         return request({
             url: finalUrl,
             method: 'put',
@@ -61,7 +55,7 @@ class Resource {
         const finalPath = path ? '/' + path : ''
         const finalId = id > 0 ? finalPath + '/' + id : ''
         const finalUrl = this.uri ? this.uri + finalId : ''
-        
+
         return request({
             url: finalUrl,
             method: 'delete',
@@ -73,4 +67,7 @@ class Resource {
     }
 }
 
-export { Resource as default };
+export {
+    Resource as
+    default
+};

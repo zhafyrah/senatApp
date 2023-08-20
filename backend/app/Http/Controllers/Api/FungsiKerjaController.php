@@ -4,59 +4,77 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\FungsiKerja;
-use DB;
+use App\Models\AnggotaFungsiKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 use Validator;
 
 class FungsiKerjaController extends Controller
 {
-    public function __construct() {
-    }
-
-    public function show(Request $request, $id = 0) {
-        //\Log::info('show', $request->all());
-        //\Log::info('url >> ' . url()->full());
+    public function show(Request $request, $id = 0)
+    {
         if ($id > 0) {
-            $data = FungsiKerja::singleRow($id);
+            $fungsiKerja = FungsiKerja::with('anggota')->find($id);
 
-            return $this->successResponse($data);
+            if (!$fungsiKerja) {
+                return $this->notFoundResponse('Fungsi Kerja not found.');
+            }
+
+            return $this->successResponse($fungsiKerja);
         }
 
-        $data = FungsiKerja::list();
-        return $this->paginateResponse($data);
-    }
+        $fungsiKerjaList = FungsiKerja::with('anggota')->paginate();
 
-    public function store(Request $request) {
-        //\Log::info('store', $request->all());
+        return $this->paginateResponse($fungsiKerjaList);
+    }
+    public function store(Request $request)
+    {
+
         DB::beginTransaction();
         try {
+            // Validasi input
             $this->validationException(Validator::make(
                 $request->all(),
                 [
-                    'komisi'     => 'required',
+                    'komisi' => 'required',
+                    'nama_komisi' => 'required',
                     'ketua_komisi' => 'required',
-                    'fungsi_kerja'  => 'required',
+                    'fungsi_kerja' => 'required',
                 ],
                 [
-                    'komisi.required'     => 'Komisi Kosong',
+                    'komisi.required' => 'Komisi Kosong',
+                    'nama_komisi.required' => 'Nama Komisi Kosong',
                     'ketua_komisi.required' => 'Ketua Komisi Kosong',
-                    'fungsi_kerja.required'  => 'Fungsi Kerja Kosong',
+                    'fungsi_kerja.required' => 'Fungsi Kerja Kosong',
                 ]
             ));
 
-            $data = [
+            // Data Fungsi Kerja
+            $dataFungsiKerja = [
                 'komisi' => $request->komisi,
+                'nama_komisi' => $request->nama_komisi,
                 'ketua_komisi' => $request->ketua_komisi,
                 'fungsi_kerja' => $request->fungsi_kerja,
-                'nama_anggota1' => $request->nama_anggota1,
-                'nama_anggota2' => $request->nama_anggota2,
-                'nama_anggota3' => $request->nama_anggota3,
-                //'created_user' => $request->header('userId'),
-                //'modified_user' => $request->header('userId'),
             ];
 
-            FungsiKerja::create($data);
+            // Simpan Fungsi Kerja
+            $fungsiKerja = FungsiKerja::create($dataFungsiKerja);
+
+            // Data Anggota Fungsi Kerja
+            $anggotaData = [];
+            for ($i = 1;; $i++) {
+                $namaAnggota = $request->input("nama_anggota{$i}");
+                if (!$namaAnggota) {
+                    break; // Exit the loop if there's no more input
+                }
+                $anggotaData[] = ['nama_anggota' => $namaAnggota, 'fungsi_kerja_id' => $fungsiKerja->id];
+            }
+
+            // Simpan Anggota Fungsi Kerja
+            if (!empty($anggotaData)) {
+                AnggotaFungsiKerja::insert($anggotaData);
+            }
 
             DB::commit();
 
@@ -67,17 +85,35 @@ class FungsiKerjaController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $fungsiKerja = FungsiKerja::find($id);
-            $fungsiKerja->komisi = $request->komisi;
-            $fungsiKerja->fungsi_kerja = $request->jabatan;
-            $fungsiKerja->nama_anggota1 = $request->nama_anggota1;
-            $fungsiKerja->nama_anggota2 = $request->nama_anggota2;
-            $fungsiKerja->nama_anggota3 = $request->nama_anggota3;
-            $fungsiKerja->modified_user = $request->modified_user;
+            if (!$fungsiKerja) {
+                return $this->errorResponse('Fungsi Kerja not found', 404);
+            }
 
-            $fungsiKerja->save();
+            // Update data Fungsi Kerja
+            $fungsiKerja->update([
+                'komisi' => $request->komisi,
+                'nama_komisi' => $request->nama_komisi,
+                'ketua_komisi' => $request->ketua_komisi,
+                'fungsi_kerja' => $request->fungsi_kerja,
+            ]);
+
+            // Update atau tambahkan anggota
+            for ($i = 1; $i <= 5; $i++) {
+                $namaAnggota = $request->input("nama_anggota{$i}");
+                if ($namaAnggota) {
+                    $anggota = AnggotaFungsiKerja::updateOrCreate(
+                        ['fungsi_kerja_id' => $fungsiKerja->id, 'nama_anggota' => $namaAnggota],
+                        ['fungsi_kerja_id' => $fungsiKerja->id, 'nama_anggota' => $namaAnggota]
+                    );
+                } else {
+                    AnggotaFungsiKerja::where('fungsi_kerja_id', $fungsiKerja->id)->delete();
+                }
+            }
+
             return $this->successResponse();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -85,9 +121,16 @@ class FungsiKerjaController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $fungsiKerja = FungsiKerja::find($id);
+            if (!$fungsiKerja) {
+                return $this->errorResponse('Fungsi Kerja not found', 404);
+            }
+
+            // Hapus anggota sebelum menghapus Fungsi Kerja
+            AnggotaFungsiKerja::where('fungsi_kerja_id', $fungsiKerja->id)->delete();
             $fungsiKerja->delete();
 
             return $this->successResponse();

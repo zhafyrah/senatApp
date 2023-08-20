@@ -8,13 +8,15 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Schema;
 
-class RolesSeeder extends Seeder {
+class RolesSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         Schema::disableForeignKeyConstraints();
 
         $data = [
@@ -27,7 +29,7 @@ class RolesSeeder extends Seeder {
             [
                 'role' => 'ketua',
                 'permission' => '*',
-                'exclude' => 'dokumen komisi, user',
+                'exclude' => 'dokumen komisi, user, berita',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
@@ -39,13 +41,13 @@ class RolesSeeder extends Seeder {
             ],
             [
                 'role' => 'komisi',
-                'permission' => 'dashboard, dokumen senat, dokumen pleno',
+                'permission' => 'dashboard, dokumen komisi, dokumen pleno',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ]
         ];
 
-        foreach($data as $d){
+        foreach ($data as $d) {
             RoleModel::query()->insert($d);
         }
 

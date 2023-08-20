@@ -1,6 +1,16 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listSambutanRequest, insertSambutanRequest, updateSambutanRequest, deleteSambutanRequest, getById } from '../api/sambutan-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listSambutanRequest,
+    insertSambutanRequest,
+    updateSambutanRequest,
+    deleteSambutanRequest,
+    getById
+} from '../api/sambutan-api';
 
 const loadingOverlay = useLoading()
 
@@ -16,11 +26,10 @@ function resultSambutanForm(sambutanForm, fotoFile) {
     formData.append('nama_ketua_senat', sambutanForm.namaKetuaSenat)
     formData.append('judul', sambutanForm.judul)
     formData.append('isi', sambutanForm.isi)
-    if (fotoFile)
-    {
-        formData.append('foto', fotoFile)    
+    if (fotoFile) {
+        formData.append('foto', fotoFile)
     }
-    
+
     return formData
 }
 
@@ -56,14 +65,11 @@ export const useSambutanStore = defineStore("sambutan", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -80,17 +86,13 @@ export const useSambutanStore = defineStore("sambutan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sambutan Berhasil di Simpan"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -107,18 +109,14 @@ export const useSambutanStore = defineStore("sambutan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sambutan Berhasil di Update"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -135,18 +133,14 @@ export const useSambutanStore = defineStore("sambutan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Sambutan Berhasil di Hapus"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -160,19 +154,15 @@ export const useSambutanStore = defineStore("sambutan", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\FungsiKerjaController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\KeanggotaanController;
 use App\Http\Controllers\Api\KomentarDokumenPlenoController;
-use App\Http\Controllers\Api\KomentarDokumenSenatController;
 use App\Http\Controllers\Api\KomentarDokumenKomisiController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
@@ -41,13 +40,14 @@ Route::group([
 
 Route::group(
     [
-        //'middleware' => ['auth.api']
+        //'middleware' => ['myauth']
     ],
     function () {
         Route::group([
             'prefix' => 'dashboard',
         ], function () {
             Route::get('/', [DashboardController::class, 'show']);
+            Route::get('/chart-dokumen', [DashboardController::class, 'getChartData']);
         });
 
         Route::group([
@@ -58,7 +58,7 @@ Route::group(
             Route::get('/{id}', [UserController::class, 'show']);
 
             Route::group([
-                'middleware' => ['auth.api']
+                'middleware' => ['myauth']
             ], function () {
                 Route::post('/save', [UserController::class, 'store']);
 
@@ -76,7 +76,7 @@ Route::group(
             Route::get('/{id}', [BeritaController::class, 'show']);
 
             Route::group([
-                'middleware' => ['auth.api']
+                'middleware' => ['myauth']
             ], function () {
                 Route::post('/save', [BeritaController::class, 'store']);
 
@@ -94,7 +94,7 @@ Route::group(
             Route::get('/{id}', [DokumenPlenoController::class, 'show']);
 
             Route::group([
-                'middleware' => ['auth.api']
+                'middleware' => ['myauth']
             ], function () {
                 Route::post('/save', [DokumenPlenoController::class, 'store']);
 
@@ -103,7 +103,6 @@ Route::group(
                 Route::delete('/delete/{id}', [DokumenPlenoController::class, 'destroy']);
             });
         });
-
         Route::group([
             'prefix' => 'dokumen-senat',
         ], function () {
@@ -117,7 +116,6 @@ Route::group(
 
             Route::delete('/delete/{id}', [DokumenSenatController::class, 'destroy']);
         });
-
         Route::group([
             'prefix' => 'dokumen-komisi',
         ], function () {
@@ -157,18 +155,6 @@ Route::group(
         });
 
         Route::group([
-            'prefix' => 'komentar-senat',
-        ], function () {
-            Route::get('/', [KomentarDokumenSenatController::class, 'show']);
-
-            Route::get('/{id}', [KomentarDokumenSenatController::class, 'show']);
-
-            Route::post('/save', [KomentarDokumenSenatController::class, 'store']);
-
-            Route::delete('/delete/{id}', [KomentarDokumenSenatController::class, 'destroy']);
-        });
-
-        Route::group([
             'prefix' => 'gallery',
         ], function () {
             Route::get('/', [GalleryController::class, 'show']);
@@ -189,12 +175,15 @@ Route::group(
 
             Route::get('/{id}', [KeanggotaanController::class, 'show']);
 
+
+
             Route::post('/save', [KeanggotaanController::class, 'store']);
 
             Route::put('/update/{id}', [KeanggotaanController::class, 'edit']);
 
             Route::delete('/delete/{id}', [KeanggotaanController::class, 'destroy']);
         });
+        Route::get('/chart', [KeanggotaanController::class, 'getDataChartOrg']);
 
         Route::group([
             'prefix' => 'profile',
@@ -228,8 +217,8 @@ Route::group(
             Route::put('/update/{id}', [FungsiKerjaController::class, 'edit']);
 
             Route::delete('/delete/{id}', [FungsiKerjaController::class, 'destroy']);
+            Route::post('/save-fungsi-kerja', [FungsiKerjaController::class, 'store']);
         });
-
         Route::group([
             'prefix' => 'sejarah',
         ], function () {
@@ -259,7 +248,6 @@ Route::group(
         });
     }
 );
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

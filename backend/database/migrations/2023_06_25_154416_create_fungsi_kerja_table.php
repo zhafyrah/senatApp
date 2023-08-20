@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::create('fungsi_kerja', function (Blueprint $table) {
             $table->id();
-            $table->string('komisi');
-            $table->string('ketua_komisi');
-            $table->string('nama_anggota1')->nullable();
-            $table->string('nama_anggota2')->nullable();
-            $table->string('nama_anggota3')->nullable();
-            $table->string('fungsi_kerja');
+            $table->string('komisi', 50);
+            $table->string('nama_komisi', 100);
+            $table->string('ketua_komisi', 200);
+            // $table->string('nama_anggota1', 200)->nullable();
+            // $table->string('nama_anggota2', 200)->nullable();
+            // $table->string('nama_anggota3', 200)->nullable();
+            // $table->string('nama_anggota4', 200)->nullable();
+            // $table->string('nama_anggota5', 200)->nullable();
+            $table->text('fungsi_kerja');
 
             $table->bigInteger('created_user')->index()->nullable();
-          //  $table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
-
             $table->bigInteger('modified_user')->index()->nullable();
-           // $table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
 
             $table->timestamps();
         });

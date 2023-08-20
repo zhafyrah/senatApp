@@ -1,6 +1,16 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listKeanggotaanRequest, insertKeanggotaanRequest, updateKeanggotaanRequest, deleteKeanggotaanRequest, getById } from '../api/keanggotaan-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listKeanggotaanRequest,
+    insertKeanggotaanRequest,
+    updateKeanggotaanRequest,
+    deleteKeanggotaanRequest,
+    getById
+} from '../api/keanggotaan-api';
 
 const loadingOverlay = useLoading()
 
@@ -16,6 +26,7 @@ function resultKeanggotaanForm(keanggotaanForm, fotoFile) {
     formData.append('nama', keanggotaanForm.nama)
     formData.append('jabatan', keanggotaanForm.jabatan)
     formData.append('pendidikan', keanggotaanForm.pendidikan)
+    formData.append('periode', keanggotaanForm.periode)
     formData.append('foto', fotoFile)
 
     return formData
@@ -53,14 +64,11 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -77,17 +85,13 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Keanggotaan Berhasil di Simpan"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -104,18 +108,14 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Keanggotaan Berhasil di Update"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -132,18 +132,14 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Keanggotaan Berhasil di Hapus"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -157,19 +153,15 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

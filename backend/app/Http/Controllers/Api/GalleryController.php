@@ -45,7 +45,7 @@ class GalleryController extends Controller {
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/gallery/' . md5($fileName);
+            $saveName = '/img/gallery/' . $fileName;
             $destinationPath = public_path('/img/gallery');
 
             $file->move($destinationPath, $fileName);

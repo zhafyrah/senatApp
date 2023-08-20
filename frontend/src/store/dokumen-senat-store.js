@@ -1,7 +1,19 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listDokSenatRequest, insertDokSenatRequest, updateDokSenatRequest, deleteDokSenatRequest, getById } from '../api/dokumen-senat-api';
-import { formatDateToServer } from "../utils/date-utils"
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listDokSenatRequest,
+    insertDokSenatRequest,
+    updateDokSenatRequest,
+    deleteDokSenatRequest,
+    getById
+} from '../api/dokumen-senat-api';
+import {
+    formatDateToServer
+} from "../utils/date-utils"
 
 const loadingOverlay = useLoading()
 
@@ -14,15 +26,14 @@ function showLoading() {
 
 function resultDokSenatForm(dokSenatForm, dokumenFile) {
     const formData = new FormData()
-    formData.append('no_surat', dokSenatForm.noSurat)
+    formData.append('judul_dokumen', dokSenatForm.noSurat)
     formData.append('keterangan', dokSenatForm.keterangan)
     formData.append('tanggal_unggah', formatDateToServer(dokSenatForm.tanggal_unggah))
-    formData.append('status', dokSenatForm.status)
-    if (dokumenFile)
-    {
-        formData.append('dokumen', dokumenFile)    
+    formData.append('link_url', dokSenatForm.link_url)
+    if (dokumenFile) {
+        formData.append('dokumen', dokumenFile)
     }
-    
+
 
     return formData
 }
@@ -54,14 +65,11 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -73,17 +81,13 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
             insertDokSenatRequest(resultDokSenatForm(dokSenatForm, fotoFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -95,18 +99,14 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
             updateDokSenatRequest(id, resultDokSenatForm(dokSenatForm, fotoFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -118,18 +118,14 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
             deleteDokSenatRequest(id)
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -140,19 +136,15 @@ export const useDokSenatStore = defineStore("dokumen-senat", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

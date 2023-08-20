@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('role', 100);
-            $table->string('permission');
-            $table->string('exclude')->nullable();
+            $table->string('permission', 100);
+            $table->string('exclude', 200)->nullable();
             $table->timestamps();
         });
     }

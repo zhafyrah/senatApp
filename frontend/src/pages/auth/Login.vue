@@ -27,7 +27,7 @@ function handleLogin() {
 }
 
 authStore.$subscribe((mutatuin, state) => {
-  console.log("subscribe", state.isSuccess);
+  //   console.log("subscribe", state.isSuccess); // status
 });
 
 watch(
@@ -77,7 +77,13 @@ onMounted(() => {
       </div>
       <div class="card">
         <div class="card-body login-card-body">
-          <p class="login-box-msg">Silahkan Masuk Unutk Memulai Sesi</p>
+          <center>
+            <!-- <img src="../assets/img/logopolindra.png" width="30" height="30" /> -->
+          </center>
+          <center>
+            <p style="font-size: 30px"><b>Masuk</b></p>
+          </center>
+          <p class="login-box-msg">Silahkan Masuk Untuk Memulai Sesi</p>
           <form @submit.prevent="handleLogin" :ref="formContainer">
             <div class="input-group mb-3">
               <input
@@ -124,7 +130,7 @@ onMounted(() => {
             </div>
           </form>
           <p class="mb-1">
-            <a href="forgot-password.html">Lupa Kata Sandi</a>
+            <!-- <a href="forgot-password.html">Lupa Kata Sandi</a> -->
           </p>
         </div>
       </div>

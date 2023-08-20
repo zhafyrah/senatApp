@@ -1,93 +1,86 @@
 <script setup>
-import { useFungsiKerjaStore } from "../../store/fungsi-kerja-store"
+import { useFungsiKerjaStore } from "../../store/fungsi-kerja-store";
 import { useSnackbar } from "vue3-snackbar";
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch, computed } from "vue";
 import Pagination from "../../components/Pagination.vue";
-import { showConfirm } from "../../utils/notif-utils"
+import { showConfirm } from "../../utils/notif-utils";
 
-const fungsiKerjaStore = useFungsiKerjaStore()
-const snackbar = useSnackbar()
+const fungsiKerjaStore = useFungsiKerjaStore();
+const snackbar = useSnackbar();
 
 const fungsiKerjaData = computed(() => {
-  return fungsiKerjaStore.fungsiKerjaData
-})
+  return fungsiKerjaStore.fungsiKerjaData;
+});
 
 const page = computed(() => {
-  return fungsiKerjaStore.page
-})
+  return fungsiKerjaStore.page;
+});
 
 const totalPage = computed(() => {
-  return fungsiKerjaStore.totalPage
-})
+  return fungsiKerjaStore.totalPage;
+});
 
 const lastNumberPage = computed(() => {
-  return fungsiKerjaStore.lastNoPage
-})
+  return fungsiKerjaStore.lastNoPage;
+});
 
 onMounted(() => {
-  fungsiKerjaStore.getList()
-})
+  fungsiKerjaStore.getList();
+});
 
 watch(
   () => fungsiKerjaStore.errorMessage,
   () => {
-    if (fungsiKerjaStore.errorMessage)
-    {
+    if (fungsiKerjaStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: fungsiKerjaStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => fungsiKerjaStore.isSuccessSubmit,
   () => {
-    if (fungsiKerjaStore.isSuccessSubmit && fungsiKerjaStore.submitMessage)
-    {
+    if (fungsiKerjaStore.isSuccessSubmit && fungsiKerjaStore.submitMessage) {
       snackbar.add({
-        type: 'success',
+        type: "success",
         text: fungsiKerjaStore.submitMessage,
-      })
+      });
 
-      fungsiKerjaStore.getList()
+      fungsiKerjaStore.getList();
     }
   }
-)
+);
 
 function onCLickNext() {
-  if (fungsiKerjaStore.page < fungsiKerjaStore.totalPage)
-  {
+  if (fungsiKerjaStore.page < fungsiKerjaStore.totalPage) {
     fungsiKerjaStore.page++;
-    fungsiKerjaStore.getList()
-  } else
-  {
+    fungsiKerjaStore.getList();
+  } else {
     snackbar.add({
       type: "warning",
-      text: "Sudah Mencapai Halaman Maximum"
-    })
+      text: "Sudah Mencapai Halaman Maximum",
+    });
   }
 }
 
 function onClickPrev() {
-  if (fungsiKerjaStore.page > 0)
-  {
+  if (fungsiKerjaStore.page > 0) {
     fungsiKerjaStore.page--;
-    fungsiKerjaStore.getList()
-  }
-  else
-  {
+    fungsiKerjaStore.getList();
+  } else {
     snackbar.add({
       type: "warning",
-      message: "Sudah Mencapai Halaman Minimum"
-    })
+      message: "Sudah Mencapai Halaman Minimum",
+    });
   }
 }
 
 function onClickPaginate(number) {
-  fungsiKerjaStore.page = number
-  fungsiKerjaStore.getList()
+  fungsiKerjaStore.page = number;
+  fungsiKerjaStore.getList();
 }
 
 function confirmDelete(e) {
@@ -99,22 +92,22 @@ function confirmDelete(e) {
     "Hapus",
     "Batal",
     (isConfirm) => {
-      if (isConfirm)
-      {
-        fungsiKerjaStore.deleteFungsiKerja(e.target.id)
+      if (isConfirm) {
+        fungsiKerjaStore.deleteFungsiKerja(e.target.id);
       }
     }
-  )
+  );
 }
 
 const anggota = (anggota1, anggota2, anggota3) => {
-  var result = [anggota1, anggota2, anggota3].map((value, index) => {
-    index++;
-    return `${index}. ${value}`
-  }).join("\n")
-  return result
-}
-
+  var result = [anggota1, anggota2, anggota3]
+    .map((value, index) => {
+      index++;
+      return `${index}. ${value}`;
+    })
+    .join("\n");
+  return result;
+};
 </script>
 <template>
   <div class="col-12">
@@ -127,7 +120,12 @@ const anggota = (anggota1, anggota2, anggota3) => {
         </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
+            <input
+              type="text"
+              name="table_search"
+              class="form-control float-right"
+              placeholder="Search"
+            />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -143,9 +141,10 @@ const anggota = (anggota1, anggota2, anggota3) => {
             <tr>
               <th>No</th>
               <th>Komisi</th>
-              <th>Fungsi Kerja</th>
+              <th>Nama Komisi</th>
               <th>Ketua Komisi</th>
               <th>Anggota</th>
+              <th>Fungsi Kerja</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -154,28 +153,40 @@ const anggota = (anggota1, anggota2, anggota3) => {
               <td colspan="6">Data FungsiKerja Kosong</td>
             </tr>
             <tr v-for="(fungsiKerja, i) in fungsiKerjaData" :key="i">
-              <td class="text-center">{{ i+=lastNumberPage }}</td>
+              <td class="text-left">{{ (i += lastNumberPage) }}</td>
               <td>
                 {{ fungsiKerja.komisi }}
               </td>
-              <td>{{ fungsiKerja.fungsi_kerja }}</td>
+              <th>{{ fungsiKerja.nama_komisi }}</th>
               <td>{{ fungsiKerja.ketua_komisi }}</td>
-              <td style="white-space: pre-line" class="text-center">{{ anggota(fungsiKerja.nama_anggota1,
-                fungsiKerja.nama_anggota2, fungsiKerja.nama_anggota3) }}</td>
+              <td style="white-space: pre-line" class="text-center">
+                <div
+                  v-for="(anggota, index) in fungsiKerja.anggota"
+                  :key="anggota.id"
+                  style="margin-bottom: 5px"
+                >
+                  <span class="mb-2" style="text-align: justify"
+                    >{{ index + 1 }}. {{ anggota.nama_anggota }}</span
+                  >
+                </div>
+              </td>
+              <td>{{ fungsiKerja.fungsi_kerja }}</td>
               <td class="text-center">
                 <a href="#" @click.prevent="confirmDelete">
                   <i :id="fungsiKerja.id" class="fas fa-trash"></i>
                 </a>
-                <!--  <router-link :to="{ name: 'DetailBerita', params: { id: fungsiKerja.id } }">
-                    <i class="fas fa-pen ml-3"></i>
-                  </router-link> -->
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
-        @click-paginate="onClickPaginate" />
+      <Pagination
+        :page="page"
+        :total-page="totalPage"
+        @click-prev="onClickPrev"
+        @click-next="onCLickNext"
+        @click-paginate="onClickPaginate"
+      />
     </div>
   </div>
 </template>

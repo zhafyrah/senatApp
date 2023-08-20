@@ -15,17 +15,15 @@ return new class extends Migration
     {
         Schema::create('sejarah', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
-            $table->string('isi');
-            $table->string('foto_name')->nullable();
-            $table->longText('foto_url')->nullable();
-            $table->string('foto_path')->nullable();
+            $table->string('judul', 100);
+            $table->longText('isi');
+            $table->string('foto_name', 50)->nullable();
+            $table->longText('foto_url', 100)->nullable();
+            $table->string('foto_path', 100)->nullable();
 
             $table->bigInteger('created_user')->index()->nullable();
-            //$table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
-
             $table->bigInteger('modified_user')->index()->nullable();
-            //$table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
+
             $table->timestamps();
         });
     }

@@ -1,8 +1,22 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listUserRequest, insertUserRequest, updateUserRequest, deleteUserRequest, getById } from '../api/user-api';
-import { formatDateToServer } from "../utils/date-utils"
-import { getMstRolesRequest } from '../api/master-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listUserRequest,
+    insertUserRequest,
+    updateUserRequest,
+    deleteUserRequest,
+    getById
+} from '../api/user-api';
+import {
+    formatDateToServer
+} from "../utils/date-utils"
+import {
+    getMstRolesRequest
+} from '../api/master-api';
 
 const loadingOverlay = useLoading()
 
@@ -15,26 +29,24 @@ function showLoading() {
 
 function resultUserForm(userForm) {
     const formData = new FormData()
-    if (userForm.nama)
-    {
+    if (userForm.nama) {
         formData.append('nama', userForm.nama)
     }
-    if (userForm.role)
-    {
+    if (userForm.nip) {
+        formData.append('nip', userForm.nip)
+    }
+    if (userForm.role) {
         formData.append('role', userForm.role)
     }
-    if (userForm.email)
-    {
+    if (userForm.email) {
         formData.append('email', userForm.email)
     }
-    if (userForm.password)
-    {
+    if (userForm.password) {
         formData.append('password', userForm.password)
     }
 
     formData.append('status', parseInt(userForm.status))
 
-    console.log('form', formData)
     return formData
 }
 
@@ -66,14 +78,11 @@ export const useUserStore = defineStore("user", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -85,17 +94,13 @@ export const useUserStore = defineStore("user", {
             insertUserRequest(resultUserForm(userForm))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -107,18 +112,14 @@ export const useUserStore = defineStore("user", {
             updateUserRequest(id, resultUserForm(userForm))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -133,18 +134,14 @@ export const useUserStore = defineStore("user", {
             deleteUserRequest(id)
                 .then((response) => {
                     this.isSuccessDelete = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -155,19 +152,15 @@ export const useUserStore = defineStore("user", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

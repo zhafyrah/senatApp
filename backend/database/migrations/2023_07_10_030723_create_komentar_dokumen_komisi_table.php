@@ -17,23 +17,11 @@ return new class extends Migration
             $table->id();
 
             $table->bigInteger('dokumen_komisi_id')->index()->nullable();
-            /*  $table->foreignId('dokumen_komisi_id')->constrained(
-                table: 'dokumen_senat',
-            )
-            ->onUpdate('cascade')
-            ->onDelete('cascade'); */
-
             $table->bigInteger('user_id')->index()->nullable();
-            /* $table->foreignId('user_id')->constrained(
-                table: 'users',
-            )
-            ->onUpdate('cascade')
-            ->onDelete('cascade'); */
-
             $table->longText('komentar');
-            $table->string('attachment_name')->nullable();
-            $table->string('attachment_path')->nullable();
-            $table->string('attachment_url')->nullable();
+            $table->string('attachment_name', 100)->nullable();
+            $table->string('attachment_path', 100)->nullable();
+            $table->string('attachment_url', 100)->nullable();
 
 
             $table->timestamps();

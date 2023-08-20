@@ -11,21 +11,24 @@ use Illuminate\Http\Request;
 use Throwable;
 use Validator;
 
-class BeritaController extends Controller {
+class BeritaController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         /* $this->middleware('auth', [
             'except' => [
                 '/'
             ]
         ]); */
 
-        $this->middleware('auth')->except([
+        $this->middleware('api')->except([
             'show',
         ]);
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -38,7 +41,8 @@ class BeritaController extends Controller {
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -88,14 +92,17 @@ class BeritaController extends Controller {
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
 
             $berita = Berita::find($id);
             $berita->judul = $request->judul;
             $berita->isi = $request->isi;
+            $berita->tanggal_unggah = $request->tanggal_unggah;
             $berita->modified_user = $request->header('userId');
-
+            // dd($request);
+            // die;
             if ($file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
                 $saveName = '/img/berita/' . $fileName;
@@ -107,7 +114,7 @@ class BeritaController extends Controller {
                 $berita->foto_name = $fileName;
             }
 
-            $berita->save();
+            $berita->update();
             return $this->successResponse();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -115,7 +122,8 @@ class BeritaController extends Controller {
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $berita = Berita::find($id);
             $berita->delete();

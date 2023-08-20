@@ -14,29 +14,37 @@ class FungsiKerja extends Model
     protected $fillable = [
         'komisi',
         'fungsi_kerja',
+        'nama_komisi',
         'ketua_komisi',
-        'nama_anggota1',
-        'nama_anggota2',
-        'nama_anggota3',
         'created_user',
         'modified_user'
     ];
 
-    private function main($query) {
+    protected $dates = ['created_at'];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'created_user');
+    }
+
+    public function anggota()
+    {
+        return $this->hasMany(AnggotaFungsiKerja::class, 'fungsi_kerja_id');
+    }
+
+    public function scopeList($query)
+    {
         return $query
-            ->leftJoin('users', 'users.id', '=', 'fungsi_kerja.created_user')
-            ->select('fungsi_kerja.*')
-            ->selectRaw("DATE(fungsi_kerja.created_at) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user");
+            ->with('users')
+            ->withCount('anggota')
+            ->paginate(5);
     }
 
-    public function scopeList($query) {
-        $data = $this->main($query)->paginate(10);
-        return $data;
-    }
-
-    public function scopeSingleRow($query, $id) {
-        $data = $this->main($query)->where('fungsi_kerja.id', $id)->first();
-        return $data;
+    public function scopeSingleRow($query, $id)
+    {
+        return $query
+            ->with('users')
+            ->with('anggota')
+            ->findOrFail($id);
     }
 }

@@ -1,110 +1,100 @@
 <script setup>
-import { useUserStore } from "../../store/user-store"
+import { useUserStore } from "../../store/user-store";
 import { useSnackbar } from "vue3-snackbar";
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch, computed } from "vue";
 import Pagination from "../../components/Pagination.vue";
-import { showConfirm } from "../../utils/notif-utils"
-import { ucwords } from "../../utils/formating-utils"
+import { showConfirm } from "../../utils/notif-utils";
+import { ucwords } from "../../utils/formating-utils";
 import { storeToRefs } from "pinia";
 
-const userStore = useUserStore()
-const snackbar = useSnackbar()
+const userStore = useUserStore();
+const snackbar = useSnackbar();
 
-const { userData, page, totalPage, lastNoPage } = storeToRefs(userStore)
+const { userData, page, totalPage, lastNoPage } = storeToRefs(userStore);
 
 onMounted(() => {
   //userStore.$reset()
-  userStore.getList()
-})
+  userStore.getList();
+});
 
 watch(
   () => userStore.errorMessage,
   () => {
-    if (userStore.errorMessage)
-    {
+    if (userStore.errorMessage) {
       snackbar.add({
-        type: 'error',
+        type: "error",
         text: userStore.errorMessage,
-      })
+      });
     }
   }
-)
+);
 
 watch(
   () => userStore.isSuccessSubmit,
   () => {
-    if (userStore.isSuccessSubmit)
-    {
+    if (userStore.isSuccessSubmit) {
       snackbar.add({
-        type: 'success',
+        type: "success",
         text: "Data User Berhasil di Hapus",
-      })
-      userStore.getList()
+      });
+      userStore.getList();
     }
   }
-)
+);
 
 watch(
   () => userStore.isSuccessUpdate,
   () => {
-    if (userStore.isSuccessUpdate)
-    {
+    if (userStore.isSuccessUpdate) {
       snackbar.add({
-        type: 'success',
+        type: "success",
         text: "Data User Berhasil di Update",
-      })
-      userStore.getList()
+      });
+      userStore.getList();
     }
   }
-)
+);
 
 watch(
   () => userStore.isSuccessDelete,
   () => {
-    if (userStore.isSuccessDelete)
-    {
+    if (userStore.isSuccessDelete) {
       snackbar.add({
-        type: 'success',
+        type: "success",
         text: "Data User Berhasil di Hapus",
-      })
-      userStore.getList()
+      });
+      userStore.getList();
     }
   }
-)
-
+);
 
 function onCLickNext() {
-  if (userStore.page < userStore.totalPage)
-  {
+  if (userStore.page < userStore.totalPage) {
     userStore.page++;
-    userStore.getList()
-  } else
-  {
+    userStore.getList();
+  } else {
     snackbar.add({
       type: "warning",
-      text: "Sudah Mencapai Halaman Maximum"
-    })
+      text: "Sudah Mencapai Halaman Maximum",
+    });
   }
 }
 
 function onClickPrev() {
-  if (userStore.page > 0)
-  {
+  if (userStore.page > 0) {
     userStore.page--;
-    userStore.getList()
-  }
-  else
-  {
+    userStore.getList();
+  } else {
     snackbar.add({
       type: "warning",
-      message: "Sudah Mencapai Halaman Minimum"
-    })
+      message: "Sudah Mencapai Halaman Minimum",
+    });
   }
 }
 
 function onClickPaginate(number) {
-  userStore.page = number
-  userStore.getList()
+  userStore.page = number;
+  userStore.getList();
 }
 
 function confirmDelete(e) {
@@ -116,22 +106,20 @@ function confirmDelete(e) {
     "Hapus",
     "Batal",
     (isConfirm) => {
-      if (isConfirm)
-      {
-        userStore.deleteUser(e.target.id)
+      if (isConfirm) {
+        userStore.deleteUser(e.target.id);
       }
     }
-  )
+  );
 }
 
 function onChangeStatus(e) {
-  const userId = e.target.getAttribute('data-id')
+  const userId = e.target.getAttribute("data-id");
   const isActive = e.target.checked;
   userStore.updateUser(userId, {
-    status: isActive ? 1 : 0
-  })
+    status: isActive ? 1 : 0,
+  });
 }
-
 </script>
 <template>
   <div class="col-12">
@@ -144,7 +132,12 @@ function onChangeStatus(e) {
         </router-link>
         <div class="card-tools mt-2">
           <div class="input-group input-group-sm" style="width: 200px">
-            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
+            <input
+              type="text"
+              name="table_search"
+              class="form-control float-right"
+              placeholder="Search"
+            />
             <div class="input-group-append">
               <button type="submit" class="btn btn-default">
                 <i class="fas fa-search"></i>
@@ -160,6 +153,8 @@ function onChangeStatus(e) {
             <tr>
               <th>No</th>
               <th>Nama</th>
+              <th>NIP</th>
+              <th>Email</th>
               <th>Role</th>
               <th>Status</th>
               <th>Aksi</th>
@@ -170,17 +165,30 @@ function onChangeStatus(e) {
               <td colspan="5">Data User Kosong</td>
             </tr>
             <tr v-for="(user, i) in userData" :key="i">
-              <td class="text-center">{{ i+=lastNoPage }}</td>
+              <td class="text-center">{{ (i += lastNoPage) }}</td>
               <td>
                 {{ user.nama }}
               </td>
+              <td>
+                {{ user.nip }}
+              </td>
+              <td>{{ user.email }}</td>
               <td>{{ ucwords(user.role) }}</td>
               <td class="text-center">
                 <div class="form-group">
                   <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" :id="'customSwitch' + user.id" :checked="user.status == 1"
-                      :data-id="user.id" @change="onChangeStatus"/>
-                    <label class="custom-control-label" :for="'customSwitch' + user.id"></label>
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      :id="'customSwitch' + user.id"
+                      :checked="user.status == 1"
+                      :data-id="user.id"
+                      @change="onChangeStatus"
+                    />
+                    <label
+                      class="custom-control-label"
+                      :for="'customSwitch' + user.id"
+                    ></label>
                   </div>
                 </div>
               </td>
@@ -188,7 +196,9 @@ function onChangeStatus(e) {
                 <a href="#" @click.prevent="confirmDelete">
                   <i :id="user.id" class="fas fa-trash"></i>
                 </a>
-                <router-link :to="{ name: 'TambahUser', params: { id: user.id } }">
+                <router-link
+                  :to="{ name: 'EditUser', params: { id: user.id } }"
+                >
                   <i class="fas fa-pen ml-3"></i>
                 </router-link>
               </td>
@@ -196,8 +206,13 @@ function onChangeStatus(e) {
           </tbody>
         </table>
       </div>
-      <Pagination :page="page" :total-page="totalPage" @click-prev="onClickPrev" @click-next="onCLickNext"
-        @click-paginate="onClickPaginate" />
+      <Pagination
+        :page="page"
+        :total-page="totalPage"
+        @click-prev="onClickPrev"
+        @click-next="onCLickNext"
+        @click-paginate="onClickPaginate"
+      />
     </div>
   </div>
 </template>

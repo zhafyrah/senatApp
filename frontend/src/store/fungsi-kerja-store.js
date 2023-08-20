@@ -1,6 +1,16 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listFungsiKerjaRequest, insertFungsiKerjaRequest, updateFungsiKerjaRequest, deleteFungsiKerjaRequest, getById } from '../api/fungsi-kerja-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listFungsiKerjaRequest,
+    insertFungsiKerjaRequest,
+    updateFungsiKerjaRequest,
+    deleteFungsiKerjaRequest,
+    getById
+} from '../api/fungsi-kerja-api';
 
 const loadingOverlay = useLoading()
 
@@ -11,18 +21,21 @@ function showLoading() {
     })
 }
 
-function resultFungsiKerjaForm(fungsiKerjaForm) {
-    const formData = new FormData()
-    formData.append('komisi', fungsiKerjaForm.komisi)
-    formData.append('ketua_komisi', fungsiKerjaForm.ketuaKomisi)
-    formData.append('fungsi_kerja', fungsiKerjaForm.fungsiKerja)
-    formData.append('nama_anggota1', fungsiKerjaForm.anggota1)
-    formData.append('nama_anggota2', fungsiKerjaForm.anggota2)
-    formData.append('nama_anggota3', fungsiKerjaForm.anggota3)
+function resultFungsiKerjaForm(fungsiKerjaForm, additionalFields) {
+    const formData = new FormData();
 
-    console.log('form fungsi kerja', formData)
-    return formData
+    formData.append('komisi', fungsiKerjaForm.komisi);
+    formData.append('nama_komisi', fungsiKerjaForm.namaKomisi);
+    formData.append('ketua_komisi', fungsiKerjaForm.ketuaKomisi);
+    formData.append('fungsi_kerja', fungsiKerjaForm.fungsiKerja);
+
+    // Menambahkan data anggota dinamis
+    additionalFields.forEach((anggota, index) => {
+        formData.append(`nama_anggota${index + 1}`, anggota.value);
+    });
+    return formData;
 }
+
 
 export const useFungsiKerjaStore = defineStore("fungsi-kerja", {
     state: () => ({
@@ -52,48 +65,38 @@ export const useFungsiKerjaStore = defineStore("fungsi-kerja", {
                     this.totalPage = response.total > 10 ? Math.ceil(response.total / 10) : 1;
                     this.lastNoPage = response.from
                     this.fungsiKerjaData = response.data
-
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
-
                     loadingOverlay.hide()
                 })
         },
-        saveFungsiKerja(fungsiKerjaForm) {
+        saveFungsiKerja(fungsiKerjaForm, additionalFields) {
             this.isSuccessSubmit = false
             this.errorMessage = ""
             this.submitMessage = ""
-
             showLoading()
-            insertFungsiKerjaRequest(resultFungsiKerjaForm(fungsiKerjaForm))
+            insertFungsiKerjaRequest(resultFungsiKerjaForm(fungsiKerjaForm, additionalFields))
                 .then((response) => {
+
                     this.isSuccessSubmit = true
-                    this.submitMessage = "Data FungsiKerja Berhasil di Simpan"
-                    //console.log('response', response)
+                    this.submitMessage = "Data Fungsi Kerja Berhasil di Simpan"
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
-
                     loadingOverlay.hide()
                 })
         },
@@ -106,22 +109,17 @@ export const useFungsiKerjaStore = defineStore("fungsi-kerja", {
             updateFungsiKerjaRequest(id, resultFungsiKerjaForm(fungsiKerjaForm))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    this.submitMessage = "Data FungsiKerja Berhasil di Update"
-                    //console.log('response', response)
+                    this.submitMessage = "Data Fungsi Kerja Berhasil di Update"
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
-
                     loadingOverlay.hide()
                 })
         },
@@ -134,19 +132,15 @@ export const useFungsiKerjaStore = defineStore("fungsi-kerja", {
             deleteFungsiKerjaRequest(id)
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    this.submitMessage = "Data FungsiKerja Berhasil di Hapus"
-                    //console.log('response', response)
+                    this.submitMessage = "Data Fungsi Kerja Berhasil di Hapus"
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -160,22 +154,17 @@ export const useFungsiKerjaStore = defineStore("fungsi-kerja", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
-
                     loadingOverlay.hide()
                 })
         }

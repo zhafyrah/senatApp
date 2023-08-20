@@ -1,8 +1,22 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listDokPlenoRequest, insertDokPlenoRequest, updateDokPlenoRequest, deleteDokPlenoRequest, getById } from '../api/dokumen-pleno-api';
-import { formatDateToServer } from "../utils/date-utils"
-import { komentarForm } from '../utils/form-utils';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listDokPlenoRequest,
+    insertDokPlenoRequest,
+    updateDokPlenoRequest,
+    deleteDokPlenoRequest,
+    getById
+} from '../api/dokumen-pleno-api';
+import {
+    formatDateToServer
+} from "../utils/date-utils"
+import {
+    komentarForm
+} from '../utils/form-utils';
 
 const loadingOverlay = useLoading()
 
@@ -19,11 +33,10 @@ function resultDokPlenoForm(dokPlenoForm, dokumenFile) {
     formData.append('keterangan', dokPlenoForm.keterangan)
     formData.append('tanggal_unggah', formatDateToServer(dokPlenoForm.tanggal_unggah))
     formData.append('status', dokPlenoForm.status)
-    if (dokumenFile)
-    {
-        formData.append('dokumen', dokumenFile)    
+    if (dokumenFile) {
+        formData.append('dokumen', dokumenFile)
     }
-    
+
     return formData
 }
 
@@ -54,14 +67,11 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -73,17 +83,13 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
             insertDokPlenoRequest(resultDokPlenoForm(dokPlenoForm, fotoFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -95,18 +101,14 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
             updateDokPlenoRequest(id, resultDokPlenoForm(dokPlenoForm, fotoFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -118,18 +120,14 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
             deleteDokPlenoRequest(id)
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -140,19 +138,15 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

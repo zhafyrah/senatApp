@@ -11,10 +11,11 @@ const mstStore = useMstStore();
 const snackbar = useSnackbar();
 const router = useRouter();
 const route = useRoute();
-
+const isEdit = computed(() => route.params.id !== null);
 const roleData = computed(() => mstStore.roleData);
 const userForm = ref({
   nama: "",
+  nip: "",
   role: 0,
   status: 0,
   email: "",
@@ -41,7 +42,6 @@ watch(
   () => userStore.isSuccessSubmit,
   () => {
     if (userStore.isSuccessSubmit) {
-      console.log("success");
       userStore.$reset();
 
       snackbar.add({
@@ -59,6 +59,7 @@ watch(
   () => {
     const data = userStore.singleData;
     userForm.value.nama = data.nama;
+    userForm.value.nip = data.nip;
     userForm.value.email = data.email;
     userForm.value.status = data.status;
     userForm.value.role = data.role_id;
@@ -88,18 +89,32 @@ onMounted(() => {
 <template>
   <div class="card">
     <div class="card-header">
-      <h5 class="card-title">Silahkan Tambahkan User</h5>
+      <h4 class="card-title">
+        Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} User
+      </h4>
     </div>
     <form class="form-user" @submit.prevet="onClickSubmit">
       <div class="card-body">
         <div class="form-group">
-          <label for="inputEmail">Nama</label>
+          <label for="inputName">Nama</label>
           <div class="form">
             <input
               type="text"
               class="form-control"
               placeholder="Silahkan Isi Nama"
               v-model="userForm.nama"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName">NIP</label>
+          <div class="form">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Silahkan Isi NIP"
+              v-model="userForm.nip"
               required
             />
           </div>
@@ -113,13 +128,6 @@ onMounted(() => {
             </option>
           </select>
         </div>
-        <!--  <div class="form-group">
-          <label for="inputPassword3" class="col-sm-2 col-form-label">Status</label>
-          <div class="custom-control custom-switch ml-2">
-            <input type="checkbox" class="custom-control-input" id="customSwitch1" @change="onChangeStatus"/>
-            <label class="custom-control-label" for="customSwitch1"></label>
-          </div>
-        </div> -->
         <div class="form-group">
           <label for="inputEmail">Email</label>
           <div class="form">

@@ -40,6 +40,7 @@ const keanggotaanForm = ref({
   nama: "",
   jabatan: "",
   pendidikan: "",
+  periode: "",
 });
 
 const fotoFile = ref(null);
@@ -85,13 +86,25 @@ function onClickSubmit(e) {
           </div>
         </div>
         <div class="form-group">
-          <label for="inputEmail">Pendidikan</label>
+          <label for="inputEmail">Pendidikan Terakhir</label>
           <div class="form">
             <input
               type="text"
               class="form-control"
               placeholder="Silahkan Isi Pendidikan"
               v-model="keanggotaanForm.pendidikan"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputEmail">Periode</label>
+          <div class="form">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Silahkan Isi Periode"
+              v-model="keanggotaanForm.periode"
               required
             />
           </div>

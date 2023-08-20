@@ -24,7 +24,6 @@ const komentarForm = reactive(initialKomentarForm());
 const attachmentFile = ref(null)
 
 komentarStore.$subscribe((mutations, state) => {
-    //console.log('state', state.komentarData)
 })
 
 watch(
@@ -49,6 +48,7 @@ watch(
             text: "Komentar Berhasil di Tambahkan",
         })
     }
+   
 )
 
 function onChangeFile(e) {
@@ -62,7 +62,7 @@ function onSubmit(e) {
 
 onMounted(() => {
     dokStore.getDokKomisiById(route.params.id)
-    komentarStore.getListKomentar()
+    komentarStore.getListKomentar(route.params.id)
 })
 
 </script>
@@ -73,15 +73,16 @@ onMounted(() => {
                 <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                     <div class="row p-3">
                         <div class="col-12">
-                            <!-- diambil dari nomor surat -->
-                            <h4>Surat nomor: {{ dokStore.singleData.no_surat }}</h4>
+                            <!-- diambil dari nomor dokumen -->
+                            <h4>Nomor Dokumen: {{ dokStore.singleData.no_surat }}</h4>
                             <div class="row">
-                                <p>
+                                <!-- <p>
                                     <a :href="dokStore.singleData.dokumen_url" class="link-black text-sm" target="_blank">
                                         <i class="fas fa-link mr-1"></i>
                                         Tampilan File PDF
                                     </a>
-                                </p>
+                                </p> -->
+                                <iframe :src="dokStore.singleData.dokumen_url" frameborder="0" width="100%" height="800"></iframe>
                             </div>
                             <div class="mt-3">
                                 <h4>Komentar</h4>
@@ -100,10 +101,10 @@ onMounted(() => {
                                         {{ formatDateTimeFromServer(komentar.created_at) }}
                                     </p>
                                     </p>
-                                    <p hidden>
+                                    <!-- <p hidden>
                                         <a href="#" class="link-black text-sm">
                                             <i class="fas fa-link mr-1"></i> tampilan foto</a>
-                                    </p>
+                                    </p> -->
                                 </div>
                             </div>
                         </div>
@@ -130,14 +131,14 @@ onMounted(() => {
                             <b class="d-block">{{ dokStore.singleData.tanggal_unggah }}</b>
                         </p>
                         <!-- status bisa diupdate disini -->
-                        <div class="form-group" hidden>
+                        <!-- <div class="form-group" hidden>
                             <select class="form-control select" style="width: 100%" placeholder="Silahkan Pilih Status">
                                 <option selected disabled>Silahkan Pilih Status</option>
                                 <option select-id="1">Belum Disahkan</option>
                                 <option select-id="2">Dipertimbangkan</option>
                                 <option select-id="3">Disahkan</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                     <router-link to="dokumen" class="btn btn-primary" hidden>
                         Simpan Update</router-link>

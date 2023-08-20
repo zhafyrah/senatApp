@@ -1,7 +1,19 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listBeritaRequest, insertBeritaRequest, updateBeritaRequest, deleteBeritaRequest, getById } from '../api/berita-api';
-import { formatDateToServer } from "../utils/date-utils"
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listBeritaRequest,
+    insertBeritaRequest,
+    updateBeritaRequest,
+    deleteBeritaRequest,
+    getById
+} from '../api/berita-api';
+import {
+    formatDateToServer
+} from "../utils/date-utils"
 
 const loadingOverlay = useLoading()
 
@@ -13,11 +25,15 @@ function showLoading() {
 }
 
 function resultBeritaForm(beritaForm, fotoFile) {
+    console.log("Result Berita Form")
+    console.log(fotoFile);
     const formData = new FormData()
     formData.append('judul', beritaForm.judul)
     formData.append('tanggal_unggah', formatDateToServer(beritaForm.tanggal_unggah))
     formData.append('isi', beritaForm.isi)
-    formData.append('foto', fotoFile)
+    if (fotoFile) {
+        formData.append('foto', fotoFile)
+    }
 
     return formData
 
@@ -25,7 +41,13 @@ function resultBeritaForm(beritaForm, fotoFile) {
 export const useBeritaStore = defineStore("berita", {
     state: () => ({
         beritaData: [],
-        beritaSingleData: {},
+        beritaSingleData: {
+            judul: "",
+            tanggal_unggah: "",
+            isi: "",
+            foto_url: "",
+            foto_name: ""
+        },
         errorMessage: "",
         totalData: 0,
         page: 1,
@@ -35,6 +57,17 @@ export const useBeritaStore = defineStore("berita", {
         isSuccessSubmit: false,
     }),
     actions: {
+        clearForm() {
+            console.log("clear Form");
+            this.beritaSingleData = {
+                judul: "",
+                tanggal_unggah: "",
+                isi: "",
+                foto_url: "",
+                foto_name: ""
+            }
+            console.log(this.beritaSingleData)
+        },
         async getList() {
             showLoading()
             await listBeritaRequest(this.page)
@@ -49,14 +82,11 @@ export const useBeritaStore = defineStore("berita", {
                     //console.log('beritastore',response)
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -71,14 +101,11 @@ export const useBeritaStore = defineStore("berita", {
                     //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -86,22 +113,20 @@ export const useBeritaStore = defineStore("berita", {
                 })
         },
         updateBerita(id, beritaForm, fotoFile) {
+
             showLoading()
             updateBeritaRequest(id, resultBeritaForm(beritaForm, fotoFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
+
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -113,18 +138,14 @@ export const useBeritaStore = defineStore("berita", {
             deleteBeritaRequest(id)
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -135,24 +156,22 @@ export const useBeritaStore = defineStore("berita", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.beritaSingleData = response.data
                     loadingOverlay.hide()
+                    console.log(this.beritaSingleData)
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
                     loadingOverlay.hide()
                 })
-        }
+        },
+
     }
 })

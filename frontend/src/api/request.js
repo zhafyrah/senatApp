@@ -1,30 +1,34 @@
 import axios from "axios";
-import { useUserSession } from '../store/auth-store'
-import { useRouter, useRoute } from "vue-router";
+import {
+    useUserSession
+} from '../store/auth-store'
+import {
+    useRouter,
+    useRoute
+} from "vue-router";
 
 const userSession = useUserSession()
 const router = useRouter()
 
-let baseUrl = import.meta.env.VITE_BASE_API_URL
+let baseUrl =
+    import.meta.env.VITE_BASE_API_URL
 
-if (Object.keys(userSession).length === 0)
-{
+if (Object.keys(userSession).length === 0) {
     /* router.push({
         path: '/auth/login'
     }) */
 }
 
-if (import.meta.env.PROD)
-{
+if (
+    import.meta.env.PROD) {
     //production mode
     //baseUrl = ""
 }
 
-const moreOptions = Object.keys(userSession).length > 0 ?
-    {
+const moreOptions = Object.keys(userSession).length > 0 ? {
     userId: userSession.user.id
-    } :
-    {}
+
+} : {}
 
 const service = axios.create({
     baseURL: baseUrl,
@@ -41,20 +45,16 @@ service.interceptors.request.use(
         // if (token) {
         //   config.headers['Authorization'] = 'Bearer ' + isLogged(); // Set JWT token
         // }
-        
-        if (Object.keys(userSession).length > 0)
-        {
-            if (config.data)
-            {
-                config.data['userId'] = userSession.user.id        
+
+        if (Object.keys(userSession).length > 0) {
+            if (config.data) {
+                config.data['userId'] = userSession.user.id
             }
         }
 
-        //console.log('axios config', config)
         return config;
     },
     error => {
-        console.log(error); // for debug
         Promise.reject(error);
     }
 );
@@ -64,7 +64,6 @@ service.interceptors.response.use(
         return response.data;
     },
     error => {
-        //console.log("error request", error)
         return Promise.reject(error);
     }
 );

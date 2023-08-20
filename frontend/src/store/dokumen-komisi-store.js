@@ -1,12 +1,24 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listDokKomisiRequest, insertDokKomisiRequest, updateDokKomisiRequest, deleteDokKomisiRequest, getById } from '../api/dokumen-komisi-api';
-import { formatDateToServer } from "../utils/date-utils"
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listDokKomisiRequest,
+    insertDokKomisiRequest,
+    updateDokKomisiRequest,
+    deleteDokKomisiRequest,
+    getById
+} from '../api/dokumen-komisi-api';
+import {
+    formatDateToServer
+} from "../utils/date-utils"
 
 const loadingOverlay = useLoading()
 
 function showLoading() {
-    
+
     loadingOverlay.show({
         color: "#0069d9",
         blur: "5px"
@@ -18,11 +30,10 @@ function resultDokKomisiForm(dokKomisiForm, dokumenFile) {
     formData.append('no_surat', dokKomisiForm.noSurat)
     formData.append('keterangan', dokKomisiForm.keterangan)
     formData.append('tanggal_unggah', formatDateToServer(dokKomisiForm.tanggal_unggah))
-    if (dokumenFile)
-    {
-        formData.append('dokumen', dokumenFile)    
+    if (dokumenFile) {
+        formData.append('dokumen', dokumenFile)
     }
-    
+
 
     return formData
 }
@@ -45,7 +56,6 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
             showLoading()
             listDokKomisiRequest(this.page)
                 .then((response) => {
-                    //console.log('res', response)
                     this.totalData = response.total
                     this.currentPage = response.current_page
                     this.totalPage = response.total > 10 ? Math.ceil(response.total / 10) : 1;
@@ -55,14 +65,11 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -74,17 +81,13 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
             insertDokKomisiRequest(resultDokKomisiForm(dokKomisiForm, dokumenFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -96,18 +99,14 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
             updateDokKomisiRequest(id, resultDokKomisiForm(dokKomisiForm, dokumenFile))
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -119,18 +118,14 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
             deleteDokKomisiRequest(id)
                 .then((response) => {
                     this.isSuccessSubmit = true
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -141,19 +136,15 @@ export const useDokKomisiStore = defineStore("dokumen-komisi", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

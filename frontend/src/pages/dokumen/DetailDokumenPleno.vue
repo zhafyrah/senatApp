@@ -24,7 +24,6 @@ const komentarForm = reactive(initialKomentarForm());
 const attachmentFile = ref(null)
 
 komentarStore.$subscribe((mutations, state) => {
-    //console.log('state', state.komentarData)
 })
 
 watch(
@@ -62,7 +61,7 @@ function onSubmit(e) {
 
 onMounted(() => {
     dokStore.getDokPlenoById(route.params.id)
-    komentarStore.getListKomentar()
+    komentarStore.getListKomentar(route.params.id)
 })
 
 </script>
@@ -73,15 +72,10 @@ onMounted(() => {
                 <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                     <div class="row p-3">
                         <div class="col-12">
-                            <!-- diambil dari nomor surat -->
-                            <h4>Surat nomor: {{ dokStore.singleData.no_surat }}</h4>
+                            <!-- diambil dari nomor dokumen -->
+                            <h4>Nomor Dokumen: {{ dokStore.singleData.no_surat }}</h4>
                             <div class="row">
-                                <p>
-                                    <a :href="dokStore.singleData.dokumen_url" class="link-black text-sm" target="_blank">
-                                        <i class="fas fa-link mr-1"></i>
-                                        Tampilan File PDF
-                                    </a>
-                                </p>
+                                <iframe :src="dokStore.singleData.dokumen_url" frameborder="0" width="100%" height="800"></iframe>
                             </div>
                             <div class="mt-3">
                                 <h4>Komentar</h4>
@@ -90,8 +84,8 @@ onMounted(() => {
                                 </div>
                                 <div v-else class="post" v-for="(komentar, i) in komentarData" :key="i">
                                     <div class="user">
-                                        <span class="username">
-                                            <a href="#">{{ komentar.nama_user }}</a>
+                                        <span class="username" style="color:blue">
+                                            {{ komentar.nama_user }}
                                         </span>
                                     </div>
                                     <p>
@@ -99,10 +93,6 @@ onMounted(() => {
                                     <p>
                                         {{ formatDateTimeFromServer(komentar.created_at) }}
                                     </p>
-                                    </p>
-                                    <p hidden>
-                                        <a href="#" class="link-black text-sm">
-                                            <i class="fas fa-link mr-1"></i> tampilan foto</a>
                                     </p>
                                 </div>
                             </div>
@@ -128,22 +118,23 @@ onMounted(() => {
                     </p>
                     <hr />
                     <div class="text-muted">
-                        <p class="text-sm">
+                        <p class="text">
                             Tanggal Unggah
                             <b class="d-block">{{ dokStore.singleData.tanggal_unggah }}</b>
                         </p>
                         <!-- status bisa diupdate disini -->
-                        <div class="form-group" hidden>
-                            <select class="form-control select" style="width: 100%" placeholder="Silahkan Pilih Status">
+                        <div class="form-group">
+                        <!-- <p class="text">Status Dokumen</p>
+                            <select class="form-control select" style="width: 100%" placeholder="Silahkan Pilih Status" hidden>
                                 <option selected disabled>Silahkan Pilih Status</option>
-                                <option select-id="1">Belum Disahkan</option>
-                                <option select-id="2">Dipertimbangkan</option>
-                                <option select-id="3">Disahkan</option>
-                            </select>
+                                <option select-id="Belum Disahkan">Belum Disahkan</option>
+                                <option select-id="Dipertimbangkan">Dipertimbangkan</option>
+                                <option select-id="Disahkan">Disahkan</option>
+                            </select> -->
                         </div>
                     </div>
-                    <router-link to="dokumen" class="btn btn-primary" hidden>
-                        Simpan Update</router-link>
+                    <!-- <router-link to="dokumen" class="btn btn-primary">
+                        Simpan Update</router-link> -->
                 </div>
             </div>
         </div>

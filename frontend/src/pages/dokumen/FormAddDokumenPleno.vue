@@ -1,5 +1,6 @@
 <script setup>
 import { useDokPlenoStore } from "../../store/dokumen-pleno-store";
+import { useLocalStorageStore } from "../../store/local-storage-store";
 import { useSnackbar } from "vue3-snackbar";
 import { onMounted, ref, watch, computed } from "vue";
 import Datepicker from "vue3-datepicker";
@@ -9,19 +10,34 @@ const dokStore = useDokPlenoStore();
 const snackbar = useSnackbar();
 const router = useRouter();
 const route = useRoute();
-
+const localStorageStore = useLocalStorageStore();
+const isEdit = computed(() => route.params.id !== null);
 const dokForm = ref({
   noSurat: "",
   tanggal_unggah: new Date(),
   keterangan: "",
   status: "",
+  //   status: [
+  //     {
+  //       type: "is-danger",
+  //       status: "Belum Disahkan",
+  //     },
+  //     {
+  //       type: "is-primary",
+  //       status: "Dipertimbangkan",
+  //     },
+  //     {
+  //       type: "is-success",
+  //       status: "Disahkan",
+  //     },
+  //   ],
 });
 
 const dokUrl = ref("");
 const dokName = ref("");
 const dokId = ref(0);
 const dokFile = ref(null);
-
+let permission = ref({});
 watch(
   () => dokStore.errorMessage,
   () => {
@@ -55,7 +71,7 @@ watch(
   () => {
     dokId.value = dokStore.singleData.id;
     dokForm.value.noSurat = dokStore.singleData.no_surat;
-    dokForm.value.tanggal_unggah = new Date(dokStore.singleData.tanggal_unggah);
+    dokForm.value.tanggal_unggah = dokStore.singleData.tanggal_unggah;
     dokForm.value.keterangan = dokStore.singleData.keterangan;
     dokForm.value.status = dokStore.singleData.status;
     dokUrl.value = dokStore.singleData.dokumen_url;
@@ -76,21 +92,28 @@ function onSubmit(e) {
   }
 }
 
-const isDokKomisi = computed(() => {
-  return route.params.type && route.params.type === "komisi";
+const isDokumenPleno = computed(() => {
+  return route.params.type && route.params.type === "pleno";
+});
+
+const onlyAdminAndKetua = computed(() => {
+  return permission.value.role == "admin" || permission.value.role == "ketua";
 });
 
 onMounted(() => {
   if (route.params.id) {
     dokStore.getDokPlenoById(route.params.id);
   }
+  permission.value = localStorageStore.getPermission;
 });
 </script>
 <template>
   <div class="card">
     <div class="card-header">
       <div class="d-flex align-items-center">
-        <h5>Dokumen</h5>
+        <h4 class="card-title">
+          Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} Dokumen Pleno
+        </h4>
       </div>
     </div>
     <form @submit.prevent="onSubmit">
@@ -98,7 +121,7 @@ onMounted(() => {
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label for="inputName">No Surat</label>
+              <label for="inputName">No Dokumen</label>
               <input
                 type="text"
                 id="nosurat"
@@ -123,16 +146,15 @@ onMounted(() => {
           <div class="col-md-12">
             <div class="form-group">
               <label>Tanggal Unggah</label>
-              <Datepicker
-                v-model="dokForm.tanggal_unggah"
-                placeholder="Tanggal Unggah"
+              <input
                 class="form-control"
-                required
+                type="date"
+                v-model="dokForm.tanggal_unggah"
               />
             </div>
           </div>
           <div class="col-md-12">
-            <div v-if="!isDokKomisi" class="form-group">
+            <div v-if="onlyAdminAndKetua" class="form-group">
               <label>Status</label>
               <select class="form-control" v-model="dokForm.status" required>
                 <option selected disabled value="">
@@ -165,12 +187,10 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div v-else class="row text-center">
+        <div v-else class="row text-left">
           <div class="col-md-12">
-            <img :src="dokUrl" width="150" height="150" />
-          </div>
-          <div class="col-md-12">
-            <label>{{ dokName }}</label>
+            <!-- <img :src="dokUrl" width="150" height="150" /> -->
+            <h5>Dokumen yang diunggah: {{ dokName }}</h5>
           </div>
         </div>
       </div>

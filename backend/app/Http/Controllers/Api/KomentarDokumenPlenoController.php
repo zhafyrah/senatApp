@@ -12,10 +12,12 @@ use Validator;
 
 class KomentarDokumenPlenoController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -24,11 +26,12 @@ class KomentarDokumenPlenoController extends Controller
             return $this->successResponse($data);
         }
 
-        $data = KomentarDokumenPleno::list();
+        $data = KomentarDokumenPleno::where('dokumen_pleno_id', $request->documentId)->list();
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -75,7 +78,8 @@ class KomentarDokumenPlenoController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
 
             return $this->successResponse();
@@ -85,7 +89,8 @@ class KomentarDokumenPlenoController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $dok = KomentarDokumenPleno::find($id);
             $dok->delete();

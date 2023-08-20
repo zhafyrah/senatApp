@@ -15,19 +15,16 @@ return new class extends Migration
     {
         Schema::create('dokumen_pleno', function (Blueprint $table) {
             $table->id();
-            $table->string('no_surat');
-            $table->string('dokumen_name')->nullable();
-            $table->string('dokumen_path')->nullable();
-            $table->string('dokumen_url')->nullable();
-            $table->string('keterangan');
+            $table->string('no_surat', 200);
+            $table->string('dokumen_name', 50)->nullable();
+            $table->string('dokumen_path', 100)->nullable();
+            $table->string('dokumen_url', 100)->nullable();
+            $table->string('keterangan', 200);
             $table->string('status');
             $table->dateTime('tanggal_unggah')->nullable();
 
             $table->bigInteger('created_user')->index()->nullable();
-            //$table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
-
             $table->bigInteger('modified_user')->index()->nullable();
-            //$table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
 
             $table->timestamps();
         });

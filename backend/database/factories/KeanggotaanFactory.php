@@ -19,10 +19,12 @@ class KeanggotaanFactory extends Factory
     {
         $jabatan = ['Keta Senat', 'Anggota Senat', 'Komisi'];
         $pendidikan = ['SD', 'SMP', 'SMA'];
+        $periode = ['2017, 2018, 2019, 2020, 2021'];
         return [
             'nama' => $this->faker->name(),
             'jabatan' => Arr::random($jabatan),
             'pendidikan' => Arr::random($pendidikan),
+            'periode' => Arr::random($periode),
             'foto_name' => 'no-picture.png',
             'foto_path' => '/img/no-picture.png',
             'created_user' => 1,

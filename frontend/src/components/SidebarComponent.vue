@@ -17,8 +17,6 @@ if (!!access && access.constructor === Array) {
   access = access[0];
 }
 
-//console.log('permission', access)
-
 const fullName = user.nama;
 
 const handleLogout = () => {
@@ -29,7 +27,6 @@ const handleLogout = () => {
 };
 
 const hasAccess = (name) => {
-  //console.log('acc', access.exclude != null && access.exclude.includes(name))
   if (access.exclude != null && access.exclude.includes(name)) {
     return false;
   }
@@ -127,19 +124,6 @@ onMounted(() => {
                   <p>Dokumen Pleno</p>
                 </router-link>
               </li>
-              <!-- <li v-if="isDokumenSenat" class="nav-item">
-                <router-link
-                  to="/dokumen-senat"
-                  class="nav-link"
-                  :class="{
-                    'active router-link-exact-active':
-                      routePath.includes('senat'),
-                  }"
-                >
-                  <i class="nav-icon fas fa-book mr-3"></i>
-                  <p>Dokumen Senat</p>
-                </router-link>
-              </li> -->
               <li v-if="isDokumenKomisi" class="nav-item">
                 <router-link
                   to="/dokumen-komisi"
@@ -151,6 +135,19 @@ onMounted(() => {
                 >
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Dokumen Komisi</p>
+                </router-link>
+              </li>
+              <li v-if="isDokumenSenat" class="nav-item">
+                <router-link
+                  to="/dokumen-senat"
+                  class="nav-link"
+                  :class="{
+                    'active router-link-exact-active':
+                      routePath.includes('senat'),
+                  }"
+                >
+                  <i class="nav-icon fas fa-book mr-3"></i>
+                  <p>Dokumen Senat</p>
                 </router-link>
               </li>
             </template>
@@ -237,7 +234,7 @@ onMounted(() => {
           class="btn btn-primary w-100"
           @click="handleLogout"
         >
-          Logout
+          Keluar
         </button>
       </div>
     </div>

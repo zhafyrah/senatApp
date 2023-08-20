@@ -1,6 +1,16 @@
-import { defineStore } from 'pinia'
-import { useLoading } from 'vue3-loading-overlay';
-import { listGalleryRequest, insertGalleryRequest, updateGalleryRequest, deleteGalleryRequest, getById } from '../api/gallery-api';
+import {
+    defineStore
+} from 'pinia'
+import {
+    useLoading
+} from 'vue3-loading-overlay';
+import {
+    listGalleryRequest,
+    insertGalleryRequest,
+    updateGalleryRequest,
+    deleteGalleryRequest,
+    getById
+} from '../api/gallery-api';
 
 const loadingOverlay = useLoading()
 
@@ -50,14 +60,11 @@ export const useGalleryStore = defineStore("gallery", {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -74,17 +81,13 @@ export const useGalleryStore = defineStore("gallery", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Gallery Berhasil di Simpan"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 }).catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -101,18 +104,14 @@ export const useGalleryStore = defineStore("gallery", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Gallery Berhasil di Update"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -129,18 +128,14 @@ export const useGalleryStore = defineStore("gallery", {
                 .then((response) => {
                     this.isSuccessSubmit = true
                     this.submitMessage = "Data Gallery Berhasil di Hapus"
-                    //console.log('response', response)
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 
@@ -154,19 +149,15 @@ export const useGalleryStore = defineStore("gallery", {
             showLoading()
             getById(id)
                 .then((response) => {
-                    //console.log('byid', response)
                     this.singleData = response.data
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.errorMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.errorMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.errorMessage = error.message
                     }
 

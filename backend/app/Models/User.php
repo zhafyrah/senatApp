@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nama',
+        'nip',
         'email',
         'password',
         'status',
@@ -43,7 +44,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    private function main($query) {
+    private function main($query)
+    {
         return $query
             ->leftJoin('users_roles', 'users.id', '=', 'users_roles.users_id')
             ->leftJoin('roles', 'users_roles.roles_id', '=', 'roles.id')
@@ -52,12 +54,14 @@ class User extends Authenticatable
             ->selectRaw("users.nama as nama_user, roles.id as role_id");
     }
 
-    public function scopeList($query, $currentUserId) {
+    public function scopeList($query, $currentUserId)
+    {
         $data = $this->main($query)->whereRaw("users.id <> $currentUserId")->paginate(10);
         return $data;
     }
 
-    public function scopeSingleRow($query, $id) {
+    public function scopeSingleRow($query, $id)
+    {
         $data = $this->main($query)->where('users.id', $id)->first();
         return $data;
     }

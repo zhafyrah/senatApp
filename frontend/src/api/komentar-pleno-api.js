@@ -2,9 +2,10 @@ import Resource from "./resource"
 
 const resource = new Resource('komentar-pleno')
 
-export function listKomentarRequest(page) {
+export function listKomentarRequest(page, documentId) {
     const result = resource.get({
-        page: parseInt(page)
+        page: parseInt(page),
+        documentId: documentId
     });
 
     return result

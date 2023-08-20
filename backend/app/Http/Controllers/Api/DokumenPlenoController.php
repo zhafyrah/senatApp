@@ -12,10 +12,12 @@ use Validator;
 
 class DokumenPlenoController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -28,7 +30,8 @@ class DokumenPlenoController extends Controller
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -81,11 +84,13 @@ class DokumenPlenoController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $dok = DokumenPleno::find($id);
             $dok->no_surat = $request->no_surat;
             $dok->keterangan = $request->keterangan;
+            $dok->tanggal_unggah = $request->tanggal_unggah;
             $dok->modified_user = $request->modified_user;
             $dok->status = $request->status;
 
@@ -112,7 +117,8 @@ class DokumenPlenoController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $dok = DokumenPleno::find($id);
             $dok->delete();

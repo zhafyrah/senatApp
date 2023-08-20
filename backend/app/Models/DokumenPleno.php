@@ -18,25 +18,29 @@ class DokumenPleno extends BaseModel
         'dokumen_url',
         'keterangan',
         'status',
+        'tanggal_unggah',
         'created_user',
         'modified_user'
     ];
 
-    private function main($query) {
+    private function main($query)
+    {
         return $query
             ->leftJoin('users', 'users.id', '=', 'dokumen_pleno.created_user')
             ->select('dokumen_pleno.*')
-            ->selectRaw("DATE(dokumen_pleno.created_at) as tanggal_unggah")
+            ->selectRaw("DATE(dokumen_pleno.tanggal_unggah) as tanggal_unggah")
             ->selectRaw("users.nama as nama_user")
             ->selectRaw("CONCAT('" . url('') . "', dokumen_path) as dokumen_url");
     }
 
-    public function scopeList($query) {
+    public function scopeList($query)
+    {
         $data = $this->main($query)->paginate(10);
         return $data;
     }
 
-    public function scopeSingleRow($query, $id) {
+    public function scopeSingleRow($query, $id)
+    {
         $data = $this->main($query)->where('dokumen_pleno.id', $id)->first();
         return $data;
     }

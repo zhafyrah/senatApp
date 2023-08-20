@@ -15,18 +15,16 @@ return new class extends Migration
     {
         Schema::create('keanggotaan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('jabatan');
-            $table->string('pendidikan');
-            $table->string('foto_name')->nullable();
-            $table->longText('foto_url')->nullable();
-            $table->string('foto_path');
+            $table->string('nama', 200);
+            $table->string('jabatan', 100);
+            $table->string('pendidikan', 100);
+            $table->string('periode', 50);
+            $table->string('foto_name', 50)->nullable();
+            $table->longText('foto_url', 100)->nullable();
+            $table->string('foto_path', 100);
 
             $table->bigInteger('created_user')->index()->nullable();
-            //$table->foreign('created_user')->references('id')->on('users')->onDelete('SET NULL');
-
             $table->bigInteger('modified_user')->index()->nullable();
-            //$table->foreign('modified_user')->references('id')->on('users')->onDelete('SET NULL');
 
             $table->timestamps();
         });

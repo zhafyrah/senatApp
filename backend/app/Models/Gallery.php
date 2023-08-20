@@ -20,7 +20,8 @@ class Gallery extends BaseModel
         'modified_user'
     ];
 
-    private function main($query) {
+    private function main($query)
+    {
         return $query
             ->leftJoin('users', 'users.id', '=', 'gallery.created_user')
             ->select('gallery.*')
@@ -28,12 +29,19 @@ class Gallery extends BaseModel
             ->selectRaw("users.nama as nama_user");
     }
 
-    public function scopeList($query) {
+    public function scopeList($query)
+    {
         $data = $this->main($query)->paginate(10);
         return $data;
     }
 
-    public function scopeSingleRow($query, $id) {
+    public function getFotoPathAttribute($image)
+    {
+        return asset($image);
+    }
+
+    public function scopeSingleRow($query, $id)
+    {
         $data = $this->main($query)->where('gallery.id', $id)->first();
         return $data;
     }

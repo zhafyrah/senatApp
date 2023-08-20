@@ -1,0 +1,44 @@
+Koding TA (struktur organisasi)
+            <!-- <nav-item
+              icon-class="fas fa-columns"
+              text="Truktur Organisasi"
+              :to="{ path: 'pages/kanban' }"
+            >
+            </nav-item>
+            <nav-item
+              icon-class="fas fa-columns"
+              text="Truktur Organisasi"
+              :to="{ path: 'pages/kanban' }"
+            >
+            </nav-item> -->
+
+
+documentation: https://adminlte.io/docs/3.0/components/boxes.html
+
+Sidang dimajukan
+- Pertengahan juli (minggu 2/3): pendaftaran sidang 
+
+- Syarat:
+1. mengisi form pendaftaran online
+2. lembar pengajuan TA/skripsi
+3. bebas tunggakan dari BAK
+4. laporan tugas akhir/ skripsi yg telah di acc (sebanyak 3 rangkap)
+5. lembar bimbingan >= 8x
+6. konfirmasi pendaftaran sidang ke koordinator
+7. softcopy maupun source code diunggah ke drive
+
+- Bulan depan sidang minimal 5 orang perkelas.
+
+- 
+
+
+
+                  <thead>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                  </thead>

@@ -1,6 +1,12 @@
-import { defineStore } from 'pinia'
-import { loginRequest } from "../api/auth-api"
-import { useLoading } from 'vue3-loading-overlay';  
+import {
+    defineStore
+} from 'pinia'
+import {
+    loginRequest
+} from "../api/auth-api"
+import {
+    useLoading
+} from 'vue3-loading-overlay';
 
 const loadingOverlay = useLoading()
 
@@ -23,15 +29,12 @@ export const useAuthStore = defineStore('auth', {
 
             loginRequest(email, password)
                 .then((response) => {
-                    console.log('login res', response)
-                    if (remember)
-                    {
+                    if (remember) {
                         localStorage.setItem("remember", {
                             email: email,
                             password: password,
                         })
-                    } else
-                    {
+                    } else {
                         localStorage.setItem("remember", null)
                     }
 
@@ -40,14 +43,11 @@ export const useAuthStore = defineStore('auth', {
                     loadingOverlay.hide()
                 })
                 .catch((error) => {
-                    if (error.response)
-                    {
+                    if (error.response) {
                         this.responseMessage = error.response.data.message
-                    } else if (error.request)
-                    {
+                    } else if (error.request) {
                         this.responseMessage = error.request
-                    } else
-                    {
+                    } else {
                         this.responseMessage = error.message
                     }
 
@@ -63,8 +63,7 @@ export const useAuthStore = defineStore('auth', {
 })
 
 export function useUserSession() {
-    if (localStorage.getItem("user"))
-    {
+    if (localStorage.getItem("user")) {
         return {
             user: JSON.parse(localStorage.getItem("user")),
             permission: JSON.parse(localStorage.getItem("permission")),

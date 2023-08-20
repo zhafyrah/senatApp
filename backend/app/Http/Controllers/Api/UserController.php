@@ -13,11 +13,14 @@ use Hash;
 use Throwable;
 use Validator;
 
-class UserController extends Controller {
-    public function __construct() {
+class UserController extends Controller
+{
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -30,7 +33,8 @@ class UserController extends Controller {
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -38,12 +42,14 @@ class UserController extends Controller {
                 $request->all(),
                 [
                     'nama'     => 'required',
+                    'nip'     => 'required',
                     'role'  => 'required',
                     'email'  => 'required',
                     'password' => 'required',
                 ],
                 [
                     'nama.required'     => 'Nama Kosong',
+                    'nip.required'     => 'Nip Kosong',
                     'role.required'  => 'Role Kosong',
                     'email.required'  => 'Email Kosong',
                     'password.required'  => 'Password Kosong',
@@ -52,6 +58,7 @@ class UserController extends Controller {
 
             $dataUser = [
                 'nama' => $request->nama,
+                'nip' => $request->nip,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'status' => 1,
@@ -77,12 +84,16 @@ class UserController extends Controller {
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $user = User::find($id);
 
             if (!empty($request->nama)) {
                 $user->nama = $request->nama;
+            }
+            if (!empty($request->nip)) {
+                $user->nip = $request->nip;
             }
             if (!empty($request->status)) {
                 $user->status =  (int) $request->status;
@@ -112,7 +123,8 @@ class UserController extends Controller {
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $user = User::find($id);
             $user->delete();

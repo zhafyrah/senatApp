@@ -10,44 +10,50 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Schema;
 
-class UserSeeder extends Seeder {
+class UserSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         Schema::disableForeignKeyConstraints();
 
         $users = [
             [
                 'nama'        => 'Admin',
-                'email'             => 'admin@admin.com',
-                'password'          => Hash::make('12345'),
+                'nip'        => '19923005202308',
+                'email'             => 'admin@gmail.com',
+                'password'          => Hash::make('password'),
                 'status' => 1,
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
             [
                 'nama'        => 'Ketua',
-                'email'             => 'ketua@admin.com',
-                'password'          => Hash::make('12345'),
+                'nip'        => '19943005202308',
+                'email'             => 'ketua@gmail.com',
+                'password'          => Hash::make('password'),
                 'status' => 1,
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
             [
                 'nama'        => 'Anggota',
-                'email'             => 'anggota@admin.com',
-                'password'          => Hash::make('12345'),
+                'email'             => 'anggota@gmail.com',
+                'nip'        => '19923005202308',
+                'password'          => Hash::make('password'),
                 'status' => 1,
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
             [
                 'nama'        => 'Komisi',
-                'email'             => 'komisi@admin.com',
-                'password'          => Hash::make('12345'),
+                'email'             => 'komisi@gmail.com',
+                'nip'        => '19923005202308',
+                'password'          => Hash::make('password'),
                 'status' => 1,
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
@@ -59,7 +65,7 @@ class UserSeeder extends Seeder {
 
             DB::table('password_backup')->insert([
                 'users_id' => $id->id,
-                'password' => '12345'
+                'password' => 'password'
             ]);
         }
 
