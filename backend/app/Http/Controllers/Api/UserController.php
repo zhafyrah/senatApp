@@ -21,15 +21,30 @@ class UserController extends Controller
 
     public function show(Request $request, $id = 0)
     {
-        //\Log::info('show', $request->all());
-        //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
-            $data = User::singleRow($id);
+            // Eager load the userRole and role relationships
+            $data = User::with('userRole.role')->find($id);
 
-            return $this->successResponse($data);
+            if ($data) {
+                return $this->successResponse($data);
+            } else {
+                return $this->notFoundResponse('User not found.');
+            }
         }
 
-        $data = User::list($request->header('userId'));
+        // Use a single query for both searching and listing
+        $query = User::with('userRole.role');
+
+        // Check if there's a search keyword
+        $keyword = $request->input('search');
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama', 'LIKE', "%$keyword%")
+                    ->orWhere('nip', 'LIKE', "%$keyword%");
+            });
+        }
+
+        $data = $query->paginate(10);
         return $this->paginateResponse($data);
     }
 

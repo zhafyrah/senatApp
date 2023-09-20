@@ -52,11 +52,12 @@ export const useDokPlenoStore = defineStore("dokumen-pleno", {
         totalPage: 1,
         lastNoPage: 0,
         isSuccessSubmit: false,
+        isLoading: false,
     }),
     actions: {
-        getList() {
+        getList(search) {
             showLoading()
-            listDokPlenoRequest(this.page)
+            listDokPlenoRequest(this.page, search)
                 .then((response) => {
                     this.totalData = response.total
                     this.currentPage = response.current_page

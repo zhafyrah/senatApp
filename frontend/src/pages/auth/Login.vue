@@ -52,10 +52,7 @@ watch(
         text: "Login Berhasil",
       });
 
-      router.push({
-        path: "/",
-        replace: true,
-      });
+      window.location.href = "/";
     }
   }
 );

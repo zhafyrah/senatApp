@@ -23,11 +23,21 @@ class DokumenKomisiController extends Controller
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
             $data = DokumenKomisi::singleRow($id);
-
             return $this->successResponse($data);
         }
 
         $data = DokumenKomisi::list();
+
+        $keyword = $request->input('search');
+        $query = DokumenKomisi::query();
+
+        if (!empty($keyword)) {
+            $query->where('no_surat', 'LIKE', "%$keyword%")
+                ->orWhere('dokumen_name', 'LIKE', "%$keyword%")
+                ->orWhere('keterangan', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10); // Adjust the pagination limit as needed
         return $this->paginateResponse($data);
     }
 

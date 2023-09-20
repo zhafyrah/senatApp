@@ -10,11 +10,14 @@ use DB;
 use Throwable;
 use Validator;
 
-class SambutanController extends Controller {
-    public function __construct() {
+class SambutanController extends Controller
+{
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -27,7 +30,8 @@ class SambutanController extends Controller {
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -80,7 +84,8 @@ class SambutanController extends Controller {
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $berita = Sambutan::find($id);
             $berita->nama_ketua_senat = $request->nama_ketua_senat;
@@ -110,7 +115,8 @@ class SambutanController extends Controller {
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $berita = Sambutan::find($id);
             $berita->delete();

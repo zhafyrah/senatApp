@@ -29,14 +29,14 @@ class DokumenSenat extends BaseModel
             ->leftJoin('users', 'users.id', '=', 'dokumen_senat.created_user')
             ->select('dokumen_senat.*')
             ->selectRaw("DATE(dokumen_senat.tanggal_unggah) as tanggal_unggah")
-            ->selectRaw("users.nama as nama_user")
-            ->selectRaw("CONCAT('" . url('') . "', dokumen_path) as dokumen_url");
+            ->selectRaw("users.nama as nama_user");
+        // ->selectRaw("CONCAT('" . url('') . "', dokumen_path) as dokumen_url");
     }
 
-    public function getFotoUrlAttribute($image)
-    {
-        return asset($image);
-    }
+    // public function getFotoUrlAttribute($image)
+    // {
+    //     return asset($image);
+    // }
 
     public function scopeList($query)
     {
@@ -53,5 +53,10 @@ class DokumenSenat extends BaseModel
     {
         $data = $this->main($query)->where('dokumen_senat.id', $id)->first();
         return $data;
+    }
+    // DokumenSenat.php model
+    public function getDokumenPathAttribute()
+    {
+        return asset($this->attributes['dokumen_path']);
     }
 }

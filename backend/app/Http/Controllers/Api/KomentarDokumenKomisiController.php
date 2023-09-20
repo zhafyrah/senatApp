@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendCommentKomisi;
 use App\Models\KomentarDokumenKomisi;
+use App\Models\User;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Log;
 use Throwable;
 use Validator;
@@ -68,7 +71,21 @@ class KomentarDokumenKomisiController extends Controller
             }
 
             KomentarDokumenKomisi::create($data);
+            $data['user'] = User::findOrFail($request->header('userId'));
 
+            if ($data['user']->userRole->roles_id == 1) {
+                $users = User::whereNotIn('id', [$request->header('userId')])->get();
+            } elseif ($data['user']->userRole->roles_id == 4) {
+                $users = User::whereNotIn('id', [$request->header('userId')])->whereHas('userRole', function ($query) {
+                    $query->whereIn("roles_id", [4, 1]);
+                })->get();
+            }
+
+            // foreach ($users as $user) {
+            //     $data['receiver'] = $user;
+            //     Mail::to($user->email)->send(new SendCommentKomisi($data));
+            //     sleep(1);
+            // }
             DB::commit();
 
             return $this->successResponse();

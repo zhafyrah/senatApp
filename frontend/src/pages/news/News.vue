@@ -4,6 +4,7 @@ import { useSnackbar } from "vue3-snackbar";
 import { onMounted, watch, computed } from "vue";
 import Pagination from "../../components/Pagination.vue";
 import { showConfirm } from "../../utils/notif-utils";
+import { formatDateToServer } from "../../utils/date-utils";
 
 const beritaStore = useBeritaStore();
 const snackbar = useSnackbar();

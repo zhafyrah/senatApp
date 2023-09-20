@@ -1,16 +1,33 @@
 <script setup>
 import { useDokPlenoStore } from "../../store/dokumen-pleno-store";
 import { useSnackbar } from "vue3-snackbar";
-import { onMounted, watch, computed } from "vue";
+import { onMounted, watch, computed, ref } from "vue";
 import Pagination from "../../components/Pagination.vue";
 import { showConfirm } from "../../utils/notif-utils";
-
+import { debounce } from "lodash";
 const dokStore = useDokPlenoStore();
 const snackbar = useSnackbar();
 
 const data = computed(() => dokStore.dokData);
 const page = computed(() => dokStore.page);
 const totalPage = computed(() => dokStore.totalPage);
+const searchQuery = ref("");
+const searchResults = ref([]);
+
+const debouncedSearchData = debounce(() => {
+  if (searchQuery.value !== "") {
+    dokStore.getList(searchQuery.value);
+  } else {
+    dokStore.getList();
+  }
+}, 500); // Adjust the delay as needed (300ms in this example)
+
+watch(
+  () => searchQuery.value,
+  () => {
+    debouncedSearchData(); // Call the debounced function when searchQuery changes
+  }
+);
 
 onMounted(() => {
   dokStore.getList();
@@ -103,12 +120,21 @@ function confirmDelete(e) {
           <div class="input-group input-group-sm" style="width: 200px">
             <input
               type="text"
+              v-model="searchQuery"
               name="table_search"
               class="form-control float-right"
               placeholder="Search"
+              @input="searchData"
             />
             <div class="input-group-append">
-              <button type="submit" class="btn btn-default">
+              <button
+                type="button"
+                class="btn btn-default"
+                @click="searchQuery = ''"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+              <button type="button" class="btn btn-default" @click="searchData">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -132,6 +158,12 @@ function confirmDelete(e) {
           <tbody>
             <tr v-if="data.length == 0" class="text-center border">
               <td colspan="6">Dokumen Pleno Kosong</td>
+            </tr>
+            <tr
+              v-else-if="data.length === 0 && searchQuery"
+              class="text-center border"
+            >
+              <td colspan="6">Data yang Dicari Tidak Ada</td>
             </tr>
             <tr v-for="(dok, i) in data" :key="i">
               <td>

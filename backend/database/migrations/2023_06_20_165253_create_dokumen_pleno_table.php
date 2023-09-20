@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('dokumen_pleno', function (Blueprint $table) {
             $table->id();
             $table->string('no_surat', 200);
-            $table->string('dokumen_name', 50)->nullable();
-            $table->string('dokumen_path', 100)->nullable();
-            $table->string('dokumen_url', 100)->nullable();
+            $table->string('dokumen_name')->nullable();
+            $table->string('dokumen_path')->nullable();
+            $table->string('dokumen_url')->nullable();
             $table->string('keterangan', 200);
             $table->string('status');
             $table->dateTime('tanggal_unggah')->nullable();

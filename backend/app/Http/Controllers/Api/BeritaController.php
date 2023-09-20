@@ -38,6 +38,17 @@ class BeritaController extends Controller
         }
 
         $data = Berita::list();
+
+        $keyword = $request->input('search');
+        $query = Berita::query();
+
+        if (!empty($keyword)) {
+            $query->where('judul', 'LIKE', "%$keyword%")
+                ->orWhere('tanggal_unggah', 'LIKE', "%$keyword%")
+                ->orWhere('isi', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10);
         return $this->paginateResponse($data);
     }
 
@@ -101,8 +112,7 @@ class BeritaController extends Controller
             $berita->isi = $request->isi;
             $berita->tanggal_unggah = $request->tanggal_unggah;
             $berita->modified_user = $request->header('userId');
-            // dd($request);
-            // die;
+
             if ($file = $request->file('foto')) {
                 $fileName = clean_file_name($file->getClientOriginalName());
                 $saveName = '/img/berita/' . $fileName;

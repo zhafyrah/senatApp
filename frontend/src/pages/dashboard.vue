@@ -87,7 +87,9 @@ watch(
         <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">Dokumen Pleno</span>
-          <span class="info-box-number">{{ dashboardData.dokumen }}</span>
+          <a href="/dokumen-pleno"
+            ><span class="info-box-number">{{ dashboardData.dokumen }}</span></a
+          >
         </div>
       </div>
     </div>
@@ -98,7 +100,9 @@ watch(
         ></span>
         <div class="info-box-content">
           <span class="info-box-text">User</span>
-          <span class="info-box-number">{{ dashboardData.user }}</span>
+          <a href="/user"
+            ><span class="info-box-number">{{ dashboardData.user }}</span></a
+          >
         </div>
       </div>
     </div>
@@ -109,7 +113,9 @@ watch(
         ></span>
         <div class="info-box-content">
           <span class="info-box-text">Berita</span>
-          <span class="info-box-number">{{ dashboardData.berita }}</span>
+          <a href="/berita"
+            ><span class="info-box-number">{{ dashboardData.berita }}</span></a
+          >
         </div>
       </div>
     </div>
@@ -120,7 +126,9 @@ watch(
         ></span>
         <div class="info-box-content">
           <span class="info-box-text">Galeri</span>
-          <span class="info-box-number">{{ dashboardData.gallery }}</span>
+          <a href="/galeri"
+            ><span class="info-box-number">{{ dashboardData.gallery }}</span></a
+          >
         </div>
       </div>
     </div>

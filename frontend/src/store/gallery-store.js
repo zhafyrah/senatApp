@@ -11,6 +11,7 @@ import {
     deleteGalleryRequest,
     getById
 } from '../api/gallery-api';
+import axios from 'axios';
 
 const loadingOverlay = useLoading()
 
@@ -31,7 +32,11 @@ function resultGalleryForm(galleryForm, fotoFile) {
 export const useGalleryStore = defineStore("gallery", {
     state: () => ({
         galleryData: [],
-        singleData: {},
+        singleData: {
+            keterangan: '',
+            foto_url: "",
+            foto_name: ""
+        },
         errorMessage: "",
         totalData: 0,
         page: 1,
@@ -94,30 +99,6 @@ export const useGalleryStore = defineStore("gallery", {
                     loadingOverlay.hide()
                 })
         },
-        updateGallery(id, galleryForm, fotoFile) {
-            this.isSuccessSubmit = false
-            this.errorMessage = ""
-            this.submitMessage = ""
-
-            showLoading()
-            updateGalleryRequest(id, resultGalleryForm(galleryForm, fotoFile))
-                .then((response) => {
-                    this.isSuccessSubmit = true
-                    this.submitMessage = "Data Gallery Berhasil di Update"
-                    loadingOverlay.hide()
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        this.errorMessage = error.response.data.message
-                    } else if (error.request) {
-                        this.errorMessage = error.request
-                    } else {
-                        this.errorMessage = error.message
-                    }
-
-                    loadingOverlay.hide()
-                })
-        },
         deleteGallery(id) {
             this.isSuccessSubmit = false
             this.errorMessage = ""
@@ -142,6 +123,37 @@ export const useGalleryStore = defineStore("gallery", {
                     loadingOverlay.hide()
                 })
         },
+
+        // ...
+
+        updateGallery(id, galleryForm, fotoFile) {
+            showLoading();
+            const formData = resultGalleryForm(galleryForm, fotoFile);
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Set header Content-Type sebagai form data
+                },
+            };
+            axios.defaults.baseURL = 'http://localhost:8000/api';
+            axios
+                .put(`/gallery/update/${id}`, formData, config) // Ganti URL sesuai dengan endpoint yang benar
+                .then((response) => {
+                    this.isSuccessSubmit = true;
+                    loadingOverlay.hide();
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        this.errorMessage = error.response.data.message;
+                    } else if (error.request) {
+                        this.errorMessage = error.request;
+                    } else {
+                        this.errorMessage = error.message;
+                    }
+
+                    loadingOverlay.hide();
+                });
+        },
+
         getGalleryById(id) {
             this.errorMessage = ""
             this.singleData = {}

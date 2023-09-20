@@ -23,7 +23,15 @@ class FungsiKerjaController extends Controller
 
             return $this->successResponse($fungsiKerja);
         }
+        $keyword = $request->input('search');
+        $query = FungsiKerja::query();
 
+        if (!empty($keyword)) {
+            $query->where('komisi', 'LIKE', "%$keyword%")
+                ->orWhere('nama_komisi', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10);
         $fungsiKerjaList = FungsiKerja::with('anggota')->paginate();
 
         return $this->paginateResponse($fungsiKerjaList);

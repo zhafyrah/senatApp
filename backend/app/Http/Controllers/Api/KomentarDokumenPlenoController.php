@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendCommentPleno;
 use App\Models\KomentarDokumenPleno;
+use App\Models\User;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 use Validator;
 
@@ -64,6 +67,14 @@ class KomentarDokumenPlenoController extends Controller
             }
 
             KomentarDokumenPleno::create($data);
+            $data['user'] = User::findOrFail($request->header('userId'));
+            $users = User::whereNotIn('id', [$request->header('userId')])->get();
+
+            // foreach ($users as $user) {
+            //     $data['receiver'] = $user;
+            //     Mail::to($user->email)->send(new SendCommentPleno($data));
+            //     sleep(1);
+            // }
 
             DB::commit();
 

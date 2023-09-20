@@ -2,9 +2,10 @@ import Resource from "./resource"
 
 const resource = new Resource('dokumen-senat')
 
-export function listDokSenatRequest(page) {
+export function listDokSenatRequest(page, search) {
     const result = resource.get({
-        page: parseInt(page)
+        page: parseInt(page),
+        search: search
     });
 
     return result

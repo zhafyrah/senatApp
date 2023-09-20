@@ -2,9 +2,10 @@ import Resource from "./resource"
 
 const resource = new Resource('dokumen-pleno')
 
-export function listDokPlenoRequest(page) {
+export function listDokPlenoRequest(page, search) {
     const result = resource.get({
-        page: parseInt(page)
+        page: parseInt(page),
+        search: search
     });
 
     return result

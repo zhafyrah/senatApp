@@ -12,10 +12,12 @@ use Validator;
 
 class SejarahController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function show(Request $request, $id = 0) {
+    public function show(Request $request, $id = 0)
+    {
         //\Log::info('show', $request->all());
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
@@ -28,7 +30,8 @@ class SejarahController extends Controller
         return $this->paginateResponse($data);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         DB::beginTransaction();
 
         try {
@@ -48,7 +51,7 @@ class SejarahController extends Controller
 
             $file = $request->file('foto');
             $fileName = clean_file_name($file->getClientOriginalName());
-            $saveName = '/img/sejarah/' .$fileName;
+            $saveName = '/img/sejarah/' . $fileName;
             $destinationPath = public_path('/img/sejarah');
 
             $file->move($destinationPath, $fileName);
@@ -79,7 +82,8 @@ class SejarahController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id)
+    {
         try {
             $berita = Sejarah::find($id);
             $berita->judul = $request->judul;
@@ -103,13 +107,14 @@ class SejarahController extends Controller
         } catch (Throwable $e) {
             DB::rollBack();
             if (isset($fileName) && is_file($fileName) && file_exists($fileName)) {
-                unlink(public_path('/img/sambutan') . $fileName);
+                unlink(public_path('/img/sejarah') . $fileName);
             }
             return $this->exceptionResponse($e);
         }
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         try {
             $berita = Sejarah::find($id);
             $berita->delete();

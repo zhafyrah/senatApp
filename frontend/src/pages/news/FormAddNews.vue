@@ -10,6 +10,7 @@ const snackbar = useSnackbar();
 const router = useRouter();
 const route = useRoute();
 const isEdit = computed(() => route.params.id !== null);
+
 onMounted(() => {
   //   beritaStore.$reset();
   if (route.params.id) {
@@ -66,7 +67,6 @@ const beritaForm = ref({
 const fotoFile = ref(null);
 const fotoUrl = ref("");
 const fotoName = ref("");
-const fotoId = ref("");
 
 function onChangeFoto(e) {
   fotoFile.value = e.target.files[0];

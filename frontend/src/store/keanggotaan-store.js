@@ -46,7 +46,7 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
         submitMessage: ""
     }),
     actions: {
-        async getList() {
+        async getList(search) {
             this.totalData = 0
             this.totalPage = 1
             this.lastNoPage = 0
@@ -54,7 +54,7 @@ export const useKeanggotaanStore = defineStore("keanggotaan", {
             this.errorMessage = ""
 
             showLoading()
-            await listKeanggotaanRequest(this.page)
+            await listKeanggotaanRequest(this.page, search)
                 .then((response) => {
                     this.totalData = response.total
                     this.totalPage = response.total > 10 ? Math.ceil(response.total / 10) : 1;

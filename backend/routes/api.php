@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\SambutanController;
 use App\Http\Controllers\Api\SejarahController;
+use App\Http\Controllers\Api\SejarahSenatController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
@@ -175,8 +176,6 @@ Route::group(
 
             Route::get('/{id}', [KeanggotaanController::class, 'show']);
 
-
-
             Route::post('/save', [KeanggotaanController::class, 'store']);
 
             Route::put('/update/{id}', [KeanggotaanController::class, 'edit']);
@@ -245,6 +244,20 @@ Route::group(
             Route::put('/update/{id}', [SambutanController::class, 'edit']);
 
             Route::delete('/delete/{id}', [SambutanController::class, 'destroy']);
+        });
+
+        Route::group([
+            'prefix' => 'sejarah-senat',
+        ], function () {
+            Route::get('/', [SejarahSenatController::class, 'show']);
+
+            Route::get('/{id}', [SejarahSenatController::class, 'show']);
+
+            Route::post('/save', [SejarahSenatController::class, 'store']);
+
+            Route::put('/update/{id}', [SejarahSenatController::class, 'edit']);
+
+            Route::delete('/delete/{id}', [SejarahSenatController::class, 'destroy']);
         });
     }
 );

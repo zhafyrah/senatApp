@@ -33,6 +33,15 @@ class KeanggotaanController extends Controller
             return $value;
         });
 
+        $keyword = $request->input('search');
+        $query = Keanggotaan::query();
+
+        if (!empty($keyword)) {
+            $query->where('nama', 'LIKE', "%$keyword%")
+                ->orWhere('jabatan', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10);
         return $this->paginateResponse($data);
     }
 

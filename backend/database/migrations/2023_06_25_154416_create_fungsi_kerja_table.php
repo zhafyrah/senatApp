@@ -17,12 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('komisi', 50);
             $table->string('nama_komisi', 100);
-            $table->string('ketua_komisi', 200);
-            // $table->string('nama_anggota1', 200)->nullable();
-            // $table->string('nama_anggota2', 200)->nullable();
-            // $table->string('nama_anggota3', 200)->nullable();
-            // $table->string('nama_anggota4', 200)->nullable();
-            // $table->string('nama_anggota5', 200)->nullable();
+            $table->string('ketua_komisi', 300);
             $table->text('fungsi_kerja');
 
             $table->bigInteger('created_user')->index()->nullable();

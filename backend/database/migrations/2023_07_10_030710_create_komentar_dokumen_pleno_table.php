@@ -19,9 +19,9 @@ return new class extends Migration
             $table->bigInteger('dokumen_pleno_id')->index()->nullable();
             $table->bigInteger('user_id')->index()->nullable();
             $table->longText('komentar');
-            $table->string('attachment_name', 100)->nullable();
-            $table->string('attachment_path', 100)->nullable();
-            $table->string('attachment_url', 100)->nullable();
+            $table->string('attachment_name')->nullable();
+            $table->string('attachment_path')->nullable();
+            $table->string('attachment_url')->nullable();
 
             $table->timestamps();
         });

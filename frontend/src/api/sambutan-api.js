@@ -2,9 +2,10 @@ import Resource from "./resource"
 
 const resource = new Resource('sambutan')
 
-export function listSambutanRequest(page) {
+export function listSambutanRequest(page, search) {
     const result = resource.get({
-        page: parseInt(page)
+        page: parseInt(page),
+        search: search
     });
 
     return result

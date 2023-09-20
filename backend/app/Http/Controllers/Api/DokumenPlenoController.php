@@ -18,17 +18,27 @@ class DokumenPlenoController extends Controller
 
     public function show(Request $request, $id = 0)
     {
-        //\Log::info('show', $request->all());
-        //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
             $data = DokumenPleno::singleRow($id);
-
             return $this->successResponse($data);
         }
-
         $data = DokumenPleno::list();
+
+        $keyword = $request->input('search');
+        $query = DokumenPleno::query();
+
+        if (!empty($keyword)) {
+            $query->where('no_surat', 'LIKE', "%$keyword%")
+                ->orWhere('dokumen_name', 'LIKE', "%$keyword%")
+                ->orWhere('keterangan', 'LIKE', "%$keyword%")
+                ->orWhere('status', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10);
+
         return $this->paginateResponse($data);
     }
+
 
     public function store(Request $request)
     {

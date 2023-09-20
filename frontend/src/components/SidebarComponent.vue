@@ -21,9 +21,7 @@ const fullName = user.nama;
 
 const handleLogout = () => {
   authStore.submitLogout();
-  router.push({
-    path: "/auth/login",
-  });
+  window.location.href = "/auth/login";
 };
 
 const hasAccess = (name) => {
@@ -48,6 +46,7 @@ const isFungsiKerja = computed(() => hasAccess("fungsi kerja"));
 // * profil
 const isSambutan = computed(() => hasAccess("sambutan ketua senat"));
 const isSejarah = computed(() => hasAccess("sejarah"));
+const isSejarahSenat = computed(() => hasAccess("sejarah senat"));
 
 const isBerita = computed(() => hasAccess("berita"));
 const isGaleri = computed(() => hasAccess("galeri"));
@@ -56,7 +55,9 @@ const isDokumen = computed(
   () => isDokumenKomisi.value || isDokumenPleno.value || isDokumenSenat.value
 );
 const isOrganisasi = computed(() => isKeanggotaan.value || isFungsiKerja.value);
-const isProfile = computed(() => isSambutan.value || isSejarah.value);
+const isProfile = computed(
+  () => isSambutan.value || isSejarah.value || isSejarahSenat.value
+);
 
 const routePath = computed(() => route.path);
 
@@ -203,6 +204,12 @@ onMounted(() => {
                 <router-link to="/sejarah" class="nav-link">
                   <i class="nav-icon fas fa-book mr-3"></i>
                   <p>Sejarah Polindra</p>
+                </router-link>
+              </li>
+              <li v-if="isSejarahSenat" class="nav-item">
+                <router-link to="/sejarah-senat" class="nav-link">
+                  <i class="nav-icon fas fa-book mr-3"></i>
+                  <p>Sejarah Senat Polindra</p>
                 </router-link>
               </li>
             </template>

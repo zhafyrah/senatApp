@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Log;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,7 @@ class User extends Authenticatable
         'nama',
         'nip',
         'email',
-        'password',
+        // 'password',
         'status',
     ];
 
@@ -31,7 +32,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        //'password',
+        'password',
         'remember_token',
     ];
 
@@ -57,12 +58,27 @@ class User extends Authenticatable
     public function scopeList($query, $currentUserId)
     {
         $data = $this->main($query)->whereRaw("users.id <> $currentUserId")->paginate(10);
-        return $data;
+
+        return $data->map(function ($user) {
+            $user->load('userRole');
+            //\Log::info('url >> ' . url()->full());
+            if ($user->userRole) {
+                $user->userRole->load('role');
+            }
+
+            return $user;
+        });
     }
+
 
     public function scopeSingleRow($query, $id)
     {
         $data = $this->main($query)->where('users.id', $id)->first();
         return $data;
+    }
+
+    public function userRole()
+    {
+        return $this->hasOne(UserRoleModel::class, 'users_id');
     }
 }

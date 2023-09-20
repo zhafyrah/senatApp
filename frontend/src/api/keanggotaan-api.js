@@ -2,9 +2,10 @@ import Resource from "./resource"
 
 const resource = new Resource('keanggotaan')
 
-export function listKeanggotaanRequest(page) {
+export function listKeanggotaanRequest(page, search) {
     const result = resource.get({
-        page: parseInt(page)
+        page: parseInt(page),
+        search: search
     });
 
     return result

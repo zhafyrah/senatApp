@@ -22,11 +22,18 @@ class DokumenSenatController extends Controller
         //\Log::info('url >> ' . url()->full());
         if ($id > 0) {
             $data = DokumenSenat::singleRow($id);
-
             return $this->successResponse($data);
         }
-
         $data = DokumenSenat::list();
+        $keyword = $request->input('search');
+        $query = DokumenSenat::query();
+
+        if (!empty($keyword)) {
+            $query->where('judul_dokumen', 'LIKE', "%$keyword%")
+                ->orWhere('keterangan', 'LIKE', "%$keyword%");
+        }
+
+        $data = $query->paginate(10);
         return $this->paginateResponse($data);
     }
 

@@ -307,6 +307,32 @@ const routes = [
         component: () => import("../pages/profil/FormAddEditSejarah.vue"),
     },
     {
+        path: "/sejarah-senat",
+        name: "Sejarah Senat Polindra",
+        meta: {
+            layout: 'Authenticated',
+        },
+        component: () => import("../pages/profil/SejarahSenat.vue"),
+    },
+    {
+        path: "/tambah-sejarah-senat",
+        name: "Tambah Sejarah Senat Polindra",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['tambah sejarah senat']
+        },
+        component: () => import("../pages/profil/FormAddEditSejarahSenat.vue"),
+    },
+    {
+        path: "/edit-sejarah-senat/:id?",
+        name: "Edit Sejarah Senat Polindra",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['edit sejarah senat']
+        },
+        component: () => import("../pages/profil/FormAddEditSejarahSenat.vue"),
+    },
+    {
         path: "/galeri",
         name: "Galeri",
         meta: {
@@ -315,10 +341,19 @@ const routes = [
         component: () => import("../pages/gallery/Gallery.vue"),
     },
     {
-        path: "/tambah-foto",
+        path: "/tambah-galeri",
         name: "Tambah Foto",
         meta: {
             layout: 'Authenticated',
+        },
+        component: () => import("../pages/gallery/FormAddGallery.vue"),
+    },
+    {
+        path: "/edit-galeri/:id?",
+        name: "Edit Foto",
+        meta: {
+            layout: 'Authenticated',
+            permission: ['edit foto']
         },
         component: () => import("../pages/gallery/FormAddGallery.vue"),
     },

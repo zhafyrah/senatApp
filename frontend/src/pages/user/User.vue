@@ -35,7 +35,7 @@ watch(
     if (userStore.isSuccessSubmit) {
       snackbar.add({
         type: "success",
-        text: "Data User Berhasil di Hapus",
+        text: "Data User Berhasil di Update",
       });
       userStore.getList();
     }

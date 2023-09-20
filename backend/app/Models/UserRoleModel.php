@@ -5,17 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserRoleModel extends BaseModel {
+class UserRoleModel extends BaseModel
+{
     use HasFactory;
 
     protected $table = 'users_roles';
 
     protected $fillable = [
         'users_id',
-        'roles_id'
+        'roles_id',
     ];
 
-    public static function allbyUserId($usersId) {
+    // Definisi relasi dengan model Role
+    public function role()
+    {
+        return $this->belongsTo(RoleModel::class, 'role_id');
+    }
+
+
+    public static function allbyUserId($usersId)
+    {
         $sql = "SELECT
                     r1.role,
                     r1.permission,

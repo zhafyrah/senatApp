@@ -4,6 +4,7 @@ import { useSnackbar } from "vue3-snackbar";
 import { onMounted, watch, computed } from "vue";
 import Pagination from "../../components/Pagination.vue";
 import { showConfirm } from "../../utils/notif-utils";
+import { formatDateToServer } from "../../utils/date-utils";
 
 const galleryStore = useGalleryStore();
 const snackbar = useSnackbar();
@@ -103,7 +104,7 @@ function confirmDelete(e) {
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <router-link to="/tambah-foto">
+        <router-link to="/tambah-galeri">
           <button class="btn btn-primary">
             <i class="fas fa-plus mr-1"></i>Unggah Foto
           </button>
@@ -150,11 +151,16 @@ function confirmDelete(e) {
                 />
               </td>
               <td>{{ gallery.keterangan }}</td>
-              <td>{{ gallery.tanggal_unggah }}</td>
+              <td>{{ formatDateToServer(gallery.created_at) }}</td>
               <td class="text-center">
                 <a href="#" @click.prevent="confirmDelete">
                   <i :id="gallery.id" class="fas fa-trash"></i>
                 </a>
+                <router-link
+                  :to="{ name: 'Edit Foto', params: { id: gallery.id } }"
+                >
+                  <i class="fas fa-pen ml-3"></i>
+                </router-link>
               </td>
             </tr>
           </tbody>

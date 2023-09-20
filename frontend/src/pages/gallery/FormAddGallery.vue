@@ -2,11 +2,22 @@
 import { useGalleryStore } from "../../store/gallery-store";
 import { useSnackbar } from "vue3-snackbar";
 import { onMounted, ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const galleryStore = useGalleryStore();
 const snackbar = useSnackbar();
 const router = useRouter();
+const route = useRoute();
+const isEdit = computed(() => route.params.id !== null);
+
+onMounted(() => {
+  if (route.params.id) {
+    galleryStore.getGalleryById(route.params.id);
+    galleryForm.value = galleryStore.singleData;
+  } else {
+    // galleryStore.clearForm();
+  }
+});
 
 watch(
   () => galleryStore.errorMessage,
@@ -17,6 +28,24 @@ watch(
         text: galleryStore.errorMessage,
       });
     }
+  }
+);
+
+const galleryForm = ref({
+  keterangan: "",
+});
+
+const fotoFile = ref(null);
+const fotoUrl = ref("");
+const fotoName = ref("");
+
+watch(
+  () => galleryStore.singleData,
+  () => {
+    const data = galleryStore.singleData;
+    galleryForm.value = data;
+    fotoUrl.value = data.foto_path;
+    fotoName.value = data.foto_name;
   }
 );
 
@@ -34,27 +63,31 @@ watch(
   }
 );
 
-const galleryForm = ref({
-  keterangan: "",
-});
-
-const fotoFile = ref(null);
-
 function onChangeFoto(e) {
   fotoFile.value = e.target.files[0];
 }
 
 function onClickSubmit(e) {
   e.preventDefault();
-  galleryStore.saveGallery(galleryForm.value, fotoFile.value);
+  if (route.params.id) {
+    galleryStore.updateGallery(
+      route.params.id,
+      galleryForm.value, // Pastikan ini memiliki nilai yang sesuai
+      fotoFile.value // Pastikan ini memiliki nilai yang sesuai
+    );
+  } else {
+    galleryStore.saveGallery(galleryForm.value, fotoFile.value);
+  }
 }
 </script>
 <template>
   <div class="card">
     <div class="card-header">
-      <h4 class="card-title">Silahkan Tambahkan Foto</h4>
+      <h4 class="card-title">
+        Silahkan {{ isEdit ? "Perbarui" : "Tambah" }} Foto
+      </h4>
     </div>
-    <form @submit.prevent="onClickSubmit">
+    <form @submit.prevent="onClickSubmit" enctype="multipart/form-data">
       <div class="card-body">
         <div class="form-group">
           <label for="input">Keterangan</label>
@@ -83,6 +116,9 @@ function onClickSubmit(e) {
                   : fotoFile.name
               }}</label>
             </div>
+          </div>
+          <div v-if="route.params.id">
+            <img :src="fotoUrl" alt="" />
           </div>
         </div>
       </div>

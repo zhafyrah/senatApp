@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('judul', 200);
             $table->longtext('isi');
             $table->dateTime('tanggal_unggah')->nullable();
-            $table->string('foto_name', 50)->nullable();
-            $table->longText('foto_url', 100)->nullable();
+            $table->string('foto_name')->nullable();
+            $table->longText('foto_url')->nullable();
             $table->string('foto_path')->nullable();
 
             $table->bigInteger('created_user')->index()->nullable();

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('dokumen_senat', function (Blueprint $table) {
             $table->id();
             $table->string('judul_dokumen', 100);
-            $table->string('link_url', 100);
-            $table->string('dokumen_name', 50)->nullable();
-            $table->string('dokumen_path', 100)->nullable();
-            $table->string('dokumen_url', 100)->nullable();
+            $table->string('link_url');
+            $table->string('dokumen_name')->nullable();
+            $table->string('dokumen_path')->nullable();
+            $table->string('dokumen_url')->nullable();
             $table->string('keterangan', 200);
             $table->dateTime('tanggal_unggah')->nullable();
 

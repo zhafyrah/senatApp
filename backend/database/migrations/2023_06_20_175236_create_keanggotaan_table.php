@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('jabatan', 100);
             $table->string('pendidikan', 100);
             $table->string('periode', 50);
-            $table->string('foto_name', 50)->nullable();
-            $table->longText('foto_url', 100)->nullable();
-            $table->string('foto_path', 100);
+            $table->string('foto_name')->nullable();
+            $table->longText('foto_url')->nullable();
+            $table->string('foto_path');
 
             $table->bigInteger('created_user')->index()->nullable();
             $table->bigInteger('modified_user')->index()->nullable();

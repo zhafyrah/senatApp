@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@mdi/js": "^7.2.96"
+    "@mdi/js": "^7.2.96",
+    "pdfjs-dist": "^3.10.111"
   }
 }
