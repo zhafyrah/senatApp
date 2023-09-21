@@ -36,12 +36,10 @@ class DashboardController extends Controller
             ->orderByRaw('MONTH(created_at)')
             ->get();
 
-        // Create a dictionary with lowercase month names as keys and counts as values
         $monthCounts = $query->pluck('count', 'month')->mapWithKeys(function ($count, $month) {
             return [strtolower($month) => $count];
         });
 
-        // Generate the response with counts for all months, showing 0 if count is not available
         $response = [];
         $months = [
             "January", "February", "March", "April", "May", "June",
