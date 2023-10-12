@@ -37,7 +37,7 @@ class DokumenKomisiController extends Controller
                 ->orWhere('keterangan', 'LIKE', "%$keyword%");
         }
 
-        $data = $query->paginate(10); // Adjust the pagination limit as needed
+        $data = $query->paginate(10);
         return $this->paginateResponse($data);
     }
 
@@ -50,13 +50,14 @@ class DokumenKomisiController extends Controller
                 $request->all(),
                 [
                     'no_surat'     => 'required',
-                    'dokumen'  => 'required',
+                    'dokumen'  => 'required|file|max:5120',
                     'keterangan'  => 'required',
                 ],
                 [
-                    'no_surat.required'     => 'No. Surat Kosong',
-                    'dokumen.required'  => 'Dokumen Kosong',
-                    'keterangan.required'     => 'Keterangan Kosong',
+                    'no_surat.required'     => 'Nomor surat kosong',
+                    'dokumen.required'  => 'Dokumen kosong',
+                    'dokumen.max'       => 'Ukuran dokumen terlalu besar. Maksimum 5 MB.',
+                    'keterangan.required'     => 'Keterangan kosong',
                 ]
             ));
 

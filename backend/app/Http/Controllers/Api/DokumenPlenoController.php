@@ -49,15 +49,16 @@ class DokumenPlenoController extends Controller
                 $request->all(),
                 [
                     'no_surat'     => 'required',
-                    'dokumen'  => 'required',
+                    'dokumen'  => 'required|file|max:5120',
                     'keterangan'  => 'required',
                     'status'  => 'required',
                 ],
                 [
-                    'no_surat.required'     => 'No. Surat Kosong',
-                    'dokumen.required'  => 'Dokumen Kosong',
-                    'keterangan.required'     => 'Keterangan Kosong',
-                    'status.required'     => 'Status Kosong',
+                    'no_surat.required'     => 'Nomor surat kosong',
+                    'dokumen.required'  => 'Dokumen kosong',
+                    'dokumen.max'       => 'Ukuran dokumen terlalu besar. Maksimum 5 MB.',
+                    'keterangan.required'     => 'Keterangan kosong',
+                    'status.required'     => 'Status kosong',
                 ]
             ));
 

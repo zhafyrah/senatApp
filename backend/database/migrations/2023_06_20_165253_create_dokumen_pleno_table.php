@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('dokumen_path')->nullable();
             $table->string('dokumen_url')->nullable();
             $table->string('keterangan', 200);
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->dateTime('tanggal_unggah')->nullable();
 
             $table->bigInteger('created_user')->index()->nullable();

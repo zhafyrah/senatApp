@@ -39,13 +39,14 @@ class SejarahController extends Controller
                 $request->all(),
                 [
                     'isi'     => 'required',
-                    'foto'  => 'required',
+                    'foto'  => 'required|image|max:2048',
                     'judul' => 'required',
                 ],
                 [
-                    'isi.required'     => 'Isi Kosong',
-                    'judul.required'     => 'Judul Kosong',
-                    'foto.required'     => 'Foto Kosong',
+                    'isi.required'     => 'Isi kosong',
+                    'judul.required'     => 'Judul kosong',
+                    'foto.required'     => 'Foto kosong',
+                    'foto.max'       => 'Ukuran foto terlalu besar. Maksimum 2 MB.',
                 ]
             ));
 

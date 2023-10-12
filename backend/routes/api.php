@@ -63,7 +63,7 @@ Route::group(
             ], function () {
                 Route::post('/save', [UserController::class, 'store']);
 
-                Route::put('/update/{id}', [UserController::class, 'edit']);
+                Route::post('/update/{id}', [UserController::class, 'edit']);
 
                 Route::delete('/delete/{id}', [UserController::class, 'destroy']);
             });
@@ -81,7 +81,7 @@ Route::group(
             ], function () {
                 Route::post('/save', [BeritaController::class, 'store']);
 
-                Route::put('/update/{id}', [BeritaController::class, 'edit']);
+                Route::post('/update/{id}', [BeritaController::class, 'edit']);
 
                 Route::delete('/delete/{id}', [BeritaController::class, 'destroy']);
             });
@@ -99,7 +99,7 @@ Route::group(
             ], function () {
                 Route::post('/save', [DokumenPlenoController::class, 'store']);
 
-                Route::put('/update/{id}', [DokumenPlenoController::class, 'edit']);
+                Route::post('/update/{id}', [DokumenPlenoController::class, 'edit']);
 
                 Route::delete('/delete/{id}', [DokumenPlenoController::class, 'destroy']);
             });
@@ -113,7 +113,7 @@ Route::group(
 
             Route::post('/save', [DokumenSenatController::class, 'store']);
 
-            Route::put('/update/{id}', [DokumenSenatController::class, 'edit']);
+            Route::post('/update/{id}', [DokumenSenatController::class, 'edit']);
 
             Route::delete('/delete/{id}', [DokumenSenatController::class, 'destroy']);
         });
@@ -126,7 +126,7 @@ Route::group(
 
             Route::post('/save', [DokumenKomisiController::class, 'store']);
 
-            Route::put('/update/{id}', [DokumenKomisiController::class, 'edit']);
+            Route::post('/update/{id}', [DokumenKomisiController::class, 'edit']);
 
             Route::delete('/delete/{id}', [DokumenKomisiController::class, 'destroy']);
         });
@@ -164,7 +164,7 @@ Route::group(
 
             Route::post('/save', [GalleryController::class, 'store']);
 
-            Route::put('/update/{id}', [GalleryController::class, 'edit']);
+            Route::post('/update/{id}', [GalleryController::class, 'edit']);
 
             Route::delete('/delete/{id}', [GalleryController::class, 'destroy']);
         });
@@ -178,7 +178,7 @@ Route::group(
 
             Route::post('/save', [KeanggotaanController::class, 'store']);
 
-            Route::put('/update/{id}', [KeanggotaanController::class, 'edit']);
+            Route::post('/update/{id}', [KeanggotaanController::class, 'edit']);
 
             Route::delete('/delete/{id}', [KeanggotaanController::class, 'destroy']);
         });
@@ -193,7 +193,7 @@ Route::group(
 
             Route::post('/save', [ProfileController::class, 'store']);
 
-            Route::put('/update/{id}', [ProfileController::class, 'edit']);
+            Route::post('/update/{id}', [ProfileController::class, 'edit']);
 
             Route::delete('/delete/{id}', [ProfileController::class, 'destroy']);
         });
@@ -213,9 +213,10 @@ Route::group(
 
             Route::post('/save', [FungsiKerjaController::class, 'store']);
 
-            Route::put('/update/{id}', [FungsiKerjaController::class, 'edit']);
+            Route::post('/update/{id}', [FungsiKerjaController::class, 'edit']);
 
             Route::delete('/delete/{id}', [FungsiKerjaController::class, 'destroy']);
+
             Route::post('/save-fungsi-kerja', [FungsiKerjaController::class, 'store']);
         });
         Route::group([
@@ -227,7 +228,7 @@ Route::group(
 
             Route::post('/save', [SejarahController::class, 'store']);
 
-            Route::put('/update/{id}', [SejarahController::class, 'edit']);
+            Route::post('/update/{id}', [SejarahController::class, 'edit']);
 
             Route::delete('/delete/{id}', [SejarahController::class, 'destroy']);
         });
@@ -241,7 +242,7 @@ Route::group(
 
             Route::post('/save', [SambutanController::class, 'store']);
 
-            Route::put('/update/{id}', [SambutanController::class, 'edit']);
+            Route::post('/update/{id}', [SambutanController::class, 'edit']);
 
             Route::delete('/delete/{id}', [SambutanController::class, 'destroy']);
         });
@@ -255,7 +256,7 @@ Route::group(
 
             Route::post('/save', [SejarahSenatController::class, 'store']);
 
-            Route::put('/update/{id}', [SejarahSenatController::class, 'edit']);
+            Route::post('/update/{id}', [SejarahSenatController::class, 'edit']);
 
             Route::delete('/delete/{id}', [SejarahSenatController::class, 'destroy']);
         });

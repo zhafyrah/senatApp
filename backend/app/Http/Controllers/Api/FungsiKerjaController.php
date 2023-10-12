@@ -41,7 +41,6 @@ class FungsiKerjaController extends Controller
 
         DB::beginTransaction();
         try {
-            // Validasi input
             $this->validationException(Validator::make(
                 $request->all(),
                 [
@@ -51,14 +50,13 @@ class FungsiKerjaController extends Controller
                     'fungsi_kerja' => 'required',
                 ],
                 [
-                    'komisi.required' => 'Komisi Kosong',
-                    'nama_komisi.required' => 'Nama Komisi Kosong',
-                    'ketua_komisi.required' => 'Ketua Komisi Kosong',
-                    'fungsi_kerja.required' => 'Fungsi Kerja Kosong',
+                    'komisi.required' => 'Komisi kosong',
+                    'nama_komisi.required' => 'Nama komisi kosong',
+                    'ketua_komisi.required' => 'Ketua komisi kosong',
+                    'fungsi_kerja.required' => 'Fungsi kerja kosong',
                 ]
             ));
 
-            // Data Fungsi Kerja
             $dataFungsiKerja = [
                 'komisi' => $request->komisi,
                 'nama_komisi' => $request->nama_komisi,
@@ -66,20 +64,16 @@ class FungsiKerjaController extends Controller
                 'fungsi_kerja' => $request->fungsi_kerja,
             ];
 
-            // Simpan Fungsi Kerja
             $fungsiKerja = FungsiKerja::create($dataFungsiKerja);
 
-            // Data Anggota Fungsi Kerja
             $anggotaData = [];
             for ($i = 1;; $i++) {
                 $namaAnggota = $request->input("nama_anggota{$i}");
                 if (!$namaAnggota) {
-                    break; // Exit the loop if there's no more input
+                    break;
                 }
                 $anggotaData[] = ['nama_anggota' => $namaAnggota, 'fungsi_kerja_id' => $fungsiKerja->id];
             }
-
-            // Simpan Anggota Fungsi Kerja
             if (!empty($anggotaData)) {
                 AnggotaFungsiKerja::insert($anggotaData);
             }
@@ -101,7 +95,6 @@ class FungsiKerjaController extends Controller
                 return $this->errorResponse('Fungsi Kerja not found', 404);
             }
 
-            // Update data Fungsi Kerja
             $fungsiKerja->update([
                 'komisi' => $request->komisi,
                 'nama_komisi' => $request->nama_komisi,
@@ -109,7 +102,6 @@ class FungsiKerjaController extends Controller
                 'fungsi_kerja' => $request->fungsi_kerja,
             ]);
 
-            // Update atau tambahkan anggota
             for ($i = 1; $i <= 5; $i++) {
                 $namaAnggota = $request->input("nama_anggota{$i}");
                 if ($namaAnggota) {
@@ -137,7 +129,6 @@ class FungsiKerjaController extends Controller
                 return $this->errorResponse('Fungsi Kerja not found', 404);
             }
 
-            // Hapus anggota sebelum menghapus Fungsi Kerja
             AnggotaFungsiKerja::where('fungsi_kerja_id', $fungsiKerja->id)->delete();
             $fungsiKerja->delete();
 

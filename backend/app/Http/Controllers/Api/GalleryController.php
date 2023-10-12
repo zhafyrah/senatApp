@@ -49,12 +49,12 @@ class GalleryController extends Controller
                 $request->all(),
                 [
                     'keterangan' => 'required',
-                    'foto' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'foto' => 'required|image|max:2048',
                 ],
                 [
-                    'keterangan.required'     => 'Keterangan Kosong',
-                    'foto.required'     => 'Foto Kosong',
-                    'foto.mimes' => 'Format foto tidak valid. Gunakan format JPEG, PNG, JPG, atau GIF',
+                    'keterangan.required'     => 'Keterangan kosong',
+                    'foto.required'     => 'Foto kosong',
+                    'foto.max'       => 'Ukuran foto terlalu besar. Maksimum 2 MB.',
                 ]
             ));
 
@@ -98,7 +98,6 @@ class GalleryController extends Controller
             $berita->keterangan = $request->keterangan;
             $berita->modified_user = $request->modified_user;
 
-            // Cek apakah ada file yang dikirim
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');
                 $fileName = clean_file_name($file->getClientOriginalName());

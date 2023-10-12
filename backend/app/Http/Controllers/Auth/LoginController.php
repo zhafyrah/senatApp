@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 use Throwable;
 use Validator;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
 
-    public function __invoke(Request $request) {
+    public function __invoke(Request $request)
+    {
         try {
             $this->validationException(Validator::make(
                 $request->all(),
@@ -20,8 +22,8 @@ class LoginController extends Controller {
                     'password'  => 'required'
                 ],
                 [
-                    'email.required'     => 'Email Kosong',
-                    'password.required'  => 'Password Kosong'
+                    'email.required'     => 'Email kosong',
+                    'password.required'  => 'Password kosong'
                 ]
             ));
 
@@ -43,7 +45,8 @@ class LoginController extends Controller {
         }
     }
 
-    protected function credentials(Request $request) {
+    protected function credentials(Request $request)
+    {
         return ['email' => $request->email, 'password' => $request->password, 'status' => 1];
     }
 }

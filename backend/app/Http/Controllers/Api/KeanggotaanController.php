@@ -57,8 +57,8 @@ class KeanggotaanController extends Controller
                     'v' => $item->jabatan,
                     'f' => "{$item->nama} \n {$item->jabatan}",
                 ],
-                $this->getRelation($item->jabatan), // Use the getRelation function
-                $item->jabatan, // Tooltip
+                $this->getRelation($item->jabatan),
+                $item->jabatan,
             ];
 
             array_push($result, $entry);
@@ -67,7 +67,6 @@ class KeanggotaanController extends Controller
         $komisiMembers = [
             'Ketua Komisi 1' => ['Anggota Komisi 1.1', 'Anggota Komisi 1.2', 'Anggota Komisi 1.3'],
             'Ketua Komisi 2' => ['Anggota Komisi 2.1', 'Anggota Komisi 2.2', 'Anggota Komisi 2.3'],
-            // ... Add more Komisi entries and their members
         ];
 
         foreach ($komisiMembers as $komisi => $members) {
@@ -82,17 +81,14 @@ class KeanggotaanController extends Controller
                                 'v' => $member,
                                 'f' => "{$memberData->nama} \n {$member}",
                             ],
-                            $this->getRelation($komisi), // Use the getRelation function
-                            $member, // Tooltip
+                            $this->getRelation($komisi),
+                            $member,
                         ];
                         array_push($result, $entry);
                     }
                 }
             }
         }
-
-        // ... Add more Komisi entries and their members
-
         return $result;
     }
 
@@ -112,11 +108,11 @@ class KeanggotaanController extends Controller
                     'foto'  => 'required',
                 ],
                 [
-                    'nama.required'     => 'Nama Kosong',
-                    'jabatan.required'  => 'Jabatan Kosong',
-                    'pendidikan.required'     => 'Pendidikan Kosong',
-                    'periode' => 'Periode Kosong',
-                    'foto.required'     => 'Foto Kosong',
+                    'nama.required'     => 'Nama kosong',
+                    'jabatan.required'  => 'Jabatan kosong',
+                    'pendidikan.required'     => 'Pendidikan kosong',
+                    'periode' => 'Periode kosong',
+                    'foto.required'     => 'Foto kosong',
                 ]
             ));
 

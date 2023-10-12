@@ -40,14 +40,15 @@ class SambutanController extends Controller
                 [
                     'nama_ketua_senat' => 'required',
                     'judul' => 'required',
-                    'isi'     => 'required',
-                    'foto'  => 'required',
+                    'isi'   => 'required',
+                    'foto'  => 'required|image|max:2048',
                 ],
                 [
-                    'nama_ketua_senat.required'     => 'Nama Ketua Senat Kosong',
-                    'judul.required'     => 'Judul Kosong',
-                    'isi.required'     => 'Isi Kosong',
-                    'foto.required'     => 'Foto Kosong',
+                    'nama_ketua_senat.required'     => 'Nama ketua senat kosong',
+                    'judul.required'     => 'Judul kosong',
+                    'isi.required'     => 'Isi kosong',
+                    'foto.required'    => 'Foto kosong',
+                    'foto.max'       => 'Ukuran foto terlalu besar. Maksimum 2 MB.',
                 ]
             ));
 

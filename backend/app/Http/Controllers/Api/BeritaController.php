@@ -62,12 +62,13 @@ class BeritaController extends Controller
                 [
                     'judul'     => 'required',
                     'isi'  => 'required',
-                    'foto'  => 'required',
+                    'foto'  => 'required|image|max:2048',
                 ],
                 [
-                    'judul.required'     => 'Judul Kosong',
-                    'isi.required'  => 'Isi Kosong',
-                    'foto.required'     => 'Foto Kosong',
+                    'judul.required'     => 'Judul kosong',
+                    'isi.required'  => 'Isi kosong',
+                    'foto.required' => 'Foto kosong',
+                    'dokumen.max' => 'Ukuran foto terlalu besar. Maksimum 2 MB.',
                 ]
             ));
 

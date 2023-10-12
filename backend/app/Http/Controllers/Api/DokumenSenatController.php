@@ -46,15 +46,16 @@ class DokumenSenatController extends Controller
                 $request->all(),
                 [
                     'judul_dokumen'     => 'required',
-                    'dokumen'  => 'required',
+                    'dokumen'  => 'required|file|max:2048',
                     'keterangan'  => 'required',
                     'link_url' => 'required'
                 ],
                 [
-                    'judul_dokumen.required'     => 'Judul Dokumen Kosong',
-                    'dokumen.required'  => 'Dokumen Kosong',
-                    'keterangan.required'     => 'Keterangan Kosong',
-                    'link_url.required' => 'Link Kosong'
+                    'judul_dokumen.required'     => 'Judul dokumen kosong',
+                    'dokumen.required'  => 'Dokumen kosong',
+                    'dokumen.max'       => 'Ukuran foto terlalu besar. Maksimum 2 MB.',
+                    'keterangan.required'     => 'Keterangan kosong',
+                    'link_url.required' => 'Link kosong'
                 ]
             ));
 

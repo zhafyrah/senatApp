@@ -32,10 +32,7 @@ class UserController extends Controller
             }
         }
 
-        // Use a single query for both searching and listing
         $query = User::with('userRole.role');
-
-        // Check if there's a search keyword
         $keyword = $request->input('search');
         if (!empty($keyword)) {
             $query->where(function ($q) use ($keyword) {
@@ -63,11 +60,11 @@ class UserController extends Controller
                     'password' => 'required',
                 ],
                 [
-                    'nama.required'     => 'Nama Kosong',
-                    'nip.required'     => 'Nip Kosong',
-                    'role.required'  => 'Role Kosong',
-                    'email.required'  => 'Email Kosong',
-                    'password.required'  => 'Password Kosong',
+                    'nama.required'     => 'Nama kosong',
+                    'nip.required'     => 'Nip kosong',
+                    'role.required'  => 'Role kosong',
+                    'email.required'  => 'Email kosong',
+                    'password.required'  => 'Password kosong',
                 ]
             ));
 
